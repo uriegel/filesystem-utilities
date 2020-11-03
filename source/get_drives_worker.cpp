@@ -22,7 +22,7 @@ public:
 
     void OnOK();
 
-    Promise Promise() { return deferred.Promise(); }
+    Napi::Promise Promise() { return deferred.Promise(); }
 
 private:
     Promise::Deferred deferred;

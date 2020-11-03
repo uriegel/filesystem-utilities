@@ -40,7 +40,9 @@
             ['OS=="linux"', {
                 'defines': ['LINUX'],
                 'libraries!': [ ],
-                'sources': [ ]
+                'sources': [ 
+                    'source/linux/drives.cpp'
+                ]
             }],
         ]          
     }]

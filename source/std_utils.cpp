@@ -1,4 +1,3 @@
-#pragma once
 #include <vector>
 #include "std_utils.h"
 using namespace std;
@@ -30,7 +29,7 @@ int findString(stdstring const& text, stdstring const& searchText) {
         [](auto ch1, auto ch2) { return toupper(ch1) == toupper(ch2); }
     );
 	auto pos = static_cast<int>(it - text.begin());
-	return pos < text.length() ? pos : -1;
+	return pos < (int)text.length() ? pos : -1;
 }
 
 bool ends_with(stdstring const& value, stdstring const& ending)
