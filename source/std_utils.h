@@ -10,7 +10,7 @@
 // #include <codecvt>
 
 const std::vector<stdstring> split(const stdstring& s, stdchar delim);
-std::wstring join(const std::vector<stdstring>& arr, stdchar delim);
+stdstring join(const std::vector<stdstring>& arr, stdchar delim);
 int findString(const stdstring &text, const stdstring& searchText);
 
 // inline std::string ws2utf8(const std::wstring &input) {
