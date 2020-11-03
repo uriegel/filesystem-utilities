@@ -2,10 +2,18 @@
   "name": "filesystem-utilities",
   "version": "0.1.0",
   "description": "File system utilities for Node.js",
-  "main": "index.js",
+  "main": "./build/Release/filesystem-utilities",
+  "gypfile": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node dev/index.js",
+    "debug": "node --nolazy --inspect-brk=9229 dev/index.js",
+    "build:dev": "node-gyp build --debug",
+    "build": "node-gyp build",
+    "rebuild:dev": "node-gyp rebuild --debug",
+    "rebuild": "node-gyp rebuild",
+    "clean": "node-gyp clean"
   },
+  "types": "filesystem-utilities.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/uriegel/filesystem-utils.git"
@@ -20,5 +28,11 @@
   "bugs": {
     "url": "https://github.com/uriegel/filesystem-utils/issues"
   },
-  "homepage": "https://github.com/uriegel/filesystem-utils#readme"
+  "homepage": "https://github.com/uriegel/filesystem-utils#readme",
+  "dependencies": {
+    "node-addon-api": "^3.0.2"
+  },
+  "devDependencies": {
+    "bindings": "^1.5.0"
+  }
 }
