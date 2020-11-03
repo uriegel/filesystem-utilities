@@ -2,7 +2,9 @@
     "targets": [{
         "target_name": "filesystem-utilities",
         "sources": [ 
-            'source/addon.cpp'
+            'source/addon.cpp',
+            'source/nullfunction.cpp',
+            'source/get_drives_worker.cpp'
         ],
         'include_dirs': [
             "<!@(node -p \"require('node-addon-api').include\")",
@@ -31,6 +33,7 @@
                     }
                 },
                 'sources': [
+                    'source/windows/drives.cpp'
                 ]                
             }],
             ['OS=="linux"', {
