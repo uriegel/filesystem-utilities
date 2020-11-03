@@ -5,7 +5,6 @@
 #include "../std_utils.h"
 using namespace std;
 
-// TODO: shared!
 class file_handle
 {
 public:
@@ -18,6 +17,48 @@ public:
 private:
 	HANDLE handle{ INVALID_HANDLE_VALUE };
 };
+
+const wstring get_drive_description(const wstring& name) {
+	array<wchar_t, 400> buffer;
+	if (GetVolumeInformationW(name.c_str(), buffer.data(), static_cast<DWORD>(buffer.size()), nullptr, nullptr, nullptr, nullptr, 0))
+		return wstring(buffer.data(), wcslen(buffer.data()));
+	else
+		return wstring();
+}
+
+uint64_t get_volume_size(const wstring& directory_on_drive) {
+	ULARGE_INTEGER result{ 0 };
+	GetDiskFreeSpaceExW(directory_on_drive.c_str(), nullptr, &result, nullptr);
+	return result.QuadPart;
+}
+
+Drive_type get_drive_type(unsigned int type) {
+	switch (type)
+	{
+	case 2:
+		return Drive_type::REMOVABLE;
+	case 3:
+		return Drive_type::HARDDRIVE;
+	case 4:
+		return Drive_type::NETWORK;
+	case 5:
+		return Drive_type::ROM;
+	default:
+		return Drive_type::UNKNOWN;
+	}
+}
+
+bool is_mounted(const file_handle& volume) {
+	if (volume == INVALID_HANDLE_VALUE)
+		// 2 means "no disk", anything else means by inference "disk
+		// in drive, but you do not have admin privs to do a
+		// CreateFile on that volume".
+		return GetLastError() != 2;
+
+	DWORD bytes_returned; // ignored
+	auto result = DeviceIoControl(volume, FSCTL_IS_VOLUME_MOUNTED, nullptr, 0, nullptr, 0, &bytes_returned, nullptr);
+	return result != 0;
+}
 
 vector<Drive_item> get_drives() {
   	array<wchar_t, 500> buffer;

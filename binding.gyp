@@ -4,7 +4,8 @@
         "sources": [ 
             'source/addon.cpp',
             'source/nullfunction.cpp',
-            'source/get_drives_worker.cpp'
+            'source/get_drives_worker.cpp',
+            'source/std_utils.cpp'
         ],
         'include_dirs': [
             "<!@(node -p \"require('node-addon-api').include\")",

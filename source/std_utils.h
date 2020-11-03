@@ -1,5 +1,4 @@
 #pragma once
-#include <sstream>
 #include <vector>
 #if WINDOWS
 #include "windows/platform.h"
