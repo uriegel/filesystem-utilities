@@ -1,5 +1,5 @@
 {
-  "name": "filesystem-utils",
+  "name": "filesystem-utilities",
   "version": "0.1.0",
   "description": "File system utilities for Node.js",
   "main": "index.js",
