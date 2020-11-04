@@ -5,6 +5,7 @@
             'source/addon.cpp',
             'source/nullfunction.cpp',
             'source/get_drives_worker.cpp',
+            'source/get_files_worker.cpp',
             'source/std_utils.cpp'
         ],
         'include_dirs': [
@@ -34,14 +35,16 @@
                     }
                 },
                 'sources': [
-                    'source/windows/drives.cpp'
+                    'source/windows/drives.cpp',
+                    'source/windows/files.cpp',
                 ]                
             }],
             ['OS=="linux"', {
                 'defines': ['LINUX'],
                 'libraries!': [ ],
                 'sources': [ 
-                    'source/linux/drives.cpp'
+                    'source/linux/drives.cpp',
+                    'source/linux/files.cpp'
                 ]
             }],
         ]          

@@ -14,6 +14,15 @@ interface DriveItem {
     isMounted: boolean
 }
 
+interface FileItem {
+    name: string
+    isDirectory: boolean
+    isHidden: boolean
+    size: number 
+    time: Date
+}
+
 declare module 'filesystem-utilities' {
     function getDrives(): Promise<DriveItem[]>
+    function getFiles(directory: string): Promise<FileItem[]>
 }

@@ -5,10 +5,12 @@
 #include "linux/platform.h"
 #endif
 #include "get_drives_worker.h"
+#include "get_files_worker.h"
 using namespace Napi;
 
 Object Init(Env env, Object exports) {
     exports.Set(String::New(env, "getDrives"), Function::New(env, GetDrives));
+    exports.Set(String::New(env, "getFiles"), Function::New(env, GetFiles));
     return exports;    
 }
 
