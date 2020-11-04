@@ -53,7 +53,7 @@ for(auto item: files) {
 }
 
 Value GetFiles(const CallbackInfo& info) {
-    auto directory = (stdstring)info[0].As<String>();
+    auto directory = (stdstring)info[0].As<nodestring>();
     auto worker = new Get_files_worker(info.Env(), directory);
     worker->Queue();
     return worker->Promise();

@@ -7,6 +7,5 @@ const addon = require('bindings')('filesystem-utilities')
 
     const files = await addon.getFiles("build")
     console.log("files", files)
-
 })()
 

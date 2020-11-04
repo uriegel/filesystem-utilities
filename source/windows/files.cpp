@@ -1,7 +1,15 @@
+#include <Windows.h>
 #include <vector>
 #include <string>
 #include "../files.h"
 using namespace std;
+
+uint64_t convert_windowstime_to_unixtime(const FILETIME& ft) {
+	ULARGE_INTEGER ull;
+	ull.LowPart = ft.dwLowDateTime;
+	ull.HighPart = ft.dwHighDateTime;
+	return (ull.QuadPart / 10000000ULL - 11644473600ULL) * 1000;
+}
 
 vector<File_item> get_files(const wstring& directory) {
     auto search_string = (directory[directory.length()-1] == L'\\' || directory[directory.length()-1] == L'/') 
