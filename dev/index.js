@@ -9,3 +9,7 @@ const addon = require('bindings')('filesystem-utilities')
     console.log("files", files)
 })()
 
+// TODO: Windows version without ..
+// TODO: check timing 4000 files
+// TODO: sort by name
+

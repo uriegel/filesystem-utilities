@@ -16,7 +16,7 @@
             "name": "Launch C++ (Linux)",
             "type": "cppdbg",
             "request": "launch",
-            "program": "/opt/node-v12.12.0-linux-x64/bin/node",
+            "program": "/usr/bin/node",
             "args": [ "${workspaceFolder}/dev/index.js" ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
