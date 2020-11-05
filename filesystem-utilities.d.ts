@@ -6,6 +6,7 @@ declare enum DriveType {
 	NETWORK
 }
 
+// TODO: export?
 interface DriveItem {
     name: string
     description: string
