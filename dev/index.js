@@ -1,7 +1,7 @@
 console.log("Starting test")
 //const addon = require('bindings')('filesystem-utilities')
 
-const addon = require('bindings')('filesystem-utilities')
+const addon = require('../filesystem-utilities')
 
 const affe = addon.machnix
 affe()

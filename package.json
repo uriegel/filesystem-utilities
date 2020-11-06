@@ -2,7 +2,7 @@
   "name": "filesystem-utilities",
   "version": "0.4.1",
   "description": "File system utilities for Node.js",
-  "main": "./build/Release/filesystem-utilities",
+  "main": "index.js",
   "gypfile": true,
   "scripts": {
     "start": "node dev/index.js",
