@@ -14,5 +14,5 @@ Object Init(Env env, Object exports) {
     return exports;    
 }
 
-const char* addon = "filesystem-utilities";
+const char* addon = "_filesystem-utilities";
 NODE_API_MODULE(addon, Init)
