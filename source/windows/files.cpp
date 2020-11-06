@@ -21,11 +21,12 @@ vector<File_item> get_files(const wstring& directory) {
     WIN32_FIND_DATAW w32fd{ 0 };
     auto ret = FindFirstFileW(search_string.c_str(), &w32fd);
     while (FindNextFileW(ret, &w32fd) == TRUE) {
-        if (w32fd.cFileName[0] != L'.' || w32fd.cFileName[1] != L'.')
+        auto isHidden = (w32fd.dwFileAttributes & FILE_ATTRIBUTE_HIDDEN) == FILE_ATTRIBUTE_HIDDEN
+        if (!isHidden && (w32fd.cFileName[0] != L'.' || w32fd.cFileName[1] != L'.'))
             result.emplace_back(
                 w32fd.cFileName,
                 (w32fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) == FILE_ATTRIBUTE_DIRECTORY,
-                (w32fd.dwFileAttributes & FILE_ATTRIBUTE_HIDDEN) == FILE_ATTRIBUTE_HIDDEN,
+                isHidden,
                 static_cast<uint64_t>(w32fd.nFileSizeHigh) << 32 | w32fd.nFileSizeLow,
                 convert_windowstime_to_unixtime(w32fd.ftLastWriteTime)
         );
