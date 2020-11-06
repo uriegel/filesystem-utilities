@@ -6,7 +6,7 @@
              "type": "cppvsdbg",
              "request": "launch",
              "program": "node",
-             "args": [ "${workspaceFolder}/dev/index.js" ],
+             "args": [ "${workspaceFolder}/dev/addonTest.js" ],
              "stopAtEntry": false,
              "cwd": "${workspaceFolder}",
              "environment": [],
@@ -17,7 +17,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "/usr/bin/node",
-            "args": [ "${workspaceFolder}/dev/index.js" ],
+            "args": [ "${workspaceFolder}/dev/addonTest.js" ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
@@ -29,10 +29,22 @@
             "type": "node",
             "request": "launch",
             "cwd": "${workspaceFolder}",
-            "args": [ "${workspaceFolder}/dev/index.js" ],
+            "args": [ "${workspaceFolder}/dev/addonTest.js" ],
             "runtimeExecutable": "npm",
             "runtimeArgs": [
                 "run-script", "debug"
+            ],
+            "port": 9229
+        },
+        {
+            "name": "Launch javascript (javascript part)",
+            "type": "node",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "args": [ "${workspaceFolder}/dev/jsTest.js" ],
+            "runtimeExecutable": "npm",
+            "runtimeArgs": [
+                "run-script", "debugJs"
             ],
             "port": 9229
         }

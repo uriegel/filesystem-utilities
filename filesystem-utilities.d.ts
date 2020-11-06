@@ -12,7 +12,7 @@ interface DriveItem {
     description: string
     size: number
     type: DriveType 
-    isMounted: boolean
+    mountPoint?: string
 }
 
 interface FileItem {
