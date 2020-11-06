@@ -1,10 +1,10 @@
 console.log("Starting test")
-//const addon = require('bindings')('filesystem-utilities')
+const addon = require('bindings')('filesystem-utilities')
 
-const addon = require('../filesystem-utilities')
+//const addon = require('../index')
 
-const affe = addon.machnix
-affe()
+//const affe = addon.machnix
+//affe()
 
 ;(async () => {
     const drives = await addon.getDrives()
