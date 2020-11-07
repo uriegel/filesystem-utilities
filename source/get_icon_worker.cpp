@@ -11,15 +11,15 @@ class Get_icon_worker : public AsyncWorker {
 public:
     Get_icon_worker(const Napi::Env& env, const wstring& extension)
     : AsyncWorker(Function::New(env, NullFunction, "nullfunction"))
-    , extension(extension)
-    , deferred(Promise::Deferred::New(Env())) {}
+    , deferred(Promise::Deferred::New(Env())) 
+    , extension(extension) {}
     ~Get_icon_worker() {}
 
     void Execute () { icon_bytes = move(get_icon(extension)); }
 
     void OnOK();
 
-    Promise Promise() { return deferred.Promise(); }
+    Napi::Promise Promise() { return deferred.Promise(); }
 
 private:
     Promise::Deferred deferred;

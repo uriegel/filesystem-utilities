@@ -15,6 +15,7 @@ const requireAddon = () => {
 
 const inner = requireAddon()
 exports.getFiles = inner.getFiles
+exports.getExifDate = inner.getExifDate
 
 if (process.platform == "linux") {
 

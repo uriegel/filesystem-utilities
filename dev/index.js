@@ -8,9 +8,12 @@ const addon = require('../index')
     const files = await addon.getFiles("build")
     console.log("files", files)
 
-    //const iconPath = ".js"
-    const iconPath = "C:\\Windows\\regedit.exe"
+    const iconPath = ".js"
+    //const iconPath = "C:\\Windows\\regedit.exe"
     const icon = await addon.getIcon(iconPath)
+
+    const imgpath = "/media/Speicher/bilder/2020/Canon/IMG_0110.JPG"
+    const exifDate = await addon.getExifDate(imgpath)
 
     await runProfileTests()
 })()

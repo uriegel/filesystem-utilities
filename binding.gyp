@@ -7,7 +7,9 @@
             'source/get_drives_worker.cpp',
             'source/get_files_worker.cpp',
             'source/get_icon_worker.cpp',
-            'source/std_utils.cpp'
+            'source/get_exif_date_worker.cpp',
+            'source/std_utils.cpp',
+            'source/exif_reader.cpp'
         ],
         'include_dirs': [
             "<!@(node -p \"require('node-addon-api').include\")",
