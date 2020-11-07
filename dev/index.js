@@ -8,6 +8,9 @@ const addon = require('../index')
     const files = await addon.getFiles("build")
     console.log("files", files)
 
+    // Linux:
+    const icon = await addon.getIcon(".js")
+
     await runProfileTests()
 })()
 

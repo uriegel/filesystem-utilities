@@ -35,18 +35,6 @@
                 "run-script", "debug"
             ],
             "port": 9229
-        },
-        {
-            "name": "Launch javascript (javascript part)",
-            "type": "node",
-            "request": "launch",
-            "cwd": "${workspaceFolder}",
-            "args": [ "${workspaceFolder}/dev/jsTest.js" ],
-            "runtimeExecutable": "npm",
-            "runtimeArgs": [
-                "run-script", "debugJs"
-            ],
-            "port": 9229
         }
     ]
  }

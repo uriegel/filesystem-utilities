@@ -1,7 +1,11 @@
-const exec = require("child_process").exec
 const process = require("process")
+const path  = require("path")
+const childProcess = require("child_process")
 
-function requireAddon() {
+const exec = childProcess.exec
+const spawn = childProcess.spawn
+
+const requireAddon = () => {
     try {
         return require("./build/Release/filesystem-utilities")        
     } catch (err) {
@@ -14,13 +18,9 @@ exports.getFiles = inner.getFiles
 
 if (process.platform == "linux") {
 
-    function runCmd(cmd) {
-        return new Promise(res => 
-            exec(cmd, (_, stdout) => res(stdout))
-        )
-    }
+    const runCmd = cmd => new Promise(res => exec(cmd, (_, stdout) => res(stdout)))
 
-    async function getDrives() {
+    const getDrives = async () => {
         const drivesString = await runCmd('lsblk --bytes --output SIZE,NAME,LABEL,MOUNTPOINT,FSTYPE')
         const driveStrings = drivesString.split("\n")
         const columnsPositions = (() => {
@@ -61,8 +61,18 @@ if (process.platform == "linux") {
             .map(constructDrives)
             .filter(n => n.mountPoint && !n.mountPoint.startsWith("/snap"))        
     }
-    
+
+    const getIcon = ext => new Promise((res, rej) => {
+        const process = spawn('python3',[ path.join(__dirname, "getIcon.py"), ext ])
+        process.stdout.on('data', data => {
+            const icon = data.toString('utf8').trim()
+            res(icon)
+        })
+        process.stderr.on('data', data =>  rej(data.toString('utf8').trim()))
+    })
+
     exports.getDrives = getDrives            
+    exports.getIcon = getIcon
 }
 else
     exports.getDrives = inner.getDrives

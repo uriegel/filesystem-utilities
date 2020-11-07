@@ -6,7 +6,6 @@ declare enum DriveType {
 	NETWORK
 }
 
-// TODO: export?
 interface DriveItem {
     name: string
     description: string
@@ -26,4 +25,5 @@ interface FileItem {
 declare module 'filesystem-utilities' {
     function getDrives(): Promise<DriveItem[]>
     function getFiles(directory: string): Promise<FileItem[]>
+    function getIcon(ext: string): Promise<string|Buffer>
 }
