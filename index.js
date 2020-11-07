@@ -74,7 +74,8 @@ if (process.platform == "linux") {
     exports.getDrives = getDrives            
     exports.getIcon = getIcon
 }
-else
+else {
     exports.getDrives = inner.getDrives
-
+    exports.getIcon = inner.getIcon
+}
 

@@ -6,6 +6,7 @@
             'source/nullfunction.cpp',
             'source/get_drives_worker.cpp',
             'source/get_files_worker.cpp',
+            'source/get_icon_worker.cpp',
             'source/std_utils.cpp'
         ],
         'include_dirs': [
@@ -37,6 +38,10 @@
                 'sources': [
                     'source/windows/drives.cpp',
                     'source/windows/files.cpp',
+                    'source/windows/icon.cpp',
+                ],
+                "libraries": [ 
+                    "gdiplus.lib",
                 ]                
             }],
             ['OS=="linux"', {
@@ -44,7 +49,8 @@
                 'libraries!': [ ],
                 'sources': [ 
                     'source/linux/drives.cpp',
-                    'source/linux/files.cpp'
+                    'source/linux/files.cpp',
+                    'source/linux/icon.cpp',
                 ]
             }],
         ]          
