@@ -12,7 +12,8 @@ const addon = require('../index')
     //const iconPath = "C:\\Windows\\regedit.exe"
     const icon = await addon.getIcon(iconPath)
 
-    const imgpath = "/media/Speicher/bilder/2020/Canon/IMG_0110.JPG"
+    //const imgpath = "/media/Speicher/bilder/2020/Canon/IMG_0110.JPG"
+    const imgpath = "F:\\Bilder\\Tina\\2019\\12\\IMG_20191201_152308.jpg"
     const exifDate = await addon.getExifDate(imgpath)
 
     await runProfileTests()

@@ -136,10 +136,11 @@ enum class Exif_tag {
 class Exif_reader
 {
 public:
-	Exif_reader(const stdstring& file) : exif_stream(ifstream(file, ios_base::binary)) { }
+	Exif_reader(const string& file) : exif_stream(ifstream(file, ios_base::binary)) { }
+	Exif_reader(const wstring& file) : exif_stream(ifstream(file, ios_base::binary)) { }
 	bool initialize();
 	tuple<bool, int> get_tag_int(Exif_tag tag);
-	tuple<bool, stdstring> get_tag_string(Exif_tag tag) {
+	tuple<bool, string> get_tag_string(Exif_tag tag) {
 		return get_tag_bytes(tag);
 	}
 private:
@@ -149,11 +150,11 @@ private:
 	uint8_t read_byte();
 	uint16_t read_ushort();
 	uint32_t read_uint();
-	uint32_t to_int(stdstring data);
-	uint16_t to_ushort(stdstring data);
-	stdstring read_string(int length);
-	stdstring read_string(uint16_t tiff_offset, int length);
-	tuple<bool, stdstring> get_tag_bytes(Exif_tag tag);
+	uint32_t to_int(string data);
+	uint16_t to_ushort(string data);
+	string read_string(int length);
+	string read_string(uint16_t tiff_offset, int length);
+	tuple<bool, string> get_tag_bytes(Exif_tag tag);
 
 	ifstream exif_stream;
 	map<Exif_tag, int64_t> catalogue;
@@ -162,7 +163,7 @@ private:
 };
 
 uint64_t get_exif_date(const stdstring& file) {
-Exif_reader er(file);
+	Exif_reader er(file);
 	auto res = er.initialize();
 	if (!res)
         return 0;
@@ -175,7 +176,7 @@ Exif_reader er(file);
 		return 0;
 
 	tm tm = {};
-	stdstringstream ss(result.c_str());
+	stringstream ss(result.c_str());
 	ss >> get_time(&tm, "%Y:%m:%d %H:%M:%S");
 	auto time = mktime(&tm);
 
