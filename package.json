@@ -1,6 +1,6 @@
 {
   "name": "filesystem-utilities",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "File system utilities for Node.js",
   "main": "index.js",
   "gypfile": true,
