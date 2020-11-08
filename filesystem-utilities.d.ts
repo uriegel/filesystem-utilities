@@ -22,9 +22,17 @@ interface FileItem {
     time: Date
 }
 
+interface VersionInfo {
+    major: number
+    minor: number
+    build: number
+    patch: number
+}
+
 declare module 'filesystem-utilities' {
     function getDrives(): Promise<DriveItem[]>
     function getFiles(directory: string): Promise<FileItem[]>
     function getIcon(ext: string): Promise<string|Buffer>
     function getExifDate(file: string): Promise<Date>
+    function getFileVersion(file: string): Promise<VersionInfo>
 }
