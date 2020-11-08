@@ -137,7 +137,9 @@ class Exif_reader
 {
 public:
 	Exif_reader(const string& file) : exif_stream(ifstream(file, ios_base::binary)) { }
+#if WINDOWS
 	Exif_reader(const wstring& file) : exif_stream(ifstream(file, ios_base::binary)) { }
+#endif	
 	bool initialize();
 	tuple<bool, int> get_tag_int(Exif_tag tag);
 	tuple<bool, string> get_tag_string(Exif_tag tag) {
