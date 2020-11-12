@@ -17,9 +17,9 @@ interface DriveItem {
 interface FileItem {
     name: string
     isDirectory: boolean
-    isHidden: boolean
-    size: number 
-    time: Date
+    isHidden?: boolean
+    size?: number 
+    time?: Date
 }
 
 interface VersionInfo {
@@ -33,6 +33,6 @@ declare module 'filesystem-utilities' {
     function getDrives(): Promise<DriveItem[]>
     function getFiles(directory: string): Promise<FileItem[]>
     function getIcon(ext: string): Promise<string|Buffer>
-    function getExifDate(file: string): Promise<Date>
-    function getFileVersion(file: string): Promise<VersionInfo>
+    function getExifDate(file: string): Promise<Date|null>
+    function getFileVersion(file: string): Promise<VersionInfo|null>
 }
