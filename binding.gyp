@@ -38,7 +38,6 @@
                     }
                 },
                 'sources': [
-                    'source/windows/initialize.cpp',
                     'source/windows/drives.cpp',
                     'source/windows/files.cpp',
                     'source/windows/icon.cpp',
@@ -54,7 +53,6 @@
                 'defines': ['LINUX'],
                 'libraries!': [ ],
                 'sources': [ 
-                    'source/linux/initialize.cpp',
                     'source/linux/drives.cpp',
                     'source/linux/files.cpp',
                     'source/linux/get_icon_worker.cpp',

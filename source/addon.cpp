@@ -4,34 +4,14 @@
 #elif LINUX
     #include "linux/platform.h"
 #endif
-#include "initialize.h"
 #include "get_drives_worker.h"
 #include "get_files_worker.h"
 #include "get_icon_worker.h"
 #include "get_exif_date_worker.h"
 #include "get_file_version_worker.h"
-
-
-
-
-
-
-
-
-#include <cstdio>
-
-
-
-
-
-
-
-
 using namespace Napi;
 
 Object Init(Env env, Object exports) {
-    printf("Test Addon\n");
-    initialize();
     exports.Set(String::New(env, "getDrives"), Function::New(env, GetDrives));
     exports.Set(String::New(env, "getFiles"), Function::New(env, GetFiles));
     exports.Set(String::New(env, "getIcon"), Function::New(env, GetIcon));
