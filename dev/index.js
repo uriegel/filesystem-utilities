@@ -8,7 +8,7 @@ const addon = require('../index')
     const files = await addon.getFiles("build")
     console.log("files", files)
 
-    const iconPath = ".js"
+    const iconPath = ""
     //const iconPath = "C:\\Windows\\regedit.exe"
     const icon = await addon.getIcon(iconPath)
 

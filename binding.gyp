@@ -20,9 +20,6 @@
         'cflags_cc': ["-Wall", "-std=c++17"],
         'cflags!': [ '-fno-exceptions' ],
         'cflags_cc!': [ '-fno-exceptions' ],
-        'linkflags': [
-            '-ldl'
-        ],
         'link_settings': {
             "libraries": []
         },            
@@ -56,7 +53,6 @@
             ['OS=="linux"', {
                 'defines': ['LINUX'],
                 'libraries!': [ ],
-                'ldflags': [ '-ldl' ],
                 'sources': [ 
                     'source/linux/initialize.cpp',
                     'source/linux/drives.cpp',
