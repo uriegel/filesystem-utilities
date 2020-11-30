@@ -15,9 +15,6 @@ void initialize() {
     get_icon_names = reinterpret_cast<get_icon_names_fn*>(dlsym(libgtk, "g_themed_icon_get_names"));
     theme_choose_icon = reinterpret_cast<theme_choose_icon_fn*>(dlsym(libgtk, "gtk_icon_theme_choose_icon"));
     icon_info_get_filename = reinterpret_cast<icon_info_get_filename_fn*>(dlsym(libgtk, "gtk_icon_info_get_filename"));
-    
-    int arg = 0;
-    gtk_init(&arg, nullptr);
 }
 
 gtk_init_fn* gtk_init;

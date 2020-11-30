@@ -53,8 +53,6 @@
             ['OS=="linux"', {
                 'defines': ['LINUX'],
                 'libraries!': [ ],
-                'cflags': ['-ldl'],
-                'cflags_cc': ['-ldl'],
                 'sources': [ 
                     'source/linux/initialize.cpp',
                     'source/linux/drives.cpp',
