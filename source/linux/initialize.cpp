@@ -7,8 +7,6 @@ void* libgtk;
 
 void initialize() {
     libgtk = dlopen("libgtk-3.so.0", RTLD_NOW | RTLD_LOCAL);
-    auto gtk_init = reinterpret_cast<gtk_init_fn*>(dlsym(libgtk, "gtk_init"));
-    gtk_init(nullptr, nullptr);
     unref = reinterpret_cast<unref_fn*>(dlsym(libgtk, "g_object_unref"));
     gtk_free = reinterpret_cast<gtk_free_fn*>(dlsym(libgtk, "g_free"));
     guess_content_type = reinterpret_cast<guess_content_type_fn*>(dlsym(libgtk, "g_content_type_guess"));
