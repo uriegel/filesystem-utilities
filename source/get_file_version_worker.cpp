@@ -15,8 +15,8 @@ class Get_file_version_worker : public AsyncWorker {
 public:
     Get_file_version_worker(const Napi::Env& env, const stdstring& file)
     : AsyncWorker(Function::New(env, NullFunction, "nullfunction"))
-    , file(file)
-    , deferred(Promise::Deferred::New(Env())) {}
+    , deferred(Promise::Deferred::New(Env()))
+    , file(file) {}
     ~Get_file_version_worker() {}
 
     void Execute () { version = get_file_info_version(file); }
