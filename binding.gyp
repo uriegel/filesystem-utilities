@@ -15,6 +15,12 @@
             "<!@(node -p \"require('node-addon-api').include\")",
             "<!@(node -p \"var a = require('node-addon-api').include; var b = a.substr(0, a.length - 15); b + 'event-source-base' + a[a.length-1]\")"
         ],
+        'direct_dependent_settings': {
+          'defines': [],
+          'linkflags': [
+              '-ldl'
+          ]
+        },        
         'dependencies': ["<!(node -p \"require('node-addon-api').gyp\")"],
         "cflags": ["-Wall", "-std=c++17"],
         'cflags_cc': ["-Wall", "-std=c++17"],
