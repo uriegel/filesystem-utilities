@@ -16,15 +16,20 @@ public:
     void Execute () { 
         auto type = guess_content_type(extension.c_str(), nullptr, nullptr, nullptr);
         auto icon = get_icon_from_content_type(type);
+        printf("Step0");
         if (type)
             gtk_free(type);
+        printf("Step1");
+
         auto theme = get_default_icon_theme();
         auto names = get_icon_names(icon);
         auto icon_info = theme_choose_icon(theme, names, 16, Choose_icon_flags::Force_svg);
         auto icon_name = icon_info_get_filename(icon_info);
         this->icon = icon_name ? icon_name : "";
+        printf("Step2");
         if (icon_name)
             gtk_free(icon_name);
+        printf("Step3");            
         if (icon)
             unref(icon);
     }
