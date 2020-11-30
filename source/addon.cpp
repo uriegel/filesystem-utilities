@@ -10,6 +10,23 @@
 #include "get_icon_worker.h"
 #include "get_exif_date_worker.h"
 #include "get_file_version_worker.h"
+
+
+
+
+
+
+
+
+#include <cstdio>
+
+
+
+
+
+
+
+
 using namespace Napi;
 
 Object Init(Env env, Object exports) {

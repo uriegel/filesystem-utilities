@@ -2,11 +2,19 @@
 #include "../initialize.h"
 #include "gtk.h"
 
+
+
+
+#include <cstdio>
+
 void* libgtk;
 
 void initialize() {
+    printf("Step 1\n");
     libgtk = dlopen("libgtk-3.so.0", RTLD_NOW | RTLD_LOCAL);
+    printf("Step 2\n");
     gtk_init = reinterpret_cast<gtk_init_fn*>(dlsym(libgtk, "gtk_init"));
+    printf("Step 3\n");
     unref = reinterpret_cast<unref_fn*>(dlsym(libgtk, "g_object_unref"));
     gtk_free = reinterpret_cast<gtk_free_fn*>(dlsym(libgtk, "g_free"));
     guess_content_type = reinterpret_cast<guess_content_type_fn*>(dlsym(libgtk, "g_content_type_guess"));
@@ -15,6 +23,7 @@ void initialize() {
     get_icon_names = reinterpret_cast<get_icon_names_fn*>(dlsym(libgtk, "g_themed_icon_get_names"));
     theme_choose_icon = reinterpret_cast<theme_choose_icon_fn*>(dlsym(libgtk, "gtk_icon_theme_choose_icon"));
     icon_info_get_filename = reinterpret_cast<icon_info_get_filename_fn*>(dlsym(libgtk, "gtk_icon_info_get_filename"));
+    printf("Step 33\n");
 }
 
 gtk_init_fn* gtk_init;
