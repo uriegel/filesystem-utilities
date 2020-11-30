@@ -17,6 +17,7 @@ const inner = requireAddon()
 exports.getFiles = inner.getFiles
 exports.getExifDate = inner.getExifDate
 exports.getFileVersion = inner.getFileVersion
+exports.getIcon = inner.getIcon
 
 if (process.platform == "linux") {
 
@@ -64,20 +65,9 @@ if (process.platform == "linux") {
             .filter(n => n.mountPoint && !n.mountPoint.startsWith("/snap"))        
     }
 
-    const getIcon = ext => new Promise((res, rej) => {
-        const process = spawn('python3',[ path.join(__dirname, "getIcon.py"), ext ])
-        process.stdout.on('data', data => {
-            const icon = data.toString('utf8').trim()
-            res(icon)
-        })
-        process.stderr.on('data', data =>  rej(data.toString('utf8').trim()))
-    })
-
     exports.getDrives = getDrives            
-    exports.getIcon = getIcon
 }
-else {
+else 
     exports.getDrives = inner.getDrives
-    exports.getIcon = inner.getIcon
-}
+
 
