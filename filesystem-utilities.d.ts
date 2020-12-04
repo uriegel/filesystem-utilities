@@ -29,6 +29,11 @@ interface VersionInfo {
     patch: number
 }
 
+declare enum TrashErr {
+    FileNotFound = 1,
+    PermissionDenied = 14
+}
+
 declare module 'filesystem-utilities' {
     function getDrives(): Promise<DriveItem[]>
     function getFiles(directory: string): Promise<FileItem[]>
