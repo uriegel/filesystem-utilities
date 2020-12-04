@@ -35,4 +35,5 @@ declare module 'filesystem-utilities' {
     function getIcon(ext: string): Promise<string|Buffer>
     function getExifDate(file: string): Promise<Date|null>
     function getFileVersion(file: string): Promise<VersionInfo|null>
+    function trash(pathes: string| string[]): Promise<void>
 }

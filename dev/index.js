@@ -5,6 +5,20 @@ const addon = require('../index')
     const drives = await addon.getDrives()
     console.log("drives", drives)
 
+    try {
+        await addon.trash("/etc/affe.json")
+    } catch (err) {
+        switch (err) {
+            case 14:
+                console.log("Permission denied")
+                break;
+            case 1:
+                console.log("File not found")
+                break;
+        }
+    }
+    
+
     const files = await addon.getFiles("build")
     console.log("files", files)
 

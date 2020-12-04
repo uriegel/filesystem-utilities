@@ -73,8 +73,20 @@ if (process.platform == "linux") {
         process.stderr.on('data', data =>  rej(data.toString('utf8').trim()))
     })
 
+    const trash = pathes => new Promise((res, rej) => {
+        const process = spawn('python3',[ path.join(__dirname, "delete.py"), pathes ])
+        process.stdout.on('data', data => {
+            res()
+        })
+        process.stderr.on('data', data =>  {
+            const z = data.toString('utf8').trim()
+            rej(Number.parseInt(z))
+        })
+    })
+
     exports.getDrives = getDrives            
     exports.getIcon = getIcon
+    exports.trash = trash
 }
 else {
     exports.getDrives = inner.getDrives
