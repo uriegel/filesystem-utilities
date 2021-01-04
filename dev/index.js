@@ -6,7 +6,9 @@ const addon = require('../index')
     console.log("drives", drives)
 
     try {
-        await addon.trash("/etc/affe.json")
+        await addon.trash("/home/uwe/eintest/test1.mts")
+        await addon.trash("/home/uwe/eintest/test2.mts")
+        await addon.trash("/home/uwe/eintest/test3.mts")
     } catch (err) {
         switch (err) {
             case 14:
