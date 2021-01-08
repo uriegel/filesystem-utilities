@@ -1,6 +1,8 @@
 const process = require("process")
-const path  = require("path")
+const path = require("path")
+const fs = require('fs')
 const childProcess = require("child_process")
+const fsa = fs.promises
 
 const exec = childProcess.exec
 const spawn = childProcess.spawn
@@ -14,6 +16,11 @@ const requireAddon = () => {
 }
 
 const inner = requireAddon()
+exports.SUCCESS = 0
+exports.UNKNOWN = 1
+exports.ACCESS_DENIED = 2
+exports.FILE_EXISTS = 3
+exports.FILE_NOT_FOUND = 4
 exports.getFiles = inner.getFiles
 exports.getExifDate = inner.getExifDate
 exports.getFileVersion = inner.getFileVersion
@@ -76,21 +83,72 @@ if (process.platform == "linux") {
     const trash = pathes => new Promise((res, rej) => {
         const process = spawn('python3',[ path.join(__dirname, "delete.py"), pathes ])
         process.stdout.on('data', data => {
+            const icon = data.toString('utf8').trim()
             res()
         })
         process.stderr.on('data', data =>  {
             const z = data.toString('utf8').trim()
-            rej(Number.parseInt(z))
+            const err = Number.parseInt(z)
+            switch (err) {
+                case 1:
+                    rej({
+                        res: this.FILE_NOT_FOUND,
+                        description: "file not found"
+                    })    
+                    break
+                case 15:
+                    rej({
+                        res: this.ACCESS_DENIED,
+                        description: "Access denied"
+                    })    
+                    break
+                default:
+                rej({
+                    res: this.UNKNOWN,
+                    description: "Unknown error occurred"
+                })
+                break
+            }
         })
     })
+
+    const createFolder = async path => {
+        try {
+            await fsa.mkdir(path)   
+        } catch (e) {
+            switch (e.errno) {
+                case -13:
+                    throw ({
+                        res: this.ACCESS_DENIED,
+                        description: e.stack
+                    })
+                    break
+                case -17:
+                    throw ({
+                        res: this.FILE_EXISTS,
+                        description: e.stack
+                    })
+                    break
+                default:
+                    throw ({
+                        res: this.UNKNOWN,
+                        description: "Unknown error occurred"
+                    })
+                    break
+            }
+        }
+    }
 
     exports.getDrives = getDrives            
     exports.getIcon = getIcon
     exports.trash = trash
+    exports.createFolder = createFolder
 }
 else {
     exports.getDrives = inner.getDrives
     exports.getIcon = inner.getIcon
+    // TODO: trash for windows
+    // TODO: createFolder for windows
 }
 
 

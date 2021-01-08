@@ -2,24 +2,34 @@ console.log("Starting test")
 const addon = require('../index')
 
 ;(async () => {
-    const drives = await addon.getDrives()
-    console.log("drives", drives)
+
+    addon.createFolder("/home/uwe/Projekte/eintest")
+    try {
+        await addon.createFolder("/home/uwe/Projekte/eintest")
+    } catch (err) {
+        console.log(err)
+    }
+    try {
+        await addon.createFolder("/home/affe")
+    } catch (err) {
+        console.log(err)
+    }
+    await addon.trash("/home/uwe/Projekte/eintest")
 
     try {
-        await addon.trash("/home/uwe/eintest/test1.mts")
-        await addon.trash("/home/uwe/eintest/test2.mts")
-        await addon.trash("/home/uwe/eintest/test3.mts")
+        await addon.trash("/home/uwe/Projekte/eintest")
     } catch (err) {
-        switch (err) {
-            case 14:
-                console.log("Permission denied")
-                break;
-            case 1:
-                console.log("File not found")
-                break;
-        }
+        console.log(err)
     }
-    
+
+    try {
+        await addon.trash("/mnt")
+    } catch (err) {
+        console.log(err)
+    }
+
+    const drives = await addon.getDrives()
+    console.log("drives", drives)
 
     const files = await addon.getFiles("build")
     console.log("files", files)

@@ -29,9 +29,15 @@ interface VersionInfo {
     patch: number
 }
 
-declare enum TrashErr {
-    FileNotFound = 1,
-    PermissionDenied = 14
+export const SUCCESS
+export const UNKNOWN
+export const ACCESS_DENIED
+export const FILE_EXISTS
+export const FILE_NOT_FOUND
+
+interface FilException {
+    res: number
+    description: string
 }
 
 declare module 'filesystem-utilities' {
@@ -41,4 +47,5 @@ declare module 'filesystem-utilities' {
     function getExifDate(file: string): Promise<Date|null>
     function getFileVersion(file: string): Promise<VersionInfo|null>
     function trash(pathes: string| string[]): Promise<void>
+    function createFolder(path: string): Promise<void>
 }
