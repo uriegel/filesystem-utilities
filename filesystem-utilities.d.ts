@@ -29,18 +29,17 @@ interface VersionInfo {
     patch: number
 }
 
-export const SUCCESS
-export const UNKNOWN
-export const ACCESS_DENIED
-export const FILE_EXISTS
-export const FILE_NOT_FOUND
-
-interface FilException {
+interface FileException {
     res: number
     description: string
 }
 
 declare module 'filesystem-utilities' {
+    const SUCCESS: number
+    const UNKNOWN: number
+    const ACCESS_DENIED: number
+    const FILE_EXISTS: number
+    const FILE_NOT_FOUND: number    
     function getDrives(): Promise<DriveItem[]>
     function getFiles(directory: string): Promise<FileItem[]>
     function getIcon(ext: string): Promise<string|Buffer>
