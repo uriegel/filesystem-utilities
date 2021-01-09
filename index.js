@@ -7,6 +7,15 @@ const fsa = fs.promises
 const exec = childProcess.exec
 const spawn = childProcess.spawn
 
+var FileResult
+(function (FileResult) {
+    FileResult[FileResult["SUCCESS"] = 0] = "SUCCESS"
+    FileResult[FileResult["UNKNOWN"] = 1] = "UNKNOWN"
+    FileResult[FileResult["ACCESS_DENIED"] = 2] = "ACCESS_DENIED"
+    FileResult[FileResult["FILE_EXISTS"] = 3] = "FILE_EXISTS"
+    FileResult[FileResult["FILE_NOT_FOUND"] = 4] = "FILE_NOT_FOUND"
+})(FileResult || (FileResult = {}))
+
 const requireAddon = () => {
     try {
         return require("./build/Release/filesystem-utilities")        
@@ -16,11 +25,6 @@ const requireAddon = () => {
 }
 
 const inner = requireAddon()
-exports.SUCCESS = 0
-exports.UNKNOWN = 1
-exports.ACCESS_DENIED = 2
-exports.FILE_EXISTS = 3
-exports.FILE_NOT_FOUND = 4
 exports.getFiles = inner.getFiles
 exports.getExifDate = inner.getExifDate
 exports.getFileVersion = inner.getFileVersion
@@ -80,6 +84,7 @@ if (process.platform == "linux") {
         process.stderr.on('data', data =>  rej(data.toString('utf8').trim()))
     })
 
+
     const trash = pathes => new Promise((res, rej) => {
         const process = spawn('python3',[ path.join(__dirname, "delete.py"), pathes ])
         process.stdout.on('data', data => {
@@ -92,19 +97,19 @@ if (process.platform == "linux") {
             switch (err) {
                 case 1:
                     rej({
-                        res: this.FILE_NOT_FOUND,
+                        res: FileResult.FILE_NOT_FOUND,
                         description: "file not found"
                     })    
                     break
                 case 15:
                     rej({
-                        res: this.ACCESS_DENIED,
+                        res: FileResult.ACCESS_DENIED,
                         description: "Access denied"
                     })    
                     break
                 default:
                 rej({
-                    res: this.UNKNOWN,
+                    res: FileResult.UNKNOWN,
                     description: "Unknown error occurred"
                 })
                 break
@@ -119,19 +124,19 @@ if (process.platform == "linux") {
             switch (e.errno) {
                 case -13:
                     throw ({
-                        res: this.ACCESS_DENIED,
+                        res: FileResult.ACCESS_DENIED,
                         description: e.stack
                     })
                     break
                 case -17:
                     throw ({
-                        res: this.FILE_EXISTS,
+                        res: FileResult.FILE_EXISTS,
                         description: e.stack
                     })
                     break
                 default:
                     throw ({
-                        res: this.UNKNOWN,
+                        res: FileResult.UNKNOWN,
                         description: "Unknown error occurred"
                     })
                     break
