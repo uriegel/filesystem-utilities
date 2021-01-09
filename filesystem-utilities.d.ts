@@ -29,20 +29,18 @@ interface VersionInfo {
     patch: number
 }
 
-declare enum FileResult {
-    SUCCESS,
-    UNKNOWN,
-    ACCESS_DENIED,
-    FILE_EXISTS,
-    FILE_NOT_FOUND
-}
-
-interface FileException {
-    res: number
-    description: FileResult
-}
-
 declare module 'filesystem-utilities' {
+    enum FileResult {
+        SUCCESS,
+        UNKNOWN,
+        ACCESS_DENIED,
+        FILE_EXISTS,
+        FILE_NOT_FOUND
+    }
+    interface FileException {
+        res: number
+        description: FileResult
+    }
     function getDrives(): Promise<DriveItem[]>
     function getFiles(directory: string): Promise<FileItem[]>
     function getIcon(ext: string): Promise<string|Buffer>
