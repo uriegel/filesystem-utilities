@@ -9,11 +9,11 @@ const spawn = childProcess.spawn
 
 var FileResult
 (function (FileResult) {
-    FileResult[FileResult["SUCCESS"] = 0] = "SUCCESS"
-    FileResult[FileResult["UNKNOWN"] = 1] = "UNKNOWN"
-    FileResult[FileResult["ACCESS_DENIED"] = 2] = "ACCESS_DENIED"
-    FileResult[FileResult["FILE_EXISTS"] = 3] = "FILE_EXISTS"
-    FileResult[FileResult["FILE_NOT_FOUND"] = 4] = "FILE_NOT_FOUND"
+    FileResult[FileResult["Success"] = 0] = "Success"
+    FileResult[FileResult["Unknown"] = 1] = "Unknown"
+    FileResult[FileResult["AccessDenied"] = 2] = "AccessDenied"
+    FileResult[FileResult["FileExists"] = 3] = "FileExists"
+    FileResult[FileResult["FileNotFound"] = 4] = "FileNotFound"
 })(FileResult || (FileResult = {}))
 
 const requireAddon = () => {
@@ -98,19 +98,19 @@ if (process.platform == "linux") {
             switch (err) {
                 case 1:
                     rej({
-                        res: FileResult.FILE_NOT_FOUND,
+                        res: FileResult.FileNotFound,
                         description: "file not found"
                     })    
                     break
                 case 15:
                     rej({
-                        res: FileResult.ACCESS_DENIED,
+                        res: FileResult.AccessDenied,
                         description: "Access denied"
                     })    
                     break
                 default:
                 rej({
-                    res: FileResult.UNKNOWN,
+                    res: FileResult.Unknown,
                     description: "Unknown error occurred"
                 })
                 break
@@ -125,19 +125,19 @@ if (process.platform == "linux") {
             switch (e.errno) {
                 case -13:
                     throw ({
-                        res: FileResult.ACCESS_DENIED,
+                        res: FileResult.AccessDenied,
                         description: e.stack
                     })
                     break
                 case -17:
                     throw ({
-                        res: FileResult.FILE_EXISTS,
+                        res: FileResult.FileExists,
                         description: e.stack
                     })
                     break
                 default:
                     throw ({
-                        res: FileResult.UNKNOWN,
+                        res: FileResult.Unknown,
                         description: "Unknown error occurred"
                     })
                     break

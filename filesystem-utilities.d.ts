@@ -31,11 +31,11 @@ interface VersionInfo {
 
 declare module 'filesystem-utilities' {
     enum FileResult {
-        SUCCESS,
-        UNKNOWN,
-        ACCESS_DENIED,
-        FILE_EXISTS,
-        FILE_NOT_FOUND
+        Success,
+        Unknown,
+        AccessDenied,
+        FileExists,
+        FileNotFound
     }
     interface FileException {
         res: number
