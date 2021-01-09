@@ -25,6 +25,7 @@ const requireAddon = () => {
 }
 
 const inner = requireAddon()
+exports.FileResult = FileResult
 exports.getFiles = inner.getFiles
 exports.getExifDate = inner.getExifDate
 exports.getFileVersion = inner.getFileVersion
