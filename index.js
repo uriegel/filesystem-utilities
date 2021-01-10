@@ -86,8 +86,9 @@ if (process.platform == "linux") {
     })
 
     const trash = async pathes => {
-        if (Array.isArray(pathes))
-            pathes.forEach(async n => await trashOneFile(n))
+        if (Array.isArray(pathes)) 
+            for (const path of pathes) 
+                await trashOneFile(path)
         else
             await trashOneFile(pathes)
     }
