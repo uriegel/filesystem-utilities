@@ -145,16 +145,42 @@ if (process.platform == "linux") {
         }
     }
 
+    const copy = (source, target, progress) => {
+        return new Promise(res => {
+            const process = spawn('cp' ,[source, target])    
+            const progressId = setInterval(async () => {
+                const progressResult = await runCmd(`progress -p ${process.pid}`)
+                const percentage = 
+                    progressResult.split('\n')
+                    .filter(n => n.includes('% ('))
+                    .map(n => {
+                        const words = n.split('%').map(n => n.trim())
+                        return words[0]
+                    })[0]
+                    progress(percentage)
+                if (percentage == "100.0")
+                    clearInterval(progressId)
+            }, 1000)
+            process.once("exit", e => {
+                clearInterval(progressId)
+                res()
+            })
+        })
+    }
+    
+
     exports.getDrives = getDrives            
     exports.getIcon = getIcon
     exports.trash = trash
     exports.createFolder = createFolder
+    exports.copy = copy
 }
 else {
     exports.getDrives = inner.getDrives
     exports.getIcon = inner.getIcon
     // TODO: trash for windows
     // TODO: createFolder for windows
+    // TODO: copy for windows
 }
 
 

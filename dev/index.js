@@ -1,44 +1,9 @@
 console.log("Starting test")
 const addon = require('../index')
 
-
-const childProcess = require("child_process")
-const exec = childProcess.exec
-const spawn = childProcess.spawn
-const path = require("path")
-
-// const process = spawn('bash',[ path.join(__dirname, "../test"), "ext" ])
-// process.stdout.on('data', data => {
-//     const icon = data.toString('utf8').trim()
-//     console.log(icon)
-// })
-// process.stderr.on('data', data => {
-//     const icon = data.toString('utf8').trim()
-//     console.log(icon)
-// })
-
-
-const runCmd = cmd => new Promise(res => exec(cmd, (_, stdout) => res(stdout)))
-
-function copy(progress) {
-    return new Promise(res => {
-        const process = spawn('cp' ,["/home/uwe/Videos/essen.mp4", "."])    
-        //const process = spawn('cp' ,["/home/uwe/Videos/Nur die Sonne war Zeuge.mp4", "."])    
-        const progressId = setInterval(async () => {
-            const progress = await runCmd(`progress -p ${process.pid}`)
-            console.log(progress)
-        }, 1000)
-        process.once("exit", e => {
-            clearInterval(progressId)
-            res()
-        })
-    })
-}
-
 ;(async () => {
-
-    await copy()
-
+    //await addon.copy("/home/uwe/Videos//home/uwe/Videos/essen.mp4", ".", progress => console.log(progress))
+    await addon.copy("/home/uwe/Videos/Nur die Sonne war Zeuge.mp4", ".", progress => console.log(progress))
     return
 
 
