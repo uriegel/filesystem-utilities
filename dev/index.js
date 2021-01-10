@@ -3,8 +3,8 @@ const addon = require('../index')
 
 ;(async () => {
     //await addon.copy("/home/uwe/Videos//home/uwe/Videos/essen.mp4", ".", progress => console.log(progress))
-    await addon.copy("/home/uwe/Videos/Nur die Sonne war Zeuge.mp4", ".", progress => console.log(progress))
-    return
+    // await addon.copy("/home/uwe/Videos/Nur die Sonne war Zeuge.mp4", ".", progress => console.log(progress))
+    // return
 
 
     addon.createFolder("/home/uwe/Projekte/eintest")

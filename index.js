@@ -85,9 +85,15 @@ if (process.platform == "linux") {
         process.stderr.on('data', data =>  rej(data.toString('utf8').trim()))
     })
 
+    const trash = async pathes => {
+        if (Array.isArray(pathes))
+            pathes.forEach(async n => await trashOneFile(n))
+        else
+            await trashOneFile(pathes)
+    }
 
-    const trash = pathes => new Promise((res, rej) => {
-        const process = spawn('python3',[ path.join(__dirname, "delete.py"), pathes ])
+    const trashOneFile = file => new Promise((res, rej) => {
+        const process = spawn('python3',[ path.join(__dirname, "delete.py"), file ])
         process.stdout.on('data', data => {
             const icon = data.toString('utf8').trim()
             res()
