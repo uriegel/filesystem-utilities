@@ -152,9 +152,9 @@ if (process.platform == "linux") {
         }
     }
 
-    const copy = (source, target, progress) => {
+    const copyOrMove = (move, source, target, progress) => {
         return new Promise(res => {
-            const process = spawn('cp' ,[source, target])    
+            const process = spawn(move ? 'mv' : 'cp' ,[source, target])    
             const progressId = setInterval(async () => {
                 const progressResult = await runCmd(`progress -p ${process.pid}`)
                 const percentage = 
@@ -174,13 +174,16 @@ if (process.platform == "linux") {
             })
         })
     }
-    
 
+    const copy = (source, target, progress) => copyOrMove(false, source, target, progress)
+    const move = (source, target, progress) => copyOrMove(true, source, target, progress)
+    
     exports.getDrives = getDrives            
     exports.getIcon = getIcon
     exports.trash = trash
     exports.createFolder = createFolder
     exports.copy = copy
+    exports.move = move
 }
 else {
     exports.getDrives = inner.getDrives
@@ -188,6 +191,7 @@ else {
     // TODO: trash for windows
     // TODO: createFolder for windows
     // TODO: copy for windows
+    // TODO: move for windows
 }
 
 
