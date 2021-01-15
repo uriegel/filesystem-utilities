@@ -48,4 +48,6 @@ declare module 'filesystem-utilities' {
     function getFileVersion(file: string): Promise<VersionInfo|null>
     function trash(pathes: string| string[]): Promise<void>
     function createFolder(path: string): Promise<void>
+    function getFileSizeSync(file: string): number
+    function getFileSize(file: string): Promise<number>
 }

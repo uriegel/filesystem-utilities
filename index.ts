@@ -233,6 +233,8 @@ if (process.platform == "linux") {
     exports.createFolder = createFolder
     exports.copy = copy
     exports.move = move
+    exports.getFileSizeSync = inner.getFileSizeSync
+    exports.getFileSize = inner.getFileSize
 } else {
     exports.getDrives = inner.getDrives
     exports.getIcon = inner.getIcon

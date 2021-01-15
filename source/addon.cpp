@@ -3,6 +3,7 @@
     #include "windows/platform.h"
 #elif LINUX
     #include "linux/platform.h"
+    #include "linux/get_file_size.h"
 #endif
 #include "get_drives_worker.h"
 #include "get_files_worker.h"
@@ -17,6 +18,10 @@ Object Init(Env env, Object exports) {
     exports.Set(String::New(env, "getIcon"), Function::New(env, GetIcon));
     exports.Set(String::New(env, "getExifDate"), Function::New(env, GetExifDate));
     exports.Set(String::New(env, "getFileVersion"), Function::New(env, GetFileVersion));
+#if LINUX    
+    exports.Set(String::New(env, "getFileSizeSync"), Function::New(env, GetFileSizeSync));
+    exports.Set(String::New(env, "getFileSize"), Function::New(env, GetFileSize));
+#endif    
     return exports;    
 }
 

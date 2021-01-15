@@ -4,6 +4,23 @@ const addon = require('../index')
 const wait = () => new Promise(res => {})
 
 ;(async () => {
+
+    const start = process.hrtime.bigint()    
+    for (let i = 0; i < 1000; i++) {
+        const size = addon.getFileSizeSync("/home/uwe/Bilder/Fotos/2015/Handy.jpg")
+    }
+    let end = process.hrtime.bigint()
+    console.info(`Execution time getFileSizeSync: ${((end - start)/ BigInt(1000.0))} mys`)
+
+    const start2 = process.hrtime.bigint()    
+    for (let i = 0; i < 1000; i++) {
+        const size = await addon.getFileSize("/home/uwe/Bilder/Fotos/2015/Handy.jpg")
+    }
+    let end2 = process.hrtime.bigint()
+    console.info(`Execution time getFileSize: ${((end2 - start2)/ BigInt(1000.0))} mys`)
+
+    
+
     const drives = await addon.getDrives()
     console.log("drives", drives)
 
