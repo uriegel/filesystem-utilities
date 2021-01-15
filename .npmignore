@@ -1,3 +1,9 @@
 build
 dev
 .vscode
+index.ts
+index.map
+require.ts
+require.js
+require.map
+tsconfig.json

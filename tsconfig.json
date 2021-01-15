@@ -1,0 +1,15 @@
+{
+    "compileOnSave": true,
+    "compilerOptions": {
+        "baseUrl": "./",
+        "sourceMap": true,
+        "declaration": false,
+        "module": "none",
+        "target": "es2020",
+        "lib": ["es2020", "DOM"]
+    },
+    "include": [
+        "./index.ts",
+        "./require.ts",
+    ]
+}

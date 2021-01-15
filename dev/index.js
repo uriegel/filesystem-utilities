@@ -1,13 +1,29 @@
 console.log("Starting test")
 const addon = require('../index')
 
+const wait = () => new Promise(res => {})
+
 ;(async () => {
+    const drives = await addon.getDrives()
+    console.log("drives", drives)
+
+    const iconPath = ".js"
+    //const iconPath = "C:\\Windows\\regedit.exe"
+    const icon = await addon.getIcon(iconPath)
+
     //await addon.copy("/home/uwe/Videos//home/uwe/Videos/essen.mp4", ".", progress => console.log(progress))
     // await addon.copy("/home/uwe/Videos/Nur die Sonne war Zeuge.mp4", ".", progress => console.log(progress))
     // return
+    try {
+        await addon.trash("/home/uwe/Projekte/eintest")
+    } catch (err) {
+        console.log(err)
+    }
+    await addon.createFolder("/home/uwe/Projekte/eintest")
 
+    addon.copy("/home/uwe/Videos/Nur die Sonne war Zeuge.mp4", "/home/uwe/Projekte/eintest", p => console.log(p))
+    await wait()
 
-    addon.createFolder("/home/uwe/Projekte/eintest")
     try {
         await addon.createFolder("/home/uwe/Projekte/eintest")
     } catch (err) {
@@ -32,15 +48,8 @@ const addon = require('../index')
         console.log(err)
     }
 
-    const drives = await addon.getDrives()
-    console.log("drives", drives)
-
     const files = await addon.getFiles("build")
     console.log("files", files)
-
-    const iconPath = ".js"
-    //const iconPath = "C:\\Windows\\regedit.exe"
-    const icon = await addon.getIcon(iconPath)
 
     const imgpath = "/media/Speicher/bilder/2020/Canon/IMG_0110.JPG"
     //const imgpath = "F:\\Bilder\\Tina\\2019\\12\\IMG_20191201_152308.jpg"
