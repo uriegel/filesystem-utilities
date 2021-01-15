@@ -145,7 +145,8 @@ if (process.platform == "linux") {
 
     interface CopyInstance {
         progress?: (p: ProgressData)=>void, 
-        onError?: (err: any)=>void
+        onError?: (err: any)=>void,
+        size: number,
         jobs: CopyJob[]
     }
 
@@ -156,15 +157,14 @@ if (process.platform == "linux") {
         targetDir: string
     }
 
-    var copyInstance: CopyInstance = {jobs: []}
+    var copyInstance: CopyInstance = {size: 0, jobs: []}
 
-    const addCopyOrMove = (copyJob: CopyJob, progress: (p: ProgressData)=>void, onError: (err: any)=>void) => {
+    const addCopyOrMove = async (copyJob: CopyJob, progress: (p: ProgressData)=>void, onError: (err: any)=>void) => {
+        copyJob.size = await inner.getFileSize(copyJob.source)
+        copyInstance.size += copyJob.size
         copyInstance.onError = onError
         copyInstance.progress = progress
         copyInstance.jobs.push(copyJob)
-
-        // TODO: retrieve size of folder or file
-
         if (copyInstance.jobs.length == 1)
             setInterval(() => processCopyJobs())
     }
@@ -175,6 +175,7 @@ if (process.platform == "linux") {
             await copyOrMove(job)
         }
         // TODO: call end! or progress 100%
+        // TODO: clear copyInstance
     }
 
     const copyOrMove = (copyJob: CopyJob) => 
@@ -213,19 +214,15 @@ if (process.platform == "linux") {
         progress: number
     }
 
-    // TODO: -2: get file size of 10_000 files sync 
-    // TODO: -1: get file size of 10_000 files  
-    // TODO: 0. always determine or add complete size (from file info or determine)
     // TODO: 1. copy one large file
-    // TODO: 2. copy one small file (get file sie)
-    // TODO: 3. copy 6 large files
-    // TODO: 4. copy 6 small files
+    // TODO: 2. copy 6 large files
+    // TODO: 3. copy 1000 small files
 
     // TODO: recursively unpack sourceDir, get file size from du
-    const copy = (source: string, targetDir: string, progress: (p: ProgressData)=>void, onError: (err: any)=>void) => 
-        addCopyOrMove({move: false, source, targetDir}, progress, onError)
-    const move = (source: string, targetDir: string, progress: (p: ProgressData)=>void, onError: (err: any)=>void) => 
-        addCopyOrMove({move: true, source, targetDir}, progress, onError)
+    const copy = async (source: string, targetDir: string, progress: (p: ProgressData)=>void, onError: (err: any)=>void) => 
+        await addCopyOrMove({move: false, source, targetDir}, progress, onError)
+    const move = async (source: string, targetDir: string, progress: (p: ProgressData)=>void, onError: (err: any)=>void) => 
+        await addCopyOrMove({move: true, source, targetDir}, progress, onError)
 
     exports.getDrives = getDrives            
     exports.getIcon = getIcon
