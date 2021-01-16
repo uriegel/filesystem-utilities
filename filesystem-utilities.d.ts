@@ -29,6 +29,14 @@ interface VersionInfo {
     patch: number
 }
 
+interface ProgressData {
+    name: string
+    size: number
+    progress: number
+    totalSize: number
+    totalProgress: number
+}
+
 declare module 'filesystem-utilities' {
     enum FileResult {
         Success,
@@ -48,6 +56,6 @@ declare module 'filesystem-utilities' {
     function getFileVersion(file: string): Promise<VersionInfo|null>
     function trash(pathes: string| string[]): Promise<void>
     function createFolder(path: string): Promise<void>
-    function getFileSizeSync(file: string): number
-    function getFileSize(file: string): Promise<number>
+    function copy(source: string, targetDir: string, progress?: (p: ProgressData)=>void, onError?: (err: any)=>void): Promise<void>
+    function move(source: string, targetDir: string, progress?: (p: ProgressData)=>void, onError?: (err: any)=>void): Promise<void>
 }

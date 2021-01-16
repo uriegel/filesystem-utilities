@@ -148,6 +148,7 @@ if (process.platform == "linux") {
         onError?: (err: any)=>void,
         size: number,
         jobs: CopyJob[]
+        isRunning: boolean
     }
 
     interface CopyJob {
@@ -157,7 +158,7 @@ if (process.platform == "linux") {
         targetDir: string
     }
 
-    var copyInstance: CopyInstance = {size: 0, jobs: []}
+    var copyInstance: CopyInstance = {size: 0, jobs: [], isRunning: false}
 
     const addCopyOrMove = async (copyJob: CopyJob, progress: (p: ProgressData)=>void, onError: (err: any)=>void) => {
         copyJob.size = await inner.getFileSize(copyJob.source)
@@ -165,22 +166,34 @@ if (process.platform == "linux") {
         copyInstance.onError = onError
         copyInstance.progress = progress
         copyInstance.jobs.push(copyJob)
-        if (copyInstance.jobs.length == 1)
-            setInterval(() => processCopyJobs())
+        if (copyInstance.jobs.length == 1 && !copyInstance.isRunning)
+            setTimeout(() => processCopyJobs())
     }
 
     const processCopyJobs = async () => {
+        copyInstance.isRunning = true
         while (copyInstance.jobs.length > 0) {
             const job = copyInstance.jobs.shift()
             await copyOrMove(job)
         }
-        // TODO: call end! or progress 100%
-        // TODO: clear copyInstance
+        copyInstance.isRunning = false
     }
 
     const copyOrMove = (copyJob: CopyJob) => 
         new Promise<void>(res => {
-            let progress = copyInstance.progress
+            let progress = (percentage: string) => {
+                if (copyInstance.progress) {
+                    const recentProgress = parseFloat(percentage)
+                    copyInstance.progress({
+                        name: copyJob.source,
+                        progress: recentProgress / 100,
+                        size: copyJob.size,
+                        totalProgress: 9,
+                        totalSize: copyInstance.size
+                    })
+                }
+            }
+
             const process = spawn(copyJob.move ? 'mv' : 'cp' ,[copyJob.source, copyJob.targetDir])    
             const progressId = setInterval(async () => {
                 const progressResult = await runCmd(`progress -p ${process.pid}`)
@@ -191,27 +204,30 @@ if (process.platform == "linux") {
                         const words = n.split('%').map(n => n.trim())
                         return words[0]
                     })[0]
-                    if (progress) {
-                        // todo: get size of file, add it
-                        progress({progress: parseFloat(percentage)})
-                    }
+                    progress(percentage)
                 if (percentage == "100.0") {
                     clearInterval(progressId)
-                    progress = null
+                    progress = (p: string) => {}
                 }
             }, 1000)
             process.once("exit", () => {
-                if (progress) {
-                    // todo: if not size of file, get it and add it
-                    progress({progress: 100.0})
-                }
+                progress("100.0")
                 clearInterval(progressId)
+                if (!copyInstance.jobs) {
+                    copyInstance.onError = null
+                    copyInstance.progress = null
+                    copyInstance.size = 0
+                }
                 res()
             })
         })
 
     interface ProgressData {
+        name: string
+        size: number
         progress: number
+        totalSize: number
+        totalProgress: number
     }
 
     // TODO: 1. copy one large file
@@ -228,10 +244,10 @@ if (process.platform == "linux") {
     exports.getIcon = getIcon
     exports.trash = trash
     exports.createFolder = createFolder
-    exports.copy = copy
-    exports.move = move
     exports.getFileSizeSync = inner.getFileSizeSync
     exports.getFileSize = inner.getFileSize
+    exports.copy = copy
+    exports.move = move
 } else {
     exports.getDrives = inner.getDrives
     exports.getIcon = inner.getIcon
