@@ -56,6 +56,6 @@ declare module 'filesystem-utilities' {
     function getFileVersion(file: string): Promise<VersionInfo|null>
     function trash(pathes: string| string[]): Promise<void>
     function createFolder(path: string): Promise<void>
-    function copy(source: string, targetDir: string, progress?: (p: ProgressData)=>void, onError?: (err: any)=>void): Promise<void>
-    function move(source: string, targetDir: string, progress?: (p: ProgressData)=>void, onError?: (err: any)=>void): Promise<void>
+    function copy(sources: string[], targetDir: string, progress?: (p: ProgressData)=>void, onError?: (err: any)=>void): Promise<void>
+    function move(sources: string[], targetDir: string, progress?: (p: ProgressData)=>void, onError?: (err: any)=>void): Promise<void>
 }

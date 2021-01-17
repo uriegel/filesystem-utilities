@@ -148,7 +148,6 @@ if (process.platform == "linux") {
         onError?: (err: any)=>void,
         size: number,
         jobs: CopyJob[]
-        isRunning: boolean
     }
 
     interface CopyJob {
@@ -158,70 +157,6 @@ if (process.platform == "linux") {
         targetDir: string
     }
 
-    var copyInstance: CopyInstance = {size: 0, jobs: [], isRunning: false}
-
-    const addCopyOrMove = async (copyJob: CopyJob, progress: (p: ProgressData)=>void, onError: (err: any)=>void) => {
-        copyJob.size = await inner.getFileSize(copyJob.source)
-        copyInstance.size += copyJob.size
-        copyInstance.onError = onError
-        copyInstance.progress = progress
-        copyInstance.jobs.push(copyJob)
-        if (copyInstance.jobs.length == 1 && !copyInstance.isRunning)
-            setTimeout(() => processCopyJobs())
-    }
-
-    const processCopyJobs = async () => {
-        copyInstance.isRunning = true
-        while (copyInstance.jobs.length > 0) {
-            const job = copyInstance.jobs.shift()
-            await copyOrMove(job)
-        }
-        copyInstance.isRunning = false
-    }
-
-    const copyOrMove = (copyJob: CopyJob) => 
-        new Promise<void>(res => {
-            let progress = (percentage: string) => {
-                if (copyInstance.progress) {
-                    const recentProgress = parseFloat(percentage)
-                    copyInstance.progress({
-                        name: copyJob.source,
-                        progress: recentProgress / 100,
-                        size: copyJob.size,
-                        totalProgress: 9,
-                        totalSize: copyInstance.size
-                    })
-                }
-            }
-
-            const process = spawn(copyJob.move ? 'mv' : 'cp' ,[copyJob.source, copyJob.targetDir])    
-            const progressId = setInterval(async () => {
-                const progressResult = await runCmd(`progress -p ${process.pid}`)
-                const percentage = 
-                    progressResult.split('\n')
-                    .filter(n => n.includes('% ('))
-                    .map(n => {
-                        const words = n.split('%').map(n => n.trim())
-                        return words[0]
-                    })[0]
-                    progress(percentage)
-                if (percentage == "100.0") {
-                    clearInterval(progressId)
-                    progress = (p: string) => {}
-                }
-            }, 1000)
-            process.once("exit", () => {
-                progress("100.0")
-                clearInterval(progressId)
-                if (!copyInstance.jobs) {
-                    copyInstance.onError = null
-                    copyInstance.progress = null
-                    copyInstance.size = 0
-                }
-                res()
-            })
-        })
-
     interface ProgressData {
         name: string
         size: number
@@ -230,16 +165,78 @@ if (process.platform == "linux") {
         totalProgress: number
     }
 
-    // TODO: 1. copy one large file
-    // TODO: 2. copy 6 large files
     // TODO: 3. copy 1000 small files
 
-    // TODO: recursively unpack sourceDir, get file size from du
-    const copy = async (source: string, targetDir: string, progress: (p: ProgressData)=>void, onError: (err: any)=>void) => 
-        await addCopyOrMove({move: false, source, targetDir}, progress, onError)
-    const move = async (source: string, targetDir: string, progress: (p: ProgressData)=>void, onError: (err: any)=>void) => 
-        await addCopyOrMove({move: true, source, targetDir}, progress, onError)
+    const copyOrMove = async (move: boolean, sources: string[], targetDir: string, progress: (p: ProgressData)=>void, onError: (err: any)=>void) => {
+        // TODO: Total percentage => add completed size, percentage * size => + totalCopied
+        // TODO: recursively unpack sourceDir
+        const copyInstance: CopyInstance = {size: 0, jobs: [] }
+        for (let source of sources) {
+            const copyJob = {move, source, targetDir} as CopyJob
+            copyJob.size = await inner.getFileSize(copyJob.source)
+            copyInstance.size += copyJob.size
+            copyInstance.onError = onError
+            copyInstance.progress = progress
+            copyInstance.jobs.push(copyJob)
+        }
 
+        const copyOrMove = (copyJob: CopyJob) => 
+            new Promise<void>(res => {
+                let progress = (percentage: string) => {
+                    if (copyInstance.progress) {
+                        const recentProgress = parseFloat(percentage)
+                        copyInstance.progress({
+                            name: copyJob.source,
+                            progress: recentProgress / 100,
+                            size: copyJob.size,
+                            totalProgress: 9,
+                            totalSize: copyInstance.size
+                        })
+                    }
+                }
+
+                const process = spawn(copyJob.move ? 'mv' : 'cp' ,[copyJob.source, copyJob.targetDir])    
+                const progressId = setInterval(async () => {
+                    const progressResult = await runCmd(`progress -p ${process.pid}`)
+                    const percentage = 
+                        progressResult.split('\n')
+                        .filter(n => n.includes('% ('))
+                        .map(n => {
+                            const words = n.split('%').map(n => n.trim())
+                            return words[0]
+                        })[0]
+                        progress(percentage)
+                    if (percentage == "100.0") {
+                        clearInterval(progressId)
+                        progress = (p: string) => {}
+                    }
+                }, 1000)
+                process.once("exit", () => {
+                    progress("100.0")
+                    clearInterval(progressId)
+                    if (!copyInstance.jobs) {
+                        copyInstance.onError = null
+                        copyInstance.progress = null
+                        copyInstance.size = 0
+                    }
+                    res()
+                })
+            })
+
+        const processCopyJobs = async () => {
+            while (copyInstance.jobs.length > 0) {
+                const job = copyInstance.jobs.shift()
+                await copyOrMove(job)
+            }
+        }
+        await processCopyJobs()
+    } 
+
+    const copy = (sources: string[], targetDir: string, progress: (p: ProgressData)=>void, onError: (err: any)=>void) => 
+        copyOrMove (false, sources, targetDir, progress, onError)
+    const move = (sources: string[], targetDir: string, progress: (p: ProgressData)=>void, onError: (err: any)=>void) => 
+        copyOrMove (true, sources, targetDir, progress, onError)
+        
     exports.getDrives = getDrives            
     exports.getIcon = getIcon
     exports.trash = trash

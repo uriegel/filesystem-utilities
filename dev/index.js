@@ -21,8 +21,6 @@ const wait = time => new Promise(res => {
     let end2 = process.hrtime.bigint()
     console.info(`Execution time getFileSize: ${((end2 - start2)/ BigInt(1000.0))} mys`)
 
-    
-
     const drives = await addon.getDrives()
     console.log("drives", drives)
 
@@ -39,11 +37,21 @@ const wait = time => new Promise(res => {
 
     const progress = p => console.log(`${p.name} - ${p.size} - ${p.progress} - ${p.totalSize}`)
 
-    await addon.copy("/home/uwe/Videos/Mandela.mp4", "/home/uwe/Projekte/eintest", progress)
-    //await wait(3000)
-    await addon.copy("/home/uwe/Videos/Nur die Sonne war Zeuge.mp4", "/home/uwe/Projekte/eintest", progress)
-    //await wait()
+    const copy1 = async () => {
+        await addon.copy([ 
+            "/home/uwe/Videos/Mandela.mp4",
+            "/home/uwe/Videos/Nur die Sonne war Zeuge.mp4" ], "/home/uwe/Projekte/eintest", progress)
+        console.log("Fertig 1")
+    }
 
+    const copy2 = async () => {
+        await addon.copy([ "/home/uwe/Videos/Die Braut trug schwarz.mkv" ], "/home/uwe/Projekte/eintest", progress)
+        console.log("Fertig 2")
+    }
+
+    copy1()
+    await wait(5000)
+    copy2()
     // try {
     //     await addon.createFolder("/home/uwe/Projekte/eintest")
     // } catch (err) {
