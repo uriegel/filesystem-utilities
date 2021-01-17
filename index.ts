@@ -147,6 +147,7 @@ if (process.platform == "linux") {
         progress?: (p: ProgressData)=>void, 
         onError?: (err: any)=>void,
         size: number,
+        processedSize: number,
         jobs: CopyJob[]
     }
 
@@ -168,9 +169,8 @@ if (process.platform == "linux") {
     // TODO: 3. copy 1000 small files
 
     const copyOrMove = async (move: boolean, sources: string[], targetDir: string, progress: (p: ProgressData)=>void, onError: (err: any)=>void) => {
-        // TODO: Total percentage => add completed size, percentage * size => + totalCopied
         // TODO: recursively unpack sourceDir
-        const copyInstance: CopyInstance = {size: 0, jobs: [] }
+        const copyInstance: CopyInstance = {size: 0, processedSize: 0, jobs: [] }
         for (let source of sources) {
             const copyJob = {move, source, targetDir} as CopyJob
             copyJob.size = await inner.getFileSize(copyJob.source)
@@ -185,11 +185,12 @@ if (process.platform == "linux") {
                 let progress = (percentage: string) => {
                     if (copyInstance.progress) {
                         const recentProgress = parseFloat(percentage)
+                        const progress = recentProgress / 100
                         copyInstance.progress({
                             name: copyJob.source,
-                            progress: recentProgress / 100,
+                            progress,
                             size: copyJob.size,
-                            totalProgress: 9,
+                            totalProgress: (copyInstance.processedSize + (progress * copyJob.size)) / copyInstance.size,
                             totalSize: copyInstance.size
                         })
                     }
@@ -214,11 +215,7 @@ if (process.platform == "linux") {
                 process.once("exit", () => {
                     progress("100.0")
                     clearInterval(progressId)
-                    if (!copyInstance.jobs) {
-                        copyInstance.onError = null
-                        copyInstance.progress = null
-                        copyInstance.size = 0
-                    }
+                    copyInstance.processedSize += copyJob.size
                     res()
                 })
             })
@@ -228,6 +225,9 @@ if (process.platform == "linux") {
                 const job = copyInstance.jobs.shift()
                 await copyOrMove(job)
             }
+            copyInstance.onError = null
+            copyInstance.progress = null
+            copyInstance.size = 0
         }
         await processCopyJobs()
     } 

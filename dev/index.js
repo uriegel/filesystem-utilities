@@ -35,7 +35,7 @@ const wait = time => new Promise(res => {
     }
     await addon.createFolder("/home/uwe/Projekte/eintest")
 
-    const progress = p => console.log(`${p.name} - ${p.size} - ${p.progress} - ${p.totalSize}`)
+    const progress = p => console.log(`${p.name} - ${p.size} - ${p.progress} - ${p.totalProgress}`)
 
     const copy1 = async () => {
         await addon.copy([ 
