@@ -166,10 +166,11 @@ if (process.platform == "linux") {
         totalProgress: number
     }
 
-    // TODO: 3. copy 1000 small files
-
     const copyOrMove = async (move: boolean, sources: string[], targetDir: string, progress: (p: ProgressData)=>void, onError: (err: any)=>void) => {
         // TODO: recursively unpack sourceDir
+        // TODO: copy 1000 small files
+        // TODO: Access denied
+        // TODO: file not found
         const copyInstance: CopyInstance = {size: 0, processedSize: 0, jobs: [] }
         for (let source of sources) {
             const copyJob = {move, source, targetDir} as CopyJob
