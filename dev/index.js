@@ -35,22 +35,30 @@ const wait = time => new Promise(res => {
     const copy = async () => {
 //        await addon.copy([ "/home/uwe/Bilder/Fotos/2017" ], "/home/uwe/Projekte/eintest", progress)
         await addon.copy([ "/home/uwe/GNUstep" ], "/home/uwe/Projekte/eintest", progress)
-        console.log("Fertig")
+        console.log("finished")
     }
 
-    const copy1 = async () => {
+    const move = async () => {
+//        await addon.copy([ "/home/uwe/Bilder/Fotos/2017" ], "/home/uwe/Projekte/eintest", progress)
+        await addon.move([ "/home/uwe/Projekte/eintest/GNUstep" ], "/home/uwe/Projekte/eintest/affe", progress)
+        console.log("finished move")
+    }
+
+            const copy1 = async () => {
         await addon.copy([ 
             "/home/uwe/Videos/Mandela.mp4",
             "/home/uwe/Videos/Nur die Sonne war Zeuge.mp4" ], "/home/uwe/Projekte/eintest", progress)
-        console.log("Fertig 1")
+        console.log("finished 1")
     }
 
     const copy2 = async () => {
         await addon.copy([ "/home/uwe/Videos/Die Braut trug schwarz.mkv" ], "/home/uwe/Projekte/eintest", progress)
-        console.log("Fertig 2")
+        console.log("finished 2")
     }
 
     await copy()
+    await move()
+    await wait(5000)
     copy1()
     await wait(5000)
     copy2()

@@ -212,7 +212,7 @@ if (process.platform == "linux") {
                 
                 if (!fs.existsSync(copyJob.targetDir))
                     await fsa.mkdir(copyJob.targetDir, { recursive: true })
-                const process = spawn(copyJob.move ? 'mv' : 'cp' ,["-p", copyJob.source, copyJob.targetDir])    
+                const process = spawn(copyJob.move ? 'mv' : 'cp' ,[ copyJob.move ? null : "-p", copyJob.source, copyJob.targetDir])    
                 const progressId = setInterval(async () => {
                     const progressResult = await runCmd(`progress -p ${process.pid}`)
                     const percentage = 
@@ -228,7 +228,7 @@ if (process.platform == "linux") {
                         progress = (p: string) => {}
                     }
                 }, 1000)
-                process.once("exit", () => {
+                process.once("exit", async () => {
                     progress("100.0")
                     clearInterval(progressId)
                     copyInstance.processedSize += copyJob.size
@@ -251,7 +251,7 @@ if (process.platform == "linux") {
     const copy = (sources: string[], targetDir: string, progress: (p: ProgressData)=>void, onError: (err: any)=>void) => 
         copyOrMove (false, sources, targetDir, progress, onError)
     const move = (sources: string[], targetDir: string, progress: (p: ProgressData)=>void, onError: (err: any)=>void) => 
-        // TODO: at the end: delete source
+        // TODO: rmdir original dir move
         copyOrMove (true, sources, targetDir, progress, onError)
         
     exports.getDrives = getDrives            
