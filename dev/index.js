@@ -12,7 +12,7 @@ const wait = time => new Promise(res => {
         const size = await fs.stat("/home/uwe/Bilder/Fotos/2015/Handy.jpg")
         const isDir = size.isDirectory()
         const seize = size.size
-   }
+    }
     let end3 = process.hrtime.bigint()
     console.info(`Execution time getFileSize: ${((end3 - start3)/ BigInt(1000.0))} mys`)
 
@@ -33,7 +33,8 @@ const wait = time => new Promise(res => {
     const progress = p => console.log(`${p.name} - ${p.size} - ${p.progress} - ${p.totalProgress}`)
 
     const copy = async () => {
-        await addon.copy([ "/home/uwe/Videos" ], "/home/uwe/Projekte/eintest", progress)
+//        await addon.copy([ "/home/uwe/Bilder/Fotos/2017" ], "/home/uwe/Projekte/eintest", progress)
+        await addon.copy([ "/home/uwe/GNUstep" ], "/home/uwe/Projekte/eintest", progress)
         console.log("Fertig")
     }
 

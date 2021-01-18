@@ -167,12 +167,11 @@ if (process.platform == "linux") {
     }
 
     const copyOrMove = async (move: boolean, sources: string[], targetDir: string, progress: (p: ProgressData)=>void, onError: (err: any)=>void) => {
-        // TODO: copy 1000 small files
         // TODO: Access denied
         // TODO: file not found
         const copyInstance: CopyInstance = {size: 0, processedSize: 0, jobs: [] }
 
-        const createCopyJob = (source: string, size: number) => {
+        const createCopyJob = (source: string, targetDir: string, size: number) => {
             const copyJob = {move, source, targetDir} as CopyJob
             copyJob.size = size
             copyInstance.size += copyJob.size
@@ -181,22 +180,22 @@ if (process.platform == "linux") {
             copyInstance.jobs.push(copyJob)
         }
 
-        const fillCopyJob = async (source: string) => {
+        const fillCopyJob = async (source: string, target: string) => {
             const stat = await fsa.stat(source)
             if (!stat.isDirectory())
-                createCopyJob(source, stat.size)
+                createCopyJob(source, target, stat.size)
             else {
                 const files = await fsa.readdir(source)
                 for (let file of files) 
-                    await fillCopyJob(path.join(source, file))                 
+                    await fillCopyJob(path.join(source, file), path.join(target, path.basename(source)))                 
             }
         }
 
         for (let source of sources) 
-            await fillCopyJob(source) 
+            await fillCopyJob(source, targetDir) 
 
         const copyOrMove = (copyJob: CopyJob) => 
-            new Promise<void>(res => {
+            new Promise<void>(async res => {
                 let progress = (percentage: string) => {
                     if (copyInstance.progress) {
                         const recentProgress = parseFloat(percentage)
@@ -210,8 +209,10 @@ if (process.platform == "linux") {
                         })
                     }
                 }
-
-                const process = spawn(copyJob.move ? 'mv' : 'cp' ,[copyJob.source, copyJob.targetDir])    
+                
+                if (!fs.existsSync(copyJob.targetDir))
+                    await fsa.mkdir(copyJob.targetDir, { recursive: true })
+                const process = spawn(copyJob.move ? 'mv' : 'cp' ,["-p", copyJob.source, copyJob.targetDir])    
                 const progressId = setInterval(async () => {
                     const progressResult = await runCmd(`progress -p ${process.pid}`)
                     const percentage = 
@@ -250,6 +251,7 @@ if (process.platform == "linux") {
     const copy = (sources: string[], targetDir: string, progress: (p: ProgressData)=>void, onError: (err: any)=>void) => 
         copyOrMove (false, sources, targetDir, progress, onError)
     const move = (sources: string[], targetDir: string, progress: (p: ProgressData)=>void, onError: (err: any)=>void) => 
+        // TODO: at the end: delete source
         copyOrMove (true, sources, targetDir, progress, onError)
         
     exports.getDrives = getDrives            
