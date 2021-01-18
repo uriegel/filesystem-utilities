@@ -174,7 +174,9 @@ if (process.platform == "linux") {
         const copyInstance: CopyInstance = {size: 0, processedSize: 0, jobs: [] }
         for (let source of sources) {
             const copyJob = {move, source, targetDir} as CopyJob
-            copyJob.size = await inner.getFileSize(copyJob.source)
+            const stat = await fsa.stat(copyJob.source)
+            const isDir = stat.isDirectory()
+            copyJob.size = stat.size
             copyInstance.size += copyJob.size
             copyInstance.onError = onError
             copyInstance.progress = progress

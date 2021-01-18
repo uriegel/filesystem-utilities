@@ -57,7 +57,6 @@
                     'source/linux/files.cpp',
                     'source/linux/get_icon_worker.cpp',
                     'source/linux/file_version.cpp',
-                    'source/linux/get_file_size.cpp',
                 ]
             }],
         ]          
