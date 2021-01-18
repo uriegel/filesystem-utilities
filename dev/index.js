@@ -32,6 +32,11 @@ const wait = time => new Promise(res => {
 
     const progress = p => console.log(`${p.name} - ${p.size} - ${p.progress} - ${p.totalProgress}`)
 
+    const copy = async () => {
+        await addon.copy([ "/home/uwe/Videos" ], "/home/uwe/Projekte/eintest", progress)
+        console.log("Fertig")
+    }
+
     const copy1 = async () => {
         await addon.copy([ 
             "/home/uwe/Videos/Mandela.mp4",
@@ -44,6 +49,7 @@ const wait = time => new Promise(res => {
         console.log("Fertig 2")
     }
 
+    await copy()
     copy1()
     await wait(5000)
     copy2()

@@ -167,21 +167,33 @@ if (process.platform == "linux") {
     }
 
     const copyOrMove = async (move: boolean, sources: string[], targetDir: string, progress: (p: ProgressData)=>void, onError: (err: any)=>void) => {
-        // TODO: recursively unpack sourceDir
         // TODO: copy 1000 small files
         // TODO: Access denied
         // TODO: file not found
         const copyInstance: CopyInstance = {size: 0, processedSize: 0, jobs: [] }
-        for (let source of sources) {
+
+        const createCopyJob = (source: string, size: number) => {
             const copyJob = {move, source, targetDir} as CopyJob
-            const stat = await fsa.stat(copyJob.source)
-            const isDir = stat.isDirectory()
-            copyJob.size = stat.size
+            copyJob.size = size
             copyInstance.size += copyJob.size
             copyInstance.onError = onError
             copyInstance.progress = progress
             copyInstance.jobs.push(copyJob)
         }
+
+        const fillCopyJob = async (source: string) => {
+            const stat = await fsa.stat(source)
+            if (!stat.isDirectory())
+                createCopyJob(source, stat.size)
+            else {
+                const files = await fsa.readdir(source)
+                for (let file of files) 
+                    await fillCopyJob(path.join(source, file))                 
+            }
+        }
+
+        for (let source of sources) 
+            await fillCopyJob(source) 
 
         const copyOrMove = (copyJob: CopyJob) => 
             new Promise<void>(res => {
