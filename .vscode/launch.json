@@ -25,14 +25,26 @@
             "MIMode": "gdb",
         },          
         {
-            "name": "Launch javascript",
+            "name": "Launch javascript (linux)",
             "type": "node",
             "request": "launch",
             "cwd": "${workspaceFolder}",
             "args": [ "${workspaceFolder}/dev/addonTest.js" ],
             "runtimeExecutable": "npm",
             "runtimeArgs": [
-                "run-script", "debug"
+                "run-script", "debug linux"
+            ],
+            "port": 9229
+        },
+        {
+            "name": "Launch javascript (windows)",
+            "type": "node",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "args": [ "${workspaceFolder}/dev/addonTest.js" ],
+            "runtimeExecutable": "npm",
+            "runtimeArgs": [
+                "run-script", "debug windows"
             ],
             "port": 9229
         }

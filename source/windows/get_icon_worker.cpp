@@ -1,9 +1,9 @@
 #include <napi.h>
 #include <vector>
-#include "wstring.h"
+#include "../wstring.h"
 #include "../nullfunction.h"
 #include "../get_icon_worker.h"
-#include "icon.h"
+#include "../icon.h"
 using namespace Napi;
 using namespace std;
 

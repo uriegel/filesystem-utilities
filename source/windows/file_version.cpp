@@ -1,5 +1,5 @@
 #include <Windows.h>
-#include "../file_version.h"
+#include "file_version.h"
 using namespace std;
 
 optional<Version_info> get_file_info_version(const wstring& file_name) {

@@ -1,7 +1,7 @@
 #include <windows.h>
 #include <array>
 #include <vector>
-#include "../drives.h"
+#include "drives.h"
 #include "../std_utils.h"
 using namespace std;
 

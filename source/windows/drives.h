@@ -1,10 +1,6 @@
 #pragma once
 #include <vector>
-#if WINDOWS
-#include "windows/platform.h"
-#elif LINUX
-#include "linux/platform.h"
-#endif
+#include "platform.h"
 
 enum class Drive_type
 {

@@ -4,10 +4,8 @@
         "sources": [ 
             'source/addon.cpp',
             'source/nullfunction.cpp',
-            'source/get_drives_worker.cpp',
             'source/get_files_worker.cpp',
             'source/get_exif_date_worker.cpp',
-            'source/get_file_version_worker.cpp',
             'source/std_utils.cpp',
             'source/exif_reader.cpp'
         ],
@@ -43,6 +41,11 @@
                     'source/windows/icon.cpp',
                     'source/windows/get_icon_worker.cpp',
                     'source/windows/file_version.cpp',
+                    'source/windows/shell.cpp',
+                    'source/windows/utils.cpp',
+                    'source/windows/get_drives_worker.cpp',
+                    'source/windows/get_file_version_worker.cpp',
+                    'source/windows/create_directory_worker.cpp',
                 ],
                 "libraries": [ 
                     "gdiplus.lib",
@@ -53,10 +56,8 @@
                 'defines': ['LINUX'],
                 'libraries!': [ ],
                 'sources': [ 
-                    'source/linux/drives.cpp',
                     'source/linux/files.cpp',
                     'source/linux/get_icon_worker.cpp',
-                    'source/linux/file_version.cpp',
                 ]
             }],
         ]          

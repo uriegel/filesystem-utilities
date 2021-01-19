@@ -1,10 +1,6 @@
 #pragma once
 #include <optional>
-#if WINDOWS
-    #include "windows/platform.h"
-#elif LINUX
-    #include "linux/platform.h"
-#endif
+#include "platform.h"
 
 struct Version_info {
     Version_info(int major, int minor, int build, int patch) 

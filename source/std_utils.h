@@ -1,11 +1,10 @@
 #pragma once
 #include <vector>
 #if WINDOWS
-#include "windows/platform.h"
+    #include "windows/platform.h"
 #elif LINUX
-#include "linux/platform.h"
+    #include "linux/platform.h"
 #endif
-#include "get_drives_worker.h"
 // #include <locale>
 // #include <codecvt>
 

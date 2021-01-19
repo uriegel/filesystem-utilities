@@ -1,13 +1,9 @@
 #include <napi.h>
 #include <vector>
 #include <optional>
-#include "nullfunction.h"
+#include "../nullfunction.h"
 #include "file_version.h"
-#if WINDOWS
-    #include "windows/platform.h"
-#elif LINUX
-    #include "linux/platform.h"
-#endif
+#include "platform.h"
 using namespace Napi;
 using namespace std;
 

@@ -1,4 +1,4 @@
-console.log("Starting test")
+console.log("Starting linux test")
 const addon = require('../index')
 
 const wait = time => new Promise(res => {
@@ -20,7 +20,6 @@ const wait = time => new Promise(res => {
     console.log("drives", drives)
 
     const iconPath = ".js"
-    //const iconPath = "C:\\Windows\\regedit.exe"
     const icon = await addon.getIcon(iconPath)
 
     try {

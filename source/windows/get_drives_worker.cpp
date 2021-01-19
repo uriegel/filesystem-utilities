@@ -2,12 +2,8 @@
 #include <vector>
 #include "get_drives_worker.h"
 #include "drives.h"
-#include "nullfunction.h"
-#if WINDOWS
-#include "windows/platform.h"
-#elif LINUX
-#include "linux/platform.h"
-#endif
+#include "../nullfunction.h"
+#include "platform.h"
 using namespace Napi;
 using namespace std;
 

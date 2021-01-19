@@ -263,10 +263,36 @@ if (process.platform == "linux") {
     exports.copy = copy
     exports.move = move
 } else {
+
+    const createFolder = async (path: string) => {
+        try {
+            await inner.createDirectory(path)
+        } catch (e) {
+            switch (e.code) {
+                case -13:
+                    throw ({
+                        res: FileResult.AccessDenied,
+                        description: e.description
+                    })
+                case 183:
+                    throw ({
+                        res: FileResult.FileExists,
+                        description: e.description
+                    })
+                default:
+                    throw ({
+                        res: FileResult.Unknown,
+                        description: e.description
+                    })
+            }
+        }
+    }
+
+
     exports.getDrives = inner.getDrives
     exports.getIcon = inner.getIcon
+    exports.createFolder = createFolder
     // TODO: trash (windows)
-    // TODO: createFolder (windows)
     // TODO: copy (windows)
     // TODO: move (windows)
 }
