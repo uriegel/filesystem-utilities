@@ -38,7 +38,6 @@ const wait = time => new Promise(res => {
     }
 
     const move = async () => {
-//        await addon.copy([ "/home/uwe/Bilder/Fotos/2017" ], "/home/uwe/Projekte/eintest", progress)
         await addon.move([ "/home/uwe/Projekte/eintest/GNUstep" ], "/home/uwe/Projekte/eintest/affe", progress)
         console.log("finished move")
     }
