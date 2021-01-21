@@ -31,6 +31,28 @@ const wait = time => new Promise(res => {
 
     const progress = p => console.log(`${p.name} - ${p.size} - ${p.progress} - ${p.totalProgress}`)
 
+    const notCopy = async () => {
+        try {
+            await addon.copy([ "/home/uwe/GNUstep" ], "/etc", progress)
+            console.log("finished")
+        } catch (err) {
+            const errr = err
+            const affe = err
+        }
+    }
+    await notCopy()
+
+    const notCopy2 = async () => {
+        try {
+            await addon.copy([ "/home/uwe/Projekte/filesystem-utilities/tsconfig.json" ], "/etc", progress)
+            console.log("finished")
+        } catch (err) {
+            const errr = err
+            const affe = err
+        }
+    }
+    await notCopy2()
+
     const copy = async () => {
 //        await addon.copy([ "/home/uwe/Bilder/Fotos/2017" ], "/home/uwe/Projekte/eintest", progress)
         await addon.copy([ "/home/uwe/GNUstep" ], "/home/uwe/Projekte/eintest", progress)

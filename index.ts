@@ -121,7 +121,7 @@ if (process.platform == "linux") {
 
     const createFolder = async (path: string) => {
         try {
-            await fsa.mkdir(path)   
+            await fsa.mkdir(path, { recursive: true })   
         } catch (e) {
             switch (e.errno) {
                 case -13:
@@ -145,7 +145,6 @@ if (process.platform == "linux") {
 
     interface CopyInstance {
         progress?: (p: ProgressData)=>void, 
-        onError?: (err: any)=>void,
         size: number,
         processedSize: number,
         jobs: CopyJob[]
@@ -172,16 +171,13 @@ if (process.platform == "linux") {
         totalProgress: number
     }
 
-    const copyOrMove = async (move: boolean, sources: string[], targetDir: string, progress: (p: ProgressData)=>void, onError: (err: any)=>void) => {
-        // TODO: Access denied
-        // TODO: file not found
+    const copyOrMove = async (move: boolean, sources: string[], targetDir: string, progress: (p: ProgressData)=>void) => {
         const copyInstance: CopyInstance = {size: 0, processedSize: 0, jobs: [] }
 
         const createCopyJob = (source: string, targetDir: string, size: number) => {
             const copyJob = {jobType: move ? JobType.Move : JobType.Copy, source, targetDir} as CopyJob
             copyJob.size = size
             copyInstance.size += copyJob.size
-            copyInstance.onError = onError
             copyInstance.progress = progress
             copyInstance.jobs.push(copyJob)
         }
@@ -205,7 +201,7 @@ if (process.platform == "linux") {
             await fillCopyJob(source, targetDir, move) 
 
         const copyOrMove = (copyJob: CopyJob) => 
-            new Promise<void>(async res => {
+            new Promise<void>(async (res, rej) => {
                 let progress = (percentage: string) => {
                     if (copyInstance.progress) {
                         const recentProgress = parseFloat(percentage)
@@ -222,9 +218,15 @@ if (process.platform == "linux") {
                 
                 if (copyJob.jobType != JobType.Delete) {
                     if (!fs.existsSync(copyJob.targetDir))
-                        await fsa.mkdir(copyJob.targetDir, { recursive: true })
-                    const process = spawn(copyJob.jobType == JobType.Copy ? 'cp' : 'mv', 
-                        [ copyJob.jobType == JobType.Copy ? "-p" : null, copyJob.source, copyJob.targetDir])    
+                        try {
+                            await createFolder(copyJob.targetDir)
+                        } catch (err) { 
+                            rej(err) 
+                            return
+                        }
+                    const process = copyJob.jobType == JobType.Copy 
+                                ? spawn('cp' ,[ "-p", copyJob.source, copyJob.targetDir])    
+                                : spawn('mv' ,[ copyJob.source, copyJob.targetDir])     
                     const progressId = setInterval(async () => {
                         const progressResult = await runCmd(`progress -p ${process.pid}`)
                         const percentage = 
@@ -241,10 +243,18 @@ if (process.platform == "linux") {
                         }
                     }, 1000)
                     process.once("exit", async () => {
-                        progress("100.0")
-                        clearInterval(progressId)
-                        copyInstance.processedSize += copyJob.size
-                        res()
+                        if (!process.exitCode) {
+                            progress("100.0")
+                            clearInterval(progressId)
+                            copyInstance.processedSize += copyJob.size
+                            res()
+                        } else {
+                            clearInterval(progressId)
+                            rej({
+                                res: FileResult.Unknown,
+                                description: ""
+                            })
+                        }
                     })
                 }
                 else {
@@ -259,17 +269,16 @@ if (process.platform == "linux") {
                 const job = copyInstance.jobs.shift()
                 await copyOrMove(job)
             }
-            copyInstance.onError = null
             copyInstance.progress = null
             copyInstance.size = 0
         }
         await processCopyJobs()
     } 
 
-    const copy = (sources: string[], targetDir: string, progress: (p: ProgressData)=>void, onError: (err: any)=>void) => 
-        copyOrMove (false, sources, targetDir, progress, onError)
-    const move = (sources: string[], targetDir: string, progress: (p: ProgressData)=>void, onError: (err: any)=>void) => 
-        copyOrMove (true, sources, targetDir, progress, onError)
+    const copy = (sources: string[], targetDir: string, progress: (p: ProgressData)=>void) => 
+        copyOrMove (false, sources, targetDir, progress)
+    const move = (sources: string[], targetDir: string, progress: (p: ProgressData)=>void) => 
+        copyOrMove (true, sources, targetDir, progress)
         
     exports.getDrives = getDrives            
     exports.getIcon = getIcon
