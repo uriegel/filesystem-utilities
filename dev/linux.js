@@ -55,7 +55,8 @@ const wait = time => new Promise(res => {
 
     const copy = async () => {
 //        await addon.copy([ "/home/uwe/Bilder/Fotos/2017" ], "/home/uwe/Projekte/eintest", progress)
-        await addon.copy([ "/home/uwe/GNUstep" ], "/home/uwe/Projekte/eintest", progress)
+//        await addon.copy([ "/home/uwe/GNUstep" ], "/home/uwe/Projekte/eintest", progress)
+        await addon.copy([ "/home/uwe/Projekte/commander/node_modules" ], "/home/uwe/Projekte/eintest")
         console.log("finished")
     }
 
@@ -64,7 +65,7 @@ const wait = time => new Promise(res => {
         console.log("finished move")
     }
 
-            const copy1 = async () => {
+    const copy1 = async () => {
         await addon.copy([ 
             "/home/uwe/Videos/Mandela.mp4",
             "/home/uwe/Videos/Nur die Sonne war Zeuge.mp4" ], "/home/uwe/Projekte/eintest", progress)
@@ -77,11 +78,14 @@ const wait = time => new Promise(res => {
     }
 
     await copy()
-    await move()
-    await wait(5000)
-    copy1()
-    await wait(5000)
-    copy2()
+    // await move()
+    // await wait(5000)
+    // copy1()
+    // await wait(5000)
+    // copy2()
+
+
+
     // try {
     //     await addon.createFolder("/home/uwe/Projekte/eintest")
     // } catch (err) {

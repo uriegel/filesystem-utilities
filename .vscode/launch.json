@@ -32,7 +32,7 @@
             "args": [ "${workspaceFolder}/dev/addonTest.js" ],
             "runtimeExecutable": "npm",
             "runtimeArgs": [
-                "run-script", "debug linux"
+                "run-script", "debug-linux"
             ],
             "port": 9229
         },
@@ -44,7 +44,7 @@
             "args": [ "${workspaceFolder}/dev/addonTest.js" ],
             "runtimeExecutable": "npm",
             "runtimeArgs": [
-                "run-script", "debug windows"
+                "run-script", "debug-windows"
             ],
             "port": 9229
         }

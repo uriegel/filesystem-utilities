@@ -318,6 +318,7 @@ if (process.platform == "linux") {
     exports.getDrives = inner.getDrives
     exports.getIcon = inner.getIcon
     exports.createFolder = createFolder
+    // TODO: echo "password" | sudo -S -s -- nautilus
     // TODO: trash (windows)
     // TODO: copy (windows)
     // TODO: move (windows)
