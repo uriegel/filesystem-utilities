@@ -22,7 +22,7 @@ vector<File_item> get_files(const wstring& directory) {
     auto ret = FindFirstFileW(search_string.c_str(), &w32fd);
     while (FindNextFileW(ret, &w32fd) == TRUE) {
         auto isHidden = (w32fd.dwFileAttributes & FILE_ATTRIBUTE_HIDDEN) == FILE_ATTRIBUTE_HIDDEN;
-        if (!isHidden && (w32fd.cFileName[0] != L'.' || w32fd.cFileName[1] != L'.'))
+        if (w32fd.cFileName[0] != L'.' || w32fd.cFileName[1] != L'.')
             result.emplace_back(
                 w32fd.cFileName,
                 (w32fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) == FILE_ATTRIBUTE_DIRECTORY,
