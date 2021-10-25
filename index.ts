@@ -58,7 +58,7 @@ if (process.platform == "linux") {
             const mount = getString(3, 4)
          
             return {
-                description: takeOr(getString(2, 3), mount),
+                description: getString(2, 3),
                 name: trimName(getString(1, 2)),
                 type: 1, // TODO: Drive types enum DriveType
                 mountPoint: mount,
