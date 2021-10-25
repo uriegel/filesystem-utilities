@@ -24,7 +24,6 @@ const requireAddon = () => {
 }
 
 const inner = requireAddon()
-export const getFiles = inner.getFiles
 export const getExifDate = inner.getExifDate
 export const getFileVersion = inner.getFileVersion
 
@@ -286,7 +285,15 @@ if (process.platform == "linux") {
         copyOrMove (false, sources, targetDir, progress)
     const move = (sources: string[], targetDir: string, progress: (p: ProgressData)=>void) => 
         copyOrMove (true, sources, targetDir, progress)
-        
+
+    exports.getFiles = async path => {
+        const items = await inner.getFiles(path)
+        let dirs = items.filter(n => n.isDirectory)
+        let files = items.filter(n => !n.isDirectory)
+        return dirs.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()))
+            .concat(files.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase())))
+    }
+    
     exports.getDrives = getDrives            
     exports.getIcon = getIcon
     exports.trash = trash
@@ -320,8 +327,7 @@ if (process.platform == "linux") {
             }
         }
     }
-
-
+    exports.getFiles = inner.getFiles
     exports.getDrives = inner.getDrives
     exports.getIcon = inner.getIcon
     exports.createFolder = createFolder

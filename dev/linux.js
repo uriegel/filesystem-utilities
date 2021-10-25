@@ -19,6 +19,9 @@ const wait = time => new Promise(res => {
     const drives = await addon.getDrives()
     console.log("drives", drives)
 
+    const files = await addon.getFiles("/home/uwe")
+    console.log("files", files)
+
     const iconPath = ".js"
     const icon = await addon.getIcon(iconPath)
 
