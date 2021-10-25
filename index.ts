@@ -58,22 +58,26 @@ if (process.platform == "linux") {
             const mount = getString(3, 4)
          
             return {
-                name: takeOr(getString(2, 3), mount),
-                description: trimName(getString(1, 2)),
+                description: takeOr(getString(2, 3), mount),
+                name: trimName(getString(1, 2)),
                 type: 1, // TODO: Drive types enum DriveType
                 mountPoint: mount,
+                isMounted: !!mount,
                 driveType: driveString.substring(columnsPositions[4]).trim(),
                 size: parseInt(getString(0, 1), 10)
             }
         }
 
         const homedir = require('os').homedir()
-        return [{ name: "home", description: "~", mountPoint: homedir, type: 1, size: 0 }]
+        const items = [{ name: "~", description: "home", mountPoint: homedir, isMounted: true, type: 1, size: 0 }]
             .concat(driveStrings
                 .slice(1)
                 .filter(n => n[columnsPositions[1]] > '~')
                 .map(constructDrives)
-            )
+        )
+        const mounted = items.filter(n => n.isMounted)
+        const unmounted = items.filter(n => !n.isMounted)
+        return mounted.concat(unmounted)
     }    
 
     const getIcon = (ext: string) => new Promise((res, rej) => {
