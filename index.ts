@@ -36,25 +36,25 @@ if (process.platform == "linux") {
         const driveStrings = drivesString.split("\n")
         const columnsPositions = (() => {
             const title = driveStrings[0]
-            const getPart = (key: string) => title.indexOf(key) 
+            const getPart = (key: string) => title.indexOf(key)
 
-            return [ 
+            return [
                 0,
-                getPart("NAME"), 
+                getPart("NAME"),
                 getPart("LABEL"),
                 getPart("MOUNT"),
                 getPart("FSTYPE")
             ]
-        })()         
+        })()
 
         const takeOr = (text: string, alt: string) => text ? text : alt
         const constructDrives = (driveString: string) => {
-            const getString = (pos1: number, pos2: number) => 
+            const getString = (pos1: number, pos2: number) =>
                 driveString.substring(columnsPositions[pos1], columnsPositions[pos2]).trim()
-            const trimName = (name: string) => 
-                name.length > 2 && name[1] == '─' 
-                ? name.substring(2)
-                : name
+            const trimName = (name: string) =>
+                name.length > 2 && name[1] == '─'
+                    ? name.substring(2)
+                    : name
             const mount = getString(3, 4)
          
             return {
@@ -65,12 +65,15 @@ if (process.platform == "linux") {
                 driveType: driveString.substring(columnsPositions[4]).trim(),
                 size: parseInt(getString(0, 1), 10)
             }
-        }   
+        }
 
-        return driveStrings
-            .slice(1)
-            .map(constructDrives)
-            .filter(n => n.mountPoint && !n.mountPoint.startsWith("/snap"))        
+        const homedir = require('os').homedir()
+        return [{ name: "home", description: "~", mountPoint: homedir, type: 1, size: 0 }]
+            .concat(driveStrings
+                .slice(1)
+                .filter(n => n[columnsPositions[1]] > '~')
+                .map(constructDrives)
+            )
     }    
 
     const getIcon = (ext: string) => new Promise((res, rej) => {
