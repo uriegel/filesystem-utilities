@@ -34,14 +34,10 @@ private:
 
 void Get_exif_date_worker::OnOK() {
     HandleScope scope(Env());
-
-    if (exif_date) {
+    if (exif_date && exif_date < 0x3BA87F85800) {
         napi_value time;
         napi_create_date(Env(), static_cast<double>(exif_date), &time);
-        if (time > 0x3BA87F85800)
-            deferred.Resolve(Env().Null());
-        else 
-            deferred.Resolve(time);
+        deferred.Resolve(time);
     }
     else 
         deferred.Resolve(Env().Null());
