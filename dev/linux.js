@@ -25,6 +25,31 @@ const wait = time => new Promise(res => {
     const iconPath = ".js"
     const icon = await addon.getIcon(iconPath)
 
+
+    const dateFormat = Intl.DateTimeFormat("de-DE", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+    })
+    const timeFormat = Intl.DateTimeFormat("de-DE", {
+        hour: "2-digit",
+        minute: "2-digit"
+    })
+    const formatDateTime = unixDate => {
+        if (!unixDate)
+            return ''
+    
+        return dateFormat.format(unixDate) + " " + timeFormat.format(unixDate)  
+    }    
+    //const imgpath = "/media/Speicher/bilder/2020/Canon/IMG_0110.JPG"
+    const imgpath = "/home/uwe/Bilder/Fotos/2002/1/Bild309.jpg"
+    // //const imgpath = "F:\\Bilder\\Tina\\2019\\12\\IMG_20191201_152308.jpg"
+    const exifDate = await addon.getExifDate(imgpath)
+    console.log(new Date().getTime())
+    console.log(exifDate.getTime())
+
+
+
     try {
         await addon.trash("/home/uwe/Projekte/eintest")
     } catch (err) {
