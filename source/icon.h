@@ -1,5 +1,5 @@
 #pragma once
-#include <string>
 #include <vector>
+#include "std_utils.h"
 
-std::vector<char> get_icon(const std::wstring& extension);
+std::vector<char> get_icon(const stdstring& extension);

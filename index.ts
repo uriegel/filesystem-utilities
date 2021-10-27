@@ -79,15 +79,6 @@ if (process.platform == "linux") {
         return mounted.concat(unmounted)
     }    
 
-    const getIcon = (ext: string) => new Promise((res, rej) => {
-        const process = spawn('python3',[ path.join(__dirname, "getIcon.py"), ext ])
-        process.stdout.on('data', (data: any) => {
-            const icon = data.toString('utf8').trim()
-            res(icon)
-        })
-        process.stderr.on('data', (data: any) =>  rej(data.toString('utf8').trim()))
-    })
-
     const trash = async (pathes: string[]) => {
         if (Array.isArray(pathes)) 
             for (const path of pathes) 
@@ -295,7 +286,7 @@ if (process.platform == "linux") {
     }
     
     exports.getDrives = getDrives            
-    exports.getIcon = getIcon
+    exports.getIcon = inner.getIcon
     exports.trash = trash
     exports.createFolder = createFolder
     exports.getFileSizeSync = inner.getFileSizeSync

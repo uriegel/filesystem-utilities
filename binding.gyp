@@ -5,6 +5,7 @@
             'source/addon.cpp',
             'source/nullfunction.cpp',
             'source/get_files_worker.cpp',
+            'source/get_icon_worker.cpp',
             'source/get_exif_date_worker.cpp',
             'source/std_utils.cpp',
             'source/exif_reader.cpp'
@@ -39,7 +40,6 @@
                     'source/windows/drives.cpp',
                     'source/windows/files.cpp',
                     'source/windows/icon.cpp',
-                    'source/windows/get_icon_worker.cpp',
                     'source/windows/file_version.cpp',
                     'source/windows/shell.cpp',
                     'source/windows/utils.cpp',
@@ -54,10 +54,18 @@
             }],
             ['OS=="linux"', {
                 'defines': ['LINUX'],
-                'libraries!': [ ],
+                "libraries": ["<!@(pkg-config --libs gtk+-3.0)"],
+                "cflags": [ "<!@(pkg-config --cflags gtk+-3.0)" ],
+                'cflags_cc': [ "<!@(pkg-config --cflags gtk+-3.0)" ],
+                "ldflags": ["<!@(pkg-config --libs gtk+-3.0)"],
+                'link_settings': {
+                    "libraries": [ 
+                    ]
+                },
                 'sources': [ 
                     'source/linux/files.cpp',
-                    'source/linux/get_icon_worker.cpp',
+                    'source/linux/globals.cpp',
+                    'source/linux/icon.cpp',
                 ]
             }],
         ]          

@@ -17,7 +17,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "/usr/bin/node",
-            "args": [ "${workspaceFolder}/dev/index.js" ],
+            "args": [ "${workspaceFolder}/dev/linux.js" ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],

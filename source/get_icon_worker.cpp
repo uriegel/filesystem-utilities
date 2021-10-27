@@ -4,12 +4,13 @@
 #include "nullfunction.h"
 #include "get_icon_worker.h"
 #include "icon.h"
+#include "std_utils.h"
 using namespace Napi;
 using namespace std;
 
 class Get_icon_worker : public AsyncWorker {
 public:
-    Get_icon_worker(const Napi::Env& env, const wstring& extension)
+    Get_icon_worker(const Napi::Env& env, const stdstring& extension)
     : AsyncWorker(Function::New(env, NullFunction, "nullfunction"))
     , deferred(Promise::Deferred::New(Env())) 
     , extension(extension) {}
@@ -23,7 +24,7 @@ public:
 
 private:
     Promise::Deferred deferred;
-    wstring extension;
+    stdstring extension;
     vector<char> icon_bytes;
 };
 
@@ -37,8 +38,7 @@ void Get_icon_worker::OnOK() {
 }
 
 Value GetIcon(const CallbackInfo& info) {
-    auto extension = info[0].As<WString>().WValue();
-
+    auto extension = (stdstring)info[0].As<nodestring>();
     auto worker = new Get_icon_worker(info.Env(), extension);
     worker->Queue();
     return worker->Promise();
