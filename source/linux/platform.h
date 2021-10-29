@@ -8,4 +8,3 @@ using stdchar = char;
 using nodestring = Napi::String;
 using stdstringstream = std::stringstream;
 
-void init();

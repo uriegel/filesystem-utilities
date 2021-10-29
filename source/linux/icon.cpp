@@ -8,6 +8,7 @@ using namespace Napi;
 using namespace std;
 
 std::vector<char> get_icon(const std::string& extension) {
+    check_init();
     auto type = g_content_type_guess(extension.c_str(), nullptr, 0, nullptr);
     auto icon = g_content_type_get_icon(type);
     auto names = g_themed_icon_get_names((GThemedIcon*)icon);
