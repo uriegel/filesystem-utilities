@@ -64,7 +64,6 @@
                 },
                 'sources': [ 
                     'source/linux/files.cpp',
-                    'source/linux/globals.cpp',
                     'source/linux/icon.cpp',
                 ]
             }],

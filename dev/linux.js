@@ -24,6 +24,8 @@ const wait = time => new Promise(res => {
 
     const iconPath = ".js"
     const icon = await addon.getIcon(iconPath)
+    const iconPath2 = "."
+    const icon2 = await addon.getIcon(iconPath2)
 
 
     const dateFormat = Intl.DateTimeFormat("de-DE", {
