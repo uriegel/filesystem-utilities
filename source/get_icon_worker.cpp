@@ -38,6 +38,7 @@ void Get_icon_worker::OnOK() {
 }
 
 Value GetIcon(const CallbackInfo& info) {
+    checkInitializeIcons();
     auto extension = (stdstring)info[0].As<nodestring>();
     auto worker = new Get_icon_worker(info.Env(), extension);
     worker->Queue();

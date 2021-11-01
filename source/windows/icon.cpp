@@ -180,3 +180,5 @@ HRESULT __stdcall Memory_stream::Write(const void *pv, ULONG cb, ULONG *written)
 	*written = cb;
 	return S_OK;
 }
+
+void checkInitializeIcons() {}
