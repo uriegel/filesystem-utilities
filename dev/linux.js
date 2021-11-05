@@ -6,6 +6,11 @@ const wait = time => new Promise(res => {
 })
 
 ;(async () => {
+    try {
+        await addon.copyFile("/home/uwe/Videos/raw/Goldeneye.mts", "/etc/test.mts", (c, t) => console.log(`Progress js ${c}, ${t}`))
+    } catch (err) {
+        console.log(err)
+    }
     await addon.copyFile("/home/uwe/Videos/raw/Goldeneye.mts", "/home/uwe/test/test.mts", (c, t) => console.log(`Progress js ${c}, ${t}`))
 
 
