@@ -272,8 +272,8 @@ if (process.platform == "linux") {
         await processCopyJobs()
     } 
 
-    const copy = (sources: string[], targetDir: string, progress: (p: ProgressData)=>void) => 
-        copyOrMove (false, sources, targetDir, progress)
+    // const copy = (sources: string[], targetDir: string, progress: (p: ProgressData)=>void) => 
+    //     copyOrMove (false, sources, targetDir, progress)
     const move = (sources: string[], targetDir: string, progress: (p: ProgressData)=>void) => 
         copyOrMove (true, sources, targetDir, progress)
 
@@ -291,7 +291,7 @@ if (process.platform == "linux") {
     exports.createFolder = createFolder
     exports.getFileSizeSync = inner.getFileSizeSync
     exports.getFileSize = inner.getFileSize
-    exports.copy = copy
+    exports.copyFile = inner.copyFile
     exports.move = move
 } else {
 

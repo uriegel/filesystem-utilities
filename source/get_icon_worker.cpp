@@ -1,7 +1,6 @@
 #include <napi.h>
 #include <vector>
 #include "wstring.h"
-#include "nullfunction.h"
 #include "get_icon_worker.h"
 #include "icon.h"
 #include "std_utils.h"
@@ -11,7 +10,7 @@ using namespace std;
 class Get_icon_worker : public AsyncWorker {
 public:
     Get_icon_worker(const Napi::Env& env, const stdstring& extension)
-    : AsyncWorker(Function::New(env, NullFunction, "nullfunction"))
+    : AsyncWorker(env)
     , deferred(Promise::Deferred::New(Env())) 
     , extension(extension) {}
     ~Get_icon_worker() {}

@@ -3,7 +3,6 @@
         "target_name": "filesystem-utilities",
         "sources": [ 
             'source/addon.cpp',
-            'source/nullfunction.cpp',
             'source/get_files_worker.cpp',
             'source/get_icon_worker.cpp',
             'source/get_exif_date_worker.cpp',
@@ -65,6 +64,7 @@
                 'sources': [ 
                     'source/linux/files.cpp',
                     'source/linux/icon.cpp',
+                    'source/linux/copy_file_worker.cpp'
                 ]
             }],
         ]          

@@ -1,6 +1,5 @@
 #include <napi.h>
 #include <vector>
-#include "nullfunction.h"
 #include "get_exif_date_worker.h"
 #include "exif_reader.h"
 #if WINDOWS
@@ -14,7 +13,7 @@ using namespace std;
 class Get_exif_date_worker : public AsyncWorker {
 public:
     Get_exif_date_worker(const Napi::Env& env, const stdstring& file)
-    : AsyncWorker(Function::New(env, NullFunction, "theFunction"))
+    : AsyncWorker(env)
     , deferred(Promise::Deferred::New(Env())) 
     , file(file)
    {} 

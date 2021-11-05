@@ -2,7 +2,6 @@
 #include <vector>
 #include "get_files_worker.h"
 #include "files.h"
-#include "nullfunction.h"
 #if WINDOWS
 #include "windows/platform.h"
 #elif LINUX
@@ -14,7 +13,7 @@ using namespace std;
 class Get_files_worker : public AsyncWorker {
 public:
     Get_files_worker(const Napi::Env& env, const stdstring& directory)
-    : AsyncWorker(Function::New(env, NullFunction, "theFunction"))
+    : AsyncWorker(env)
     , directory(directory)
     , deferred(Promise::Deferred::New(Env())) {}
     ~Get_files_worker() {}

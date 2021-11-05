@@ -21,6 +21,7 @@
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
+            "preLaunchTask": "buildlinux",
             "externalConsole": false,
             "MIMode": "gdb",
         },          
