@@ -7,6 +7,7 @@
 #elif LINUX
     #include "linux/platform.h"
     #include "linux/copy_file_worker.h"
+    #include "linux/trash_worker.h"
 #endif
 #include "get_files_worker.h"
 #include "get_icon_worker.h"
@@ -18,7 +19,9 @@ Object Init(Env env, Object exports) {
     exports.Set(String::New(env, "getIcon"), Function::New(env, GetIcon));
     exports.Set(String::New(env, "getExifDate"), Function::New(env, GetExifDate));
 #if LINUX
+    exports.Set(String::New(env, "trash"), Function::New(env, Trash));
     exports.Set(String::New(env, "copyFile"), Function::New(env, CopyFile));
+    exports.Set(String::New(env, "moveFile"), Function::New(env, MoveFile));
 #endif
 #if WINDOWS    
     exports.Set(String::New(env, "getDrives"), Function::New(env, GetDrives));

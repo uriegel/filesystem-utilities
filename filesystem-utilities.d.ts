@@ -29,14 +29,6 @@ interface VersionInfo {
     patch: number
 }
 
-interface ProgressData {
-    name: string
-    size: number
-    progress: number
-    totalSize: number
-    totalProgress: number
-}
-
 declare module 'filesystem-utilities' {
     enum FileResult {
         Success,
@@ -54,9 +46,8 @@ declare module 'filesystem-utilities' {
     function getIcon(ext: string): Promise<Buffer>
     function getExifDate(file: string): Promise<Date|null>
     function getFileVersion(file: string): Promise<VersionInfo|null>
-    function trash(pathes: string| string[]): Promise<void>
+    function trash(path: string): Promise<void>
     function createFolder(path: string): Promise<void>
-    //function copy(sources: string[], targetDir: string, progress?: (p: ProgressData)=>void): Promise<void>
-    function copy(): void
-    function move(sources: string[], targetDir: string, progress?: (p: ProgressData)=>void): Promise<void>
+    function copyFile(source: string, target: string, progress: (currentSize: number, totalSize: number)=>void, overwrite?: boolean): Promise<void>
+    function moveFile(source: string, target: string, progress: (currentSize: number, totalSize: number)=>void, overwrite?: boolean): Promise<void>    
 }

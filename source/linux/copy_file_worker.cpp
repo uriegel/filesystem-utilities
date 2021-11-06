@@ -12,7 +12,7 @@ struct CopyFileProgress {
 
 class Copy_file_worker : public AsyncProgressWorker<CopyFileProgress> {
 public:
-    Copy_file_worker(const Napi::Env& env, const Function& callback, const string& source_file, const string& target_file, bool overwrite)
+    Copy_file_worker(const Napi::Env& env, const Function& callback, const string& source_file, const string& target_file, bool overwrite, bool move)
     : AsyncProgressWorker(env)
     , callback(Persistent(callback))
     , deferred(Promise::Deferred::New(Env())) 
@@ -20,6 +20,7 @@ public:
     , source_file(source_file)
     , target_file(target_file)
     , overwrite(overwrite)
+    , move(move)
    {} 
     ~Copy_file_worker() {
         callback.Reset();
@@ -35,13 +36,18 @@ public:
         auto source = g_file_new_for_path(source_file.c_str());
         auto dest = g_file_new_for_path(target_file.c_str());
         GError* error{nullptr};
-        bool success = g_file_copy(source, dest, (GFileCopyFlags)(overwrite ? 1 : 0), nullptr, FileProgressCallback, (void*)&progress, &error);
+        bool success = move
+            ? g_file_move(source, dest, (GFileCopyFlags)(overwrite ? 1 : 0), nullptr, FileProgressCallback, (void*)&progress, &error)
+            : g_file_copy(source, dest, (GFileCopyFlags)(overwrite ? 1 : 0), nullptr, FileProgressCallback, (void*)&progress, &error);
         if (error && error->code == 1 && g_file_query_exists(source, nullptr)) {
             g_error_free(error);
             error = nullptr;
             auto path = g_file_get_parent(dest);
             g_file_make_directory_with_parents(path, nullptr, nullptr);
-            success = g_file_copy(source, dest, (GFileCopyFlags)(0), nullptr, FileProgressCallback, (void*)&progress, &error); 
+            g_object_unref(path);
+            success = move
+                ? g_file_move(source, dest, (GFileCopyFlags)(0), nullptr, FileProgressCallback, (void*)&progress, &error)
+                : g_file_copy(source, dest, (GFileCopyFlags)(0), nullptr, FileProgressCallback, (void*)&progress, &error); 
         }
         if (!success) {
             if (!error)
@@ -89,6 +95,7 @@ private:
     string source_file;
     string target_file;
     bool overwrite;
+    bool move;
 };
 
 void Copy_file_worker::OnOK() {
@@ -108,7 +115,17 @@ Value CopyFile(const CallbackInfo& info) {
     auto target_file = (string)info[1].As<String>();
     auto cb = info[2].As<Function>();
     auto overwrite = info.Length() > 3 ? info[3].As<Boolean>() : false;
-    auto worker = new Copy_file_worker(info.Env(), cb, source_file, target_file, overwrite);
+    auto worker = new Copy_file_worker(info.Env(), cb, source_file, target_file, overwrite, false);
+    worker->Queue();
+    return worker->GetPromise();
+}
+
+Value MoveFile(const CallbackInfo& info) {
+    auto source_file = (string)info[0].As<String>();
+    auto target_file = (string)info[1].As<String>();
+    auto cb = info[2].As<Function>();
+    auto overwrite = info.Length() > 3 ? info[3].As<Boolean>() : false;
+    auto worker = new Copy_file_worker(info.Env(), cb, source_file, target_file, overwrite, true);
     worker->Queue();
     return worker->GetPromise();
 }

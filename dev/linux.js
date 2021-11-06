@@ -1,4 +1,4 @@
-console.log("Starting linux test")
+    console.log("Starting linux test")
 const addon = require('../index')
 
 const wait = time => new Promise(res => {
@@ -6,6 +6,12 @@ const wait = time => new Promise(res => {
 })
 
 ;(async () => {
+
+    const iconPath = ".js"
+    const icon = await addon.getIcon(iconPath)
+    const iconPath2 = "."
+    const icon2 = await addon.getIcon(iconPath2)
+
     try {
         await addon.copyFile("/home/uwe/Videos/raw/Goldeneye.mts", "/etc/test.mts", (c, t) => console.log(`Progress js ${c}, ${t}`))
     } catch (err) {
@@ -42,6 +48,9 @@ const wait = time => new Promise(res => {
     } catch (err) {
         console.log(err)
     }
+    // TODO getIcon empty array
+    // TODO trash strange result
+    // TODO test moveFile
 
 
     
@@ -61,10 +70,6 @@ const wait = time => new Promise(res => {
 //     const files = await addon.getFiles("/home/uwe")
 //     console.log("files", files)
 
-//     const iconPath = ".js"
-//     const icon = await addon.getIcon(iconPath)
-//     const iconPath2 = "."
-//     const icon2 = await addon.getIcon(iconPath2)
 
 
 //     const dateFormat = Intl.DateTimeFormat("de-DE", {
