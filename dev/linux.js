@@ -27,13 +27,16 @@ const wait = time => new Promise(res => {
     } catch (err) {
         console.log(err)
     }
+
+    await addon.moveFile("/home/uwe/test/test.mts", "/home/uwe/test/test44.mts", (c, t) => console.log(`move ${c}, ${t}`))
+
     try {
-        await addon.trash("/home/uwe/test/test.mts")
+        await addon.trash("/home/uwe/test/test44.mts")
     } catch (err) {
         console.log(err)
     }
     try {
-        await addon.trash("/home/uwe/test/test.mts")
+        await addon.trash("/home/uwe/test/test44.mts")
     } catch (err) {
         console.log(err)
     }
@@ -48,12 +51,6 @@ const wait = time => new Promise(res => {
     } catch (err) {
         console.log(err)
     }
-    // TODO getIcon empty array
-    // TODO trash strange result
-    // TODO test moveFile
-
-
-    
 //     const fs = require('fs/promises')
 //     const start3 = process.hrtime.bigint()    
 //     for (let i = 0; i < 1000; i++) {

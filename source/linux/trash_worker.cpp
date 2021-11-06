@@ -10,6 +10,7 @@ public:
     Trash_worker(const Napi::Env& env, const string& path)
     : AsyncWorker(env)
     , deferred(Promise::Deferred::New(Env())) 
+    , result(FileResult::Success)
     , path(path)
    {} 
     ~Trash_worker() { }

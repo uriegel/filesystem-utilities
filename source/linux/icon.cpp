@@ -29,10 +29,10 @@ std::vector<char> get_icon(const std::string& extension) {
         if (icon)
             g_object_unref(icon);
         auto filename = gtk_icon_info_get_filename(handle);
-        if (handle)
-            g_object_unref(handle);
         ifstream input(filename, ios::binary);
         vector<char> result(istreambuf_iterator<char>(input), {});
+        if (handle)
+            g_object_unref(handle);
         return result;
     } else {
         vector<char> result;
