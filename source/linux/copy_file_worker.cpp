@@ -12,13 +12,14 @@ struct CopyFileProgress {
 
 class Copy_file_worker : public AsyncProgressWorker<CopyFileProgress> {
 public:
-    Copy_file_worker(const Napi::Env& env, const Function& callback, const string& source_file, const string& target_file)
+    Copy_file_worker(const Napi::Env& env, const Function& callback, const string& source_file, const string& target_file, bool overwrite)
     : AsyncProgressWorker(env)
     , callback(Persistent(callback))
     , deferred(Promise::Deferred::New(Env())) 
     , result(FileResult::Success)
     , source_file(source_file)
     , target_file(target_file)
+    , overwrite(overwrite)
    {} 
     ~Copy_file_worker() {
         callback.Reset();
@@ -34,13 +35,25 @@ public:
         auto source = g_file_new_for_path(source_file.c_str());
         auto dest = g_file_new_for_path(target_file.c_str());
         GError* error{nullptr};
-        if (!g_file_copy(source, dest, (GFileCopyFlags)1, nullptr, FileProgressCallback, (void*)&progress, &error)) {
+        bool success = g_file_copy(source, dest, (GFileCopyFlags)(overwrite ? 1 : 0), nullptr, FileProgressCallback, (void*)&progress, &error);
+        if (error && error->code == 1 && g_file_query_exists(source, nullptr)) {
+            g_error_free(error);
+            error = nullptr;
+            auto path = g_file_get_parent(dest);
+            g_file_make_directory_with_parents(path, nullptr, nullptr);
+            success = g_file_copy(source, dest, (GFileCopyFlags)(0), nullptr, FileProgressCallback, (void*)&progress, &error); 
+        }
+        if (!success) {
             if (!error)
                 result = FileResult::Unknown;
             else {
+                error_description = error->message;
                 switch (error->code) {
                     case 1:
                         result = FileResult::FileNotFound;
+                        break;
+                    case 2:
+                        result = FileResult::FileExists;
                         break;
                     case 14:
                         result = FileResult::AccessDenied;
@@ -72,24 +85,30 @@ private:
     FunctionReference callback;
     Promise::Deferred deferred;
     FileResult result;
+    string error_description;
     string source_file;
     string target_file;
+    bool overwrite;
 };
 
 void Copy_file_worker::OnOK() {
     HandleScope scope(Env());
     if (result == FileResult::Success)
         deferred.Resolve(Env().Null());
-    else    
-        deferred.Reject(Number::New(Env(), (int)result));
+    else {
+        auto obj = Object::New(Env());
+        obj.Set("fileResult", Number::New(Env(), (int)result));
+        obj.Set("description", String::New(Env(), error_description));
+        deferred.Reject(obj);
+    }
 }
 
 Value CopyFile(const CallbackInfo& info) {
     auto source_file = (string)info[0].As<String>();
     auto target_file = (string)info[1].As<String>();
     auto cb = info[2].As<Function>();
-
-    auto worker = new Copy_file_worker(info.Env(), cb, source_file, target_file);
+    auto overwrite = info.Length() > 3 ? info[3].As<Boolean>() : false;
+    auto worker = new Copy_file_worker(info.Env(), cb, source_file, target_file, overwrite);
     worker->Queue();
     return worker->GetPromise();
 }

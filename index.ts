@@ -96,19 +96,19 @@ if (process.platform == "linux") {
             switch (err) {
                 case 1:
                     rej({
-                        res: FileResult.FileNotFound,
+                        error: FileResult.FileNotFound,
                         description: "file not found"
                     })    
                     break
                 case 15:
                     rej({
-                        res: FileResult.AccessDenied,
+                        error: FileResult.AccessDenied,
                         description: "Access denied"
                     })    
                     break
                 default:
                 rej({
-                    res: FileResult.Unknown,
+                    error: FileResult.Unknown,
                     description: "Unknown error occurred"
                 })
                 break

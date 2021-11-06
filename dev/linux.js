@@ -11,7 +11,37 @@ const wait = time => new Promise(res => {
     } catch (err) {
         console.log(err)
     }
+    try {
+        await addon.copyFile("/home/uwe/Videos/raw/silbereye.mts", "/home/uwe/test/test.mts", (c, t) => console.log(`Progress js ${c}, ${t}`))
+    } catch (err) {
+        console.log(err)
+    }
+    try {
+        await addon.copyFile("/home/uwe/Videos/raw/Goldeneye.mts", "/home/uwe/test/test4//test5/test.mts", (c, t) => console.log(`Progress js ${c}, ${t}`))
+    } catch (err) {
+        console.log(err)
+    }
+    try {
+        await addon.trash("/home/uwe/test/test.mts")
+    } catch (err) {
+        console.log(err)
+    }
+    try {
+        await addon.trash("/home/uwe/test/test.mts")
+    } catch (err) {
+        console.log(err)
+    }
     await addon.copyFile("/home/uwe/Videos/raw/Goldeneye.mts", "/home/uwe/test/test.mts", (c, t) => console.log(`Progress js ${c}, ${t}`))
+    try {
+        await addon.copyFile("/home/uwe/Videos/raw/Goldeneye.mts", "/home/uwe/test/test.mts", (c, t) => console.log(`Progress js ${c}, ${t}`))
+    } catch (err) {
+        console.log(err)
+    }
+    try {
+        await addon.copyFile("/home/uwe/Videos/raw/Goldeneye.mts", "/home/uwe/test/test.mts", (c, t) => console.log(`Progress js ${c}, ${t}`), true)
+    } catch (err) {
+        console.log(err)
+    }
 
 
     
@@ -61,11 +91,6 @@ const wait = time => new Promise(res => {
 
 
 
-//     try {
-//         await addon.trash("/home/uwe/Projekte/eintest")
-//     } catch (err) {
-//         console.log(err)
-//     }
 //     await addon.createFolder("/home/uwe/Projekte/eintest")
 
 //     const progress = p => console.log(`${p.name} - ${p.size} - ${p.progress} - ${p.totalProgress}`)
