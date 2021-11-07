@@ -35,7 +35,8 @@ declare module 'filesystem-utilities' {
         Unknown,
         AccessDenied,
         FileExists,
-        FileNotFound
+        FileNotFound,
+        TrashNotPossible
     }
     interface FileException {
         res: number

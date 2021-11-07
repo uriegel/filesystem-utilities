@@ -33,8 +33,11 @@ const wait = time => new Promise(res => {
     } catch (err) {
         console.log(err)
     }
-
-    await addon.moveFile("/home/uwe/test/test.mts", "/home/uwe/test/test44.mts", (c, t) => console.log(`move ${c}, ${t}`))
+    try {
+        await addon.moveFile("/home/uwe/test/test.mts", "/home/uwe/test/test44.mts", (c, t) => console.log(`move ${c}, ${t}`))
+    } catch (err) {
+        console.log(err)
+    }
 
     try {
         await addon.trash("/home/uwe/test/test44.mts")

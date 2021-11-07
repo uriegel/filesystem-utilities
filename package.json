@@ -1,18 +1,18 @@
 {
   "name": "filesystem-utilities",
-  "version": "4.0.2",
+  "version": "4.0.3",
   "description": "File system utilities for Node.js",
   "main": "index.js",
   "gypfile": true,
   "scripts": {
-    "start-linux": "tsc & node dev/linux.js",
-    "debug-linux": "tsc & node --nolazy --inspect-brk=9229 dev/linux.js",
-    "start-windows": "tsc & node dev/windows.js",
-    "debug-windows": "tsc & node --nolazy --inspect-brk=9229 dev/windows.js",
-    "build-dev": "tsc & node-gyp build --debug",
-    "build": "tsc & node-gyp build",
-    "rebuild-dev": "tsc & node-gyp rebuild --debug",
-    "rebuild": "tsc & node-gyp rebuild",
+    "start-linux": "node dev/linux.js",
+    "debug-linux": "node --nolazy --inspect-brk=9229 dev/linux.js",
+    "start-windows": "node dev/windows.js",
+    "debug-windows": "node --nolazy --inspect-brk=9229 dev/windows.js",
+    "build-dev": "node-gyp build --debug",
+    "build": "node-gyp build",
+    "rebuild-dev": "node-gyp rebuild --debug",
+    "rebuild": "node-gyp rebuild",
     "clean": "node-gyp clean"
   },
   "types": "filesystem-utilities.d.ts",
@@ -35,7 +35,6 @@
     "node-addon-api": "^4.2.0"
   },
   "devDependencies": {
-    "bindings": "^1.5.0",
-    "typescript": "^4.4.4"
+    "bindings": "^1.5.0"
   }
 }

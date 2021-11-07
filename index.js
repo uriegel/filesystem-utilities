@@ -1,19 +1,21 @@
-const childProcess = require("child_process")
-const path = require("path")
-const fs = require('fs')
-const process = require("process")
+Object.defineProperty(exports, "__esModule", { value: true });
+const childProcess = require("child_process");
+const path = require("path");
+const fs = require('fs');
+const process = require("process");
+const fsa = fs.promises;
+const exec = childProcess.exec;
+const spawn = childProcess.spawn;
 
-const fsa = fs.promises
-const exec = childProcess.exec
-
-export enum FileResult {
-    Success,
-    Unknown,
-    AccessDenied,
-    FileExists,
-    FileNotFound,
-    TrashNotPossible
-}
+var FileResult;
+(function (FileResult) {
+    FileResult[FileResult["Success"] = 0] = "Success";
+    FileResult[FileResult["Unknown"] = 1] = "Unknown";
+    FileResult[FileResult["AccessDenied"] = 2] = "AccessDenied";
+    FileResult[FileResult["FileExists"] = 3] = "FileExists";
+    FileResult[FileResult["FileNotFound"] = 4] = "FileNotFound";
+    FileResult[FileResult["TrashNotPossible"] = 4] = "TrashNotPossible";
+})(FileResult = exports.FileResult || (exports.FileResult = {}));
 
 const requireAddon = () => {
     try {
@@ -24,18 +26,18 @@ const requireAddon = () => {
 }
 
 const inner = requireAddon()
-export const getExifDate = inner.getExifDate
-export const getFileVersion = inner.getFileVersion
+exports.getExifDate = inner.getExifDate;
+exports.getFileVersion = inner.getFileVersion;
 
 if (process.platform == "linux") {
-    const runCmd = (cmd: string) => new Promise<string>(res => exec(cmd, (_: any, stdout: any) => res(stdout)))
+    const runCmd = cmd => new Promise<string>(res => exec(cmd, (_, stdout) => res(stdout)))
 
     const getDrives = async () => {
         const drivesString = await runCmd('lsblk --bytes --output SIZE,NAME,LABEL,MOUNTPOINT,FSTYPE')
         const driveStrings = drivesString.split("\n")
         const columnsPositions = (() => {
             const title = driveStrings[0]
-            const getPart = (key: string) => title.indexOf(key)
+            const getPart = key => title.indexOf(key)
 
             return [
                 0,
@@ -46,11 +48,11 @@ if (process.platform == "linux") {
             ]
         })()
 
-        const takeOr = (text: string, alt: string) => text ? text : alt
-        const constructDrives = (driveString: string) => {
-            const getString = (pos1: number, pos2: number) =>
+        //const takeOr = (text: string, alt: string) => text ? text : alt
+        const constructDrives = driveString => {
+            const getString = (pos1, pos2) =>
                 driveString.substring(columnsPositions[pos1], columnsPositions[pos2]).trim()
-            const trimName = (name: string) =>
+            const trimName = name =>
                 name.length > 2 && name[1] == '─'
                     ? name.substring(2)
                     : name
@@ -79,7 +81,7 @@ if (process.platform == "linux") {
         return mounted.concat(unmounted)
     }    
 
-    const createFolder = async (path: string) => {
+    const createFolder = async path => {
         try {
             await fsa.mkdir(path, { recursive: true })   
         } catch (e) {
@@ -121,7 +123,7 @@ if (process.platform == "linux") {
     exports.moveFile = inner.moveFile
 } else {
 
-    const createFolder = async (path: string) => {
+    const createFolder = async path => {
         try {
             await inner.createDirectory(path)
         } catch (e) {
