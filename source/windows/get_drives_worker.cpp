@@ -2,7 +2,6 @@
 #include <vector>
 #include "get_drives_worker.h"
 #include "drives.h"
-#include "../nullfunction.h"
 #include "platform.h"
 using namespace Napi;
 using namespace std;
@@ -10,7 +9,7 @@ using namespace std;
 class Get_drives_worker : public AsyncWorker {
 public:
     Get_drives_worker(const Napi::Env& env)
-    : AsyncWorker(Function::New(env, NullFunction, "theFunction"))
+    : AsyncWorker(env)
     , deferred(Promise::Deferred::New(Env())) {}
     ~Get_drives_worker() {}
 

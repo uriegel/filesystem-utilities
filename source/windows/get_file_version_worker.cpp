@@ -1,7 +1,6 @@
 #include <napi.h>
 #include <vector>
 #include <optional>
-#include "../nullfunction.h"
 #include "file_version.h"
 #include "platform.h"
 using namespace Napi;
@@ -10,7 +9,7 @@ using namespace std;
 class Get_file_version_worker : public AsyncWorker {
 public:
     Get_file_version_worker(const Napi::Env& env, const stdstring& file)
-    : AsyncWorker(Function::New(env, NullFunction, "nullfunction"))
+    : AsyncWorker(env)
     , deferred(Promise::Deferred::New(Env()))
     , file(file) {}
     ~Get_file_version_worker() {}

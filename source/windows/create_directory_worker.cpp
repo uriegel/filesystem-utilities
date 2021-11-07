@@ -1,7 +1,6 @@
 #include <napi.h>
 #include <vector>
 #include "../wstring.h"
-#include "../nullfunction.h"
 #include "create_directory_worker.h"
 #include "utils.h"
 #include "shell.h"
@@ -11,7 +10,7 @@ using namespace std;
 class Create_directory_worker : public AsyncWorker {
 public:
     Create_directory_worker(const Napi::Env& env, const wstring& path)
-    : AsyncWorker(Function::New(env, NullFunction, "theFunction"))
+    : AsyncWorker(env)
     , path(path)
     , deferred(Promise::Deferred::New(Env())) {}
     ~Create_directory_worker() {}
