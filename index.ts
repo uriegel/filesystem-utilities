@@ -5,14 +5,14 @@ const process = require("process")
 
 const fsa = fs.promises
 const exec = childProcess.exec
-const spawn = childProcess.spawn
 
 export enum FileResult {
     Success,
     Unknown,
     AccessDenied,
     FileExists,
-    FileNotFound
+    FileNotFound,
+    TrashNotPossible
 }
 
 const requireAddon = () => {
