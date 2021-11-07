@@ -86,17 +86,17 @@ if (process.platform == "linux") {
             switch (e.errno) {
                 case -13:
                     throw ({
-                        res: FileResult.AccessDenied,
+                        fileResult: FileResult.AccessDenied,
                         description: e.stack
                     })
                 case -17:
                     throw ({
-                        res: FileResult.FileExists,
+                        fileResult: FileResult.FileExists,
                         description: e.stack
                     })
                 default:
                     throw ({
-                        res: FileResult.Unknown,
+                        fileResult: FileResult.Unknown,
                         description: "Unknown error occurred"
                     })
             }

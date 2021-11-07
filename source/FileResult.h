@@ -5,5 +5,6 @@ enum class FileResult {
     Unknown,
     AccessDenied,
     FileExists,
-    FileNotFound
+    FileNotFound,
+    TrashNotPossible
 };

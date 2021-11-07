@@ -33,6 +33,9 @@ public:
                     case 14:
                         result = FileResult::AccessDenied;
                         break;
+                    case 15:
+                        result = FileResult::TrashNotPossible;
+                        break;
                     default:
                         result = FileResult::Unknown;
                         break;

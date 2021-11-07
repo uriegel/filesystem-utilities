@@ -13,6 +13,12 @@ const wait = time => new Promise(res => {
     const icon2 = await addon.getIcon(iconPath2)
 
     try {
+        await addon.trash("/etc/hosts")
+    } catch (err) {
+        console.log(err)
+    }
+
+    try {
         await addon.copyFile("/home/uwe/Videos/raw/Goldeneye.mts", "/etc/test.mts", (c, t) => console.log(`Progress js ${c}, ${t}`))
     } catch (err) {
         console.log(err)
