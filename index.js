@@ -14,7 +14,7 @@ var FileResult;
     FileResult[FileResult["AccessDenied"] = 2] = "AccessDenied";
     FileResult[FileResult["FileExists"] = 3] = "FileExists";
     FileResult[FileResult["FileNotFound"] = 4] = "FileNotFound";
-    FileResult[FileResult["TrashNotPossible"] = 4] = "TrashNotPossible";
+    FileResult[FileResult["TrashNotPossible"] = 5] = "TrashNotPossible";
 })(FileResult = exports.FileResult || (exports.FileResult = {}));
 
 const requireAddon = () => {
