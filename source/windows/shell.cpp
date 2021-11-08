@@ -117,7 +117,7 @@ void rename(wstring name, wstring new_name, string& error, int& error_code) {
         error = "Konnte nicht umbenennen";
 }
 
-void delete_files(const vector<wstring>& files, string& error, int& error_code) {
+void delete_files(const vector<wstring>& files, wstring& error_description, FileResult& error_code) {
     SHFILEOPSTRUCTW op;
     op.hwnd = nullptr;
     op.wFunc = FO_DELETE;
@@ -130,9 +130,24 @@ void delete_files(const vector<wstring>& files, string& error, int& error_code) 
     op.fAnyOperationsAborted = FALSE;
     op.hNameMappings = nullptr;
     op.lpszProgressTitle = nullptr;
-    error_code = SHFileOperationW(&op);
-    if (error_code != 0) 
-        error = "Konnte nicht löschen";
+    auto res = SHFileOperationW(&op);
+    switch (res) {
+        case 0: 
+            break;
+        default:
+            error_description = L"Konnte nicht löschen";
+            error_code = FileResult::Unknown;
+            break;
+    }
+            //         case 1:
+            //             result = FileResult::FileNotFound;
+            //             break;
+            //         case 2:
+            //             result = FileResult::FileExists;
+            //             break;
+            //         case 14:
+            //             result = FileResult::AccessDenied;
+            //             break;
 }
 
 void resolve_item(const wstring& source_path, const wstring& target_path, const wstring& sub_path, 

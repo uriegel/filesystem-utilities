@@ -4,9 +4,8 @@
             "name": "Win32",
             "includePath": [
                 "${workspaceFolder}/**",
-                "${workspaceFolder}/node_modules/node-addon-api/src/**",
-                "${workspaceFolder}/node_modules/node-addon-api",
-                "${workspaceFolder}/node_modules/event-source-base"
+                "${workspaceFolder}/node_modules/node-addon-api/**",
+                "C:/Users/urieg/AppData/Local/node-gyp/Cache/15.9.0/include/node/**"
             ],
             "defines": [
                 "_DEBUG",

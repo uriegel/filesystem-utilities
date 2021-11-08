@@ -28,9 +28,10 @@ const requireAddon = () => {
 const inner = requireAddon()
 exports.getExifDate = inner.getExifDate;
 exports.getFileVersion = inner.getFileVersion;
+exports.trash = inner.trash
 
 if (process.platform == "linux") {
-    const runCmd = cmd => new Promise<string>(res => exec(cmd, (_, stdout) => res(stdout)))
+    const runCmd = cmd => new Promise(res => exec(cmd, (_, stdout) => res(stdout)))
 
     const getDrives = async () => {
         const drivesString = await runCmd('lsblk --bytes --output SIZE,NAME,LABEL,MOUNTPOINT,FSTYPE')
@@ -115,14 +116,12 @@ if (process.platform == "linux") {
     
     exports.getDrives = getDrives            
     exports.getIcon = inner.getIcon
-    exports.trash = inner.trash
     exports.createFolder = createFolder
     exports.getFileSizeSync = inner.getFileSizeSync
     exports.getFileSize = inner.getFileSize
     exports.copyFile = inner.copyFile
     exports.moveFile = inner.moveFile
 } else {
-
     const createFolder = async path => {
         try {
             await inner.createDirectory(path)

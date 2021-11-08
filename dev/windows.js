@@ -11,12 +11,23 @@ const wait = time => new Promise(res => {
     const icon = await addon.getIcon(iconPath)
 
     try {
-        await addon.createFolder("C:\\Users\\uwe\\Desktop\\Ordner")
+        await addon.createFolder("C:\\Users\\urieg\\OneDrive\\Desktop\\Ordner")
     } catch (err) {
         console.log(err)
     }
     try {
+        await addon.trash(["C:\\Users\\urieg\\OneDrive\\Desktop\\Ordner"])
+    } catch (err) {
+        console.log(err)
+    }
+
+    try {
         await addon.createFolder("C:\\Program Files\\Ordner")
+    } catch (err) {
+        console.log(err)
+    }
+    try {
+        await addon.trash(["C:\\Program Files\\Ordner"])
     } catch (err) {
         console.log(err)
     }

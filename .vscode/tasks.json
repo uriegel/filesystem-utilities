@@ -1,7 +1,7 @@
 {
     "version": "2.0.0",
     "tasks": [{
-        "label": "buildlinux",
+        "label": "build",
         "command": "npm", // Could be any other shell command
         "args": ["run-script", "build-dev"],
         "type": "shell"

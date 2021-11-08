@@ -47,7 +47,7 @@ declare module 'filesystem-utilities' {
     function getIcon(ext: string): Promise<Buffer>
     function getExifDate(file: string): Promise<Date|null>
     function getFileVersion(file: string): Promise<VersionInfo|null>
-    function trash(path: string): Promise<void>
+    function trash(path: string | string[]): Promise<void>
     function createFolder(path: string): Promise<void>
     function copyFile(source: string, target: string, progress: (currentSize: number, totalSize: number)=>void, overwrite?: boolean): Promise<void>
     function moveFile(source: string, target: string, progress: (currentSize: number, totalSize: number)=>void, overwrite?: boolean): Promise<void>    

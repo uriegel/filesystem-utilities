@@ -2,14 +2,15 @@
     "version": "0.2.0",
      "configurations": [
          {
-             "name": "Launch C++",
+             "name": "Launch C++ (Windows)",
              "type": "cppvsdbg",
              "request": "launch",
              "program": "node",
-             "args": [ "${workspaceFolder}/dev/index.js" ],
+             "args": [ "${workspaceFolder}/dev/windows.js" ],
              "stopAtEntry": false,
              "cwd": "${workspaceFolder}",
              "environment": [],
+             "preLaunchTask": "build",
              "externalConsole": false
          },
          {
