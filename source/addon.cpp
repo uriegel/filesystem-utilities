@@ -4,6 +4,7 @@
     #include "windows/get_drives_worker.h"
     #include "windows/get_file_version_worker.h"
     #include "windows/create_directory_worker.h"
+    #include "windows/copy_worker.h"
 #elif LINUX
     #include "linux/platform.h"
     #include "linux/copy_file_worker.h"
@@ -27,6 +28,7 @@ Object Init(Env env, Object exports) {
     exports.Set(String::New(env, "getDrives"), Function::New(env, GetDrives));
     exports.Set(String::New(env, "getFileVersion"), Function::New(env, GetFileVersion));
     exports.Set(String::New(env, "createDirectory"), Function::New(env, CreateDirectory1));
+    exports.Set(String::New(env, "copy"), Function::New(env, Copy));
 #endif
     return exports;    
 }

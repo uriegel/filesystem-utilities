@@ -29,6 +29,8 @@ const inner = requireAddon()
 exports.getExifDate = inner.getExifDate;
 exports.getFileVersion = inner.getFileVersion;
 exports.trash = inner.trash
+exports.copy = inner.copy
+exports.move = inner.move
 
 if (process.platform == "linux") {
     const runCmd = cmd => new Promise(res => exec(cmd, (_, stdout) => res(stdout)))
@@ -119,8 +121,6 @@ if (process.platform == "linux") {
     exports.createFolder = createFolder
     exports.getFileSizeSync = inner.getFileSizeSync
     exports.getFileSize = inner.getFileSize
-    exports.copyFile = inner.copyFile
-    exports.moveFile = inner.moveFile
 } else {
     const createFolder = async path => {
         try {
@@ -150,7 +150,6 @@ if (process.platform == "linux") {
     exports.getIcon = inner.getIcon
     exports.createFolder = createFolder
     // TODO: echo "password" | sudo -S -s -- nautilus
-    // TODO: trash (windows)
     // TODO: copy (windows)
     // TODO: move (windows)
 }

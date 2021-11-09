@@ -45,7 +45,8 @@
                     'source/windows/get_drives_worker.cpp',
                     'source/windows/get_file_version_worker.cpp',
                     'source/windows/create_directory_worker.cpp',
-                    'source/windows/trash_worker.cpp'
+                    'source/windows/trash_worker.cpp',
+                    'source/windows/copy_worker.cpp'
                 ],
                 "libraries": [ 
                     "gdiplus.lib",
