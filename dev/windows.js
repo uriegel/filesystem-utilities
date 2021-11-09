@@ -21,6 +21,11 @@ const wait = time => new Promise(res => {
         console.log(err)
     }
     try {
+        await addon.copy("C:\\Users\\urieg\\OneDrive\\Desktop\\Ordner", "C:\\Users\\urieg\\OneDrive\\Desktop", ["Ali.mkv"], true)
+    } catch (err) {
+        console.log(err)
+    }
+    try {
         await addon.trash(["C:\\Users\\urieg\\OneDrive\\Desktop\\Ordner"])
     } catch (err) {
         console.log(err)

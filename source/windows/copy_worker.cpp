@@ -55,7 +55,7 @@ Value Copy(const CallbackInfo& info) {
         files.push_back(pathes.Get(i).As<WString>().WValue());
     auto move = false;
     if (info.Length() > 3)
-        move = info[2].As<Boolean>();
+        move = info[3].As<Boolean>();
     
     auto worker = new Copy_worker(info.Env(), source_path, target_path, files, move);
     worker->Queue();
