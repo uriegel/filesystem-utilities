@@ -30,7 +30,6 @@ exports.getExifDate = inner.getExifDate;
 exports.getFileVersion = inner.getFileVersion;
 exports.trash = inner.trash
 exports.copy = inner.copy
-exports.move = inner.move
 
 if (process.platform == "linux") {
     const runCmd = cmd => new Promise(res => exec(cmd, (_, stdout) => res(stdout)))

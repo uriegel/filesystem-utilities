@@ -1,6 +1,6 @@
 #include <napi.h>
 #include <gtk/gtk.h>
-#include "copy_file_worker.h"
+#include "copy_worker.h"
 #include "../FileResult.h"
 using namespace Napi;
 using namespace std;
@@ -110,22 +110,16 @@ void Copy_file_worker::OnOK() {
     }
 }
 
-Value CopyFile(const CallbackInfo& info) {
+Value Copy(const CallbackInfo& info) {
     auto source_file = (string)info[0].As<String>();
     auto target_file = (string)info[1].As<String>();
     auto cb = info[2].As<Function>();
-    auto overwrite = info.Length() > 3 ? info[3].As<Boolean>() : false;
-    auto worker = new Copy_file_worker(info.Env(), cb, source_file, target_file, overwrite, false);
+    auto move = false;
+    if (info.Length() > 3)
+        move = info[3].As<Boolean>();
+    auto overwrite = info.Length() > 4 ? info[4].As<Boolean>() : false;
+    auto worker = new Copy_file_worker(info.Env(), cb, source_file, target_file, overwrite, move);
     worker->Queue();
     return worker->GetPromise();
 }
 
-Value MoveFile(const CallbackInfo& info) {
-    auto source_file = (string)info[0].As<String>();
-    auto target_file = (string)info[1].As<String>();
-    auto cb = info[2].As<Function>();
-    auto overwrite = info.Length() > 3 ? info[3].As<Boolean>() : false;
-    auto worker = new Copy_file_worker(info.Env(), cb, source_file, target_file, overwrite, true);
-    worker->Queue();
-    return worker->GetPromise();
-}

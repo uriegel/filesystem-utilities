@@ -66,7 +66,7 @@
                 'sources': [ 
                     'source/linux/files.cpp',
                     'source/linux/icon.cpp',
-                    'source/linux/copy_file_worker.cpp',
+                    'source/linux/copy_worker.cpp',
                     'source/linux/trash_worker.cpp'
                 ]
             }],
