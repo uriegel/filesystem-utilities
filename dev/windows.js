@@ -26,7 +26,12 @@ const wait = time => new Promise(res => {
         console.log(err)
     }
     try {
-        await addon.trash(["C:\\Users\\urieg\\OneDrive\\Desktop\\Ordner"])
+        await addon.copy("C:\\Users\\urieg\\OneDrive\\Desktop\\Ordner", "C:\\Users\\urieg\\OneDrive\\Desktop\\Abfall", true)
+    } catch (err) {
+        console.log(err)
+    }
+    try {
+        await addon.trash(["C:\\Users\\urieg\\OneDrive\\Desktop\\Abfall"])
     } catch (err) {
         console.log(err)
     }
