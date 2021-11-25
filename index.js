@@ -149,6 +149,4 @@ if (process.platform == "linux") {
     exports.getIcon = inner.getIcon
     exports.createFolder = createFolder
     // TODO: echo "password" | sudo -S -s -- nautilus
-    // TODO: copy (windows)
-    // TODO: move (windows)
 }
