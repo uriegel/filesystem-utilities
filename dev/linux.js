@@ -18,6 +18,21 @@ const wait = time => new Promise(res => {
         console.log(err)
     }
 
+
+
+
+
+    try {
+        await addon.copy("/home/uwe/test/test", "/home/uwe/test/neutest/test", (c, t) => console.log(`Progress js ${c}, ${t}`))
+    } catch (err) {
+        console.log(err)
+    }
+
+
+
+
+
+
     try {
         await addon.copy("/home/uwe/Videos/raw/Goldeneye.mts", "/etc/test.mts", (c, t) => console.log(`Progress js ${c}, ${t}`))
     } catch (err) {
