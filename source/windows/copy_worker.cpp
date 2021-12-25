@@ -54,7 +54,6 @@ Value Copy(const CallbackInfo& info) {
     vector<wstring> source_pathes;
     vector<wstring> target_pathes;
     if (is_array) {
-        // TODO: without exceptions, only array with source/target pairs and FOF_MULTIDESTFILES
         auto arr = info[0].As<Array>();
         auto count = arr.Length();
         for (auto i = 0u; i < count; i++) 
