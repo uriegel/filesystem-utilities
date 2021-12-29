@@ -16,12 +16,16 @@ const wait = time => new Promise(res => {
         console.log(err)
     }
     try {
-        await addon.copy("D:\\Videos", "C:\\Users\\urieg\\OneDrive\\Desktop\\Ordner", ["Ali.mkv"])
+        await addon.copy(
+            // ["D:\\Videos\\Ali.mkv"], 
+            // ["C:\\Users\\urieg\\OneDrive\\Desktop\\Ordner\\Ali.mkv"])
+            ["D:\\Videos\\Ali.mkv", "D:\\Videos\\Dinos\\Dino3.mpg"], 
+            ["C:\\Users\\urieg\\OneDrive\\Desktop\\Ordner\\Ali.mkv", "C:\\Users\\urieg\\OneDrive\\Desktop\\Ordner\\Dinos\\Dino3.mpg"])
     } catch (err) {
         console.log(err)
     }
     try {
-        await addon.copy("C:\\Users\\urieg\\OneDrive\\Desktop\\Ordner", "C:\\Users\\urieg\\OneDrive\\Desktop", ["Ali.mkv"], true)
+        //await addon.copy("C:\\Users\\urieg\\OneDrive\\Desktop\\Ordner", "C:\\Users\\urieg\\OneDrive\\Desktop", ["Ali.mkv"], true)
     } catch (err) {
         console.log(err)
     }
