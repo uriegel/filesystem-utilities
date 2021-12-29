@@ -19,25 +19,25 @@ void checkInitializeIcons() {
 }
 
 std::vector<char> get_icon(const std::string& extension) {
-    if (extension.length() > 0) {
+    //if (extension.length() > 0) {
         auto type = g_content_type_guess(extension.c_str(), nullptr, 0, nullptr);
         auto icon = g_content_type_get_icon(type);
         if (type)
             g_free(type);
         auto names = g_themed_icon_get_names((GThemedIcon*)icon);
-        auto handle = gtk_icon_theme_choose_icon(default_theme, (const gchar**)names, 16, (GtkIconLookupFlags)2);
+        auto icon_info = gtk_icon_theme_choose_icon(default_theme, (const gchar**)names, 16, (GtkIconLookupFlags)2);
         if (icon)
             g_object_unref(icon);
-        auto filename = gtk_icon_info_get_filename(handle);
+        auto filename = gtk_icon_info_get_filename(icon_info);
         ifstream input(filename, ios::binary);
         vector<char> result(istreambuf_iterator<char>(input), {});
-        if (handle)
-            g_object_unref(handle);
+        // if (icon_info)
+        //     g_object_unref(icon_info);
         return result;
-    } else {
-        vector<char> result;
-        return result;
-    }
+    // } else {
+    //     vector<char> result;
+    //     return result;
+    // }
 }
 
 
