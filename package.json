@@ -1,6 +1,6 @@
 {
   "name": "filesystem-utilities",
-  "version": "6.0.0",
+  "version": "6.0.3",
   "description": "File system utilities for Node.js",
   "main": "index.js",
   "gypfile": true,
@@ -13,7 +13,8 @@
     "build": "node-gyp build",
     "rebuild-dev": "node-gyp rebuild --debug",
     "rebuild": "node-gyp rebuild",
-    "clean": "node-gyp clean"
+    "clean": "node-gyp clean",
+    "do publish": "npm publish"
   },
   "types": "filesystem-utilities.d.ts",
   "repository": {

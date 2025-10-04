@@ -31,9 +31,12 @@ void Get_icon_worker::OnOK() {
     auto env = Env();
     HandleScope scope(env);
 
-    auto buffer_result = new vector<char>(move(icon_bytes));
-    auto buffer = Buffer<char>::New(env, buffer_result->data(), buffer_result->size(), [](Napi::Env, char*, vector<char>* to_delete){ delete to_delete; }, buffer_result);
-    deferred.Resolve(buffer);
+    // auto buffer_result = new vector<char>(move(icon_bytes));
+    // auto buffer = Buffer<char>::New(env, buffer_result->data(), buffer_result->size(), [](Napi::Env, char*, vector<char>* to_delete){ delete to_delete; }, buffer_result);
+    // deferred.Resolve(buffer);
+
+    auto buffer = Napi::Buffer<char>::Copy(env, icon_bytes.data(), icon_bytes.size());
+    deferred.Resolve(buffer);    
 }
 
 Value GetIcon(const CallbackInfo& info) {
