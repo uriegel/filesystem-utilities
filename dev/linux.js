@@ -7,6 +7,9 @@ const wait = time => new Promise(res => {
 
 ;(async () => {
 
+
+    const items = await addon.getDrives()
+
     const iconPath = ".js"
     const icon = await addon.getIcon(iconPath)
     const buffer = new Uint8Array(icon) // wrap without copying

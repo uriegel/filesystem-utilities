@@ -9,7 +9,7 @@ declare enum DriveType {
 interface DriveItem {
     name: string
     description: string
-    size: number
+    size?: number
     type: DriveType 
     mountPoint?: string
 }

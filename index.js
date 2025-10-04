@@ -1,11 +1,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const childProcess = require("child_process");
-const path = require("path");
 const fs = require('fs');
 const process = require("process");
 const fsa = fs.promises;
 const exec = childProcess.exec;
-const spawn = childProcess.spawn;
 
 var FileResult;
 (function (FileResult) {
@@ -35,7 +33,7 @@ if (process.platform == "linux") {
     const runCmd = cmd => new Promise(res => exec(cmd, (_, stdout) => res(stdout)))
 
     const getDrives = async () => {
-        const drivesString = await runCmd('lsblk --bytes --output SIZE,NAME,LABEL,MOUNTPOINT,FSTYPE')
+        const drivesString = (await runCmd('lsblk --bytes --output SIZE,NAME,LABEL,MOUNTPOINT,FSTYPE'))
         const driveStrings = drivesString.split("\n")
         const columnsPositions = (() => {
             const title = driveStrings[0]
@@ -67,17 +65,24 @@ if (process.platform == "linux") {
                 mountPoint: mount,
                 isMounted: !!mount,
                 driveType: driveString.substring(columnsPositions[4]).trim(),
-                size: parseInt(getString(0, 1), 10)
+                size: parseInt(getString(0, 1), 10),
+                isRoot: driveString[columnsPositions[1]] < '~'
             }
         }
 
         const homedir = require('os').homedir()
-        const items = [{ name: "~", description: "home", mountPoint: homedir, isMounted: true, type: 1, size: 0 }]
+        const itemOffers = [{ name: "~", description: "home", mountPoint: homedir, isMounted: true, type: 1, isRoot: false }]
             .concat(driveStrings
                 .slice(1)
-                .filter(n => n[columnsPositions[1]] > '~')
                 .map(constructDrives)
         )
+        const items = itemOffers
+                        .filter(rio => (!rio.isRoot && rio.name) || (itemOffers.filter(n => n.name != rio.name && n.name.startsWith(rio.name)) == 0
+                            && rio.mountPoint != "[SWAP]"))
+            .map(n => ({
+                description: n.description, name: n.name, type: n.type, mountPoint: n.mountPoint, isMounted: n.isMounted, driveType: n.driveType, size: n.size
+            }))
+        
         const mounted = items.filter(n => n.isMounted)
         const unmounted = items.filter(n => !n.isMounted)
         return mounted.concat(unmounted)
