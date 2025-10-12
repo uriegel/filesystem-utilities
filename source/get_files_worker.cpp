@@ -18,7 +18,7 @@ public:
     , deferred(Promise::Deferred::New(Env())) {}
     ~Get_files_worker() {}
 
-    void Execute () { files = move(get_files(directory)); }
+    void Execute () { files_result = move(get_files(directory)); }
 
     void OnOK();
 
@@ -27,28 +27,38 @@ public:
 private:
     stdstring directory;
     Promise::Deferred deferred;
-    vector<File_item> files;
+    tuple<int, string, vector<File_item>> files_result;
 };
 
 void Get_files_worker::OnOK() {
     HandleScope scope(Env());
 
-    auto array = Array::New(Env(), files.size());
-    int i{0};
-for(auto item: files) {
+    auto err_code = get<0>(files_result);
+    auto err_msg = get<1>(files_result);
+    auto items = get<2>(files_result);
+    if (err_code == 0) {
+        auto array = Array::New(Env(), items.size());
+        int i{0};
+        for(auto item: items) {
+            auto obj = Object::New(Env());
+
+            obj.Set("name", nodestring::New(Env(), item.name));
+            obj.Set("size", Number::New(Env(), static_cast<double>(item.size)));
+            napi_value time;
+            napi_create_date(Env(), static_cast<double>(item.time), &time);
+            obj.Set("time", time);
+            obj.Set("isDirectory", Boolean::New(Env(), item.is_directory));
+            obj.Set("isHidden", Boolean::New(Env(), item.is_hidden));
+
+            array.Set(i++, obj);
+        }
+        deferred.Resolve(array);
+    } else {
         auto obj = Object::New(Env());
-
-        obj.Set("name", nodestring::New(Env(), item.name));
-        obj.Set("size", Number::New(Env(), static_cast<double>(item.size)));
-        napi_value time;
-        napi_create_date(Env(), static_cast<double>(item.time), &time);
-        obj.Set("time", time);
-        obj.Set("isDirectory", Boolean::New(Env(), item.is_directory));
-        obj.Set("isHidden", Boolean::New(Env(), item.is_hidden));
-
-        array.Set(i++, obj);
+        obj.Set("code", Number::New(Env(), (int)err_code));
+        obj.Set("description", String::New(Env(), err_msg));
+        deferred.Reject(obj);
     }
-    deferred.Resolve(array);
 }
 
 Value GetFiles(const CallbackInfo& info) {

@@ -1,4 +1,4 @@
-    console.log("Starting linux test")
+console.log("Starting linux test")
 const addon = require('../index')
 
 const wait = time => new Promise(res => {
@@ -7,13 +7,32 @@ const wait = time => new Promise(res => {
 
 ;(async () => {
 
-    const exifDate = await addon.getExifDate("/media/uwe/Video/Uwe/Dokumente/20131116_095204.jpg")
-    console.log(new Date().getTime())
-    console.log(exifDate)
-
-
     const fileItems = await addon.getFilesAsync("/home/uwe")
     console.log("fileItems", fileItems)
+    var str = JSON.stringify(fileItems)
+    console.log("fileItems", str)
+
+    try {
+        const nofileItems = await addon.getFilesAsync("/lost+found")
+        console.log("nofileItems", nofileItems)
+    } catch (e) {
+        console.log("err", e)
+    }
+
+    try {
+        const nofileItems = await addon.getFilesAsync("/fantasie")
+        console.log("nofileItems", nofileItems)
+    } catch (e) {
+        console.log("err", e)
+    }
+
+    const exifDate = await addon.getExifDate("/media/uwe/Video/Uwe/Dokumente/20131116_095204.jpg")
+    const exifTime = 
+    console.log(new Date().getTime())
+    console.log(exifDate)
+    console.log(JSON.stringify({
+        testt: exifDate
+    }))
 
     const items = await addon.getDrives()
 

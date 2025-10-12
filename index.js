@@ -5,14 +5,14 @@ const process = require("process");
 const fsa = fs.promises;
 const exec = childProcess.exec;
 
-// TODO: exif time to iso string
 // TODO: readTrack(gpx: string): retrieve TrackPoint[] in javascript async
 // TODO: readTrack(gpx: string): retrieve TrackInfo[] with TrackPoints in javascript async
-// TODO: getFilesAsync: GetFilesResult and exceptions
 // TODO: c++ getFiles indexing fileItems
 // TODO: c++ getFiles throwing exceptions like napi-rs
 // TODO: c++ getFiles only hidden via parameter, can be set in new function getFilesAsync
 // TODO: getExifInfoAsync returning ExifResult like napi-rs
+// TODO: DateTime always as javascript Date, it converts correctly to json
+// TODO: Windows version
 
 var FileResult;
 (function (FileResult) {

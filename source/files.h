@@ -20,4 +20,7 @@ struct File_item {
 	const uint64_t time;
 };
 
-std::vector<File_item> get_files(const stdstring& directory);
+#include <iostream>
+#include <tuple>
+
+std::tuple<int, std::string, std::vector<File_item>> get_files(const stdstring& directory);
