@@ -5,6 +5,14 @@ const process = require("process");
 const fsa = fs.promises;
 const exec = childProcess.exec;
 
+// TODO: exif time to iso string
+// TODO: readTrack(gpx: string): read gpx via tinyxml2
+// TODO: getFilesAsync: GetFilesResult and exceptions
+// TODO: c++ getFiles indexing fileItems
+// TODO: c++ getFiles throwing exceptions like napi-rs
+// TODO: c++ getFiles only hidden via parameter, can be set in new function getFilesAsync
+// TODO: getExifInfoAsync returning ExifResult like napi-rs
+
 var FileResult;
 (function (FileResult) {
     FileResult[FileResult["Success"] = 0] = "Success";
@@ -120,6 +128,14 @@ if (process.platform == "linux") {
             .concat(files.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase())))
     }
     
+    exports.getFilesAsync = async (path, isHidden) => {
+        const items = await inner.getFiles(path, isHidden == true)
+        let dirs = items.filter(n => n.isDirectory)
+        let files = items.filter(n => !n.isDirectory)
+        return dirs.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()))
+            .concat(files.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase())))
+    }
+
     exports.getDrives = getDrives            
     exports.getIcon = inner.getIcon
     exports.createFolder = createFolder
@@ -150,6 +166,7 @@ if (process.platform == "linux") {
         }
     }
     exports.getFiles = inner.getFiles
+    exports.getFilesAsync = inner.getFilesAsync
     exports.getDrives = inner.getDrives
     exports.getIcon = inner.getIcon
     exports.createFolder = createFolder

@@ -142,6 +142,7 @@ public:
 #endif	
 	bool initialize();
 	tuple<bool, int> get_tag_int(Exif_tag tag);
+	tuple<bool, double> get_tag_rationale(Exif_tag tag);
 	tuple<bool, string> get_tag_string(Exif_tag tag) {
 		return get_tag_bytes(tag);
 	}
@@ -164,7 +165,44 @@ private:
 	bool is_little_endian{ false };
 };
 
+uint64_t get_exif_info(const stdstring& file) {
+	Exif_reader er(file);
+	auto res = er.initialize();
+	if (!res)
+        return 0;
+	bool success;
+	string result;
+
+	tie(success, result) = er.get_tag_string(Exif_tag::DateTimeOriginal);
+	if (!success) 
+		tie(success, result) = er.get_tag_string(Exif_tag::DateTime);
+	uint64_t unix_time = 0;
+	if (success)
+	{
+		tm tm = {};
+		stringstream ss(result.c_str());
+		ss >> get_time(&tm, "%Y:%m:%d %H:%M:%S");
+		auto time = mktime(&tm);
+
+		auto secs = static_cast<chrono::seconds>(time).count();
+		unix_time = static_cast<uint64_t>(secs)  * 1000;
+	}
+	double double_result;
+	tie(success, double_result) = er.get_tag_rationale(Exif_tag::GPSLatitude);
+	double latitude = 0;
+	if (success)
+		latitude = double_result;
+	tie(success, double_result) = er.get_tag_rationale(Exif_tag::GPSLongitude);
+	double longitude = 0;
+	if (success)
+		longitude = double_result;
+	return unix_time;
+}
+
 uint64_t get_exif_date(const stdstring& file) {
+
+	auto toest = get_exif_info(file);
+
 	Exif_reader er(file);
 	auto res = er.initialize();
 	if (!res)
@@ -176,7 +214,7 @@ uint64_t get_exif_date(const stdstring& file) {
 		tie(success, result) = er.get_tag_string(Exif_tag::DateTime);
 	if (!success) 
 		return 0;
-
+	
 	tm tm = {};
 	stringstream ss(result.c_str());
 	ss >> get_time(&tm, "%Y:%m:%d %H:%M:%S");
@@ -309,6 +347,35 @@ tuple<bool, int> Exif_reader::get_tag_int(Exif_tag tag) {
 	if (!success)
 		return make_tuple(false, 0);
 	return make_tuple(true, to_int(result));
+}
+
+tuple<bool, double> Exif_reader::get_tag_rationale(Exif_tag tag){
+	bool success;
+	string result;
+	tie(success, result) = get_tag_bytes(tag);
+	if (!success)
+		return make_tuple(false, 0);
+
+    struct Rational {
+        uint32_t num;
+        uint32_t den;
+    };
+
+    Rational parts[3];
+    memcpy(parts, result.data(), 24);
+
+    auto to_double = [](const Rational& r) {
+        return r.den ? static_cast<double>(r.num) / r.den : 0.0;
+    };
+
+    double degrees = to_double(parts[0]);
+    double minutes = to_double(parts[1]);
+    double seconds = to_double(parts[2]);
+
+    // Convert to decimal degrees
+    auto res = degrees + minutes / 60.0 + seconds / 3600.0;
+
+	return make_tuple(true, res);
 }
 
 tuple<bool, string> Exif_reader::get_tag_bytes(Exif_tag tag) {

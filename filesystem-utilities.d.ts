@@ -42,8 +42,16 @@ declare module 'filesystem-utilities' {
         res: number
         description: FileResult
     }
+
+    export interface FileItemsResult {
+        items: FileItem[]
+        dirCount: number  
+        fileCount: number
+        path: string
+    }
     function getDrives(): Promise<DriveItem[]>
     function getFiles(directory: string): Promise<FileItem[]>
+    function getFilesAsync(path: string, isHidden?: boolean): Promise<FileItemsResult>
     function getIcon(ext: string): Promise<Buffer>
     function getExifDate(file: string): Promise<Date|null>
     function getFileVersion(file: string): Promise<VersionInfo|null>

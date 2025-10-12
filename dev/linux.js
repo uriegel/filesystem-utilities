@@ -7,6 +7,13 @@ const wait = time => new Promise(res => {
 
 ;(async () => {
 
+    const exifDate = await addon.getExifDate("/media/uwe/Video/Uwe/Dokumente/20131116_095204.jpg")
+    console.log(new Date().getTime())
+    console.log(exifDate)
+
+
+    const fileItems = await addon.getFilesAsync("/home/uwe")
+    console.log("fileItems", fileItems)
 
     const items = await addon.getDrives()
 
