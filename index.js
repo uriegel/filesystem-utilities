@@ -10,6 +10,7 @@ const exec = childProcess.exec;
 // TODO: c++ getFiles indexing fileItems
 // TODO: c++ getFiles throwing exceptions like napi-rs
 // TODO: c++ getFiles only hidden via parameter, can be set in new function getFilesAsync
+// TODO: c++ getFiles when constructing Napi result, count files and dirs and return it
 // TODO: getExifInfoAsync returning ExifResult like napi-rs
 // TODO: DateTime always as javascript Date, it converts correctly to json
 // TODO: Windows version
