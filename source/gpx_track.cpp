@@ -1,25 +1,8 @@
 #include "tinyxml2.h"
-#include <iostream>
+#include "gpx_track.h"
 #include <vector>
-#include <string>
-#include <cstring> // for strchr
 using namespace std;
 using namespace tinyxml2;
-
-struct GpxPoint {
-    double lat = 0.0;
-    double lon = 0.0;
-    double ele = 0.0;
-    string time;
-};
-
-struct GpxTrack {
-    double distance = 0.0;
-    int duration = 0;
-    string date;
-    string name;
-    vector<GpxPoint> trackPoints{};
-};
 
 // Helper: strip XML namespace prefix (e.g. "gpx:trkpt" → "trkpt")
 static const char* stripNamespace(const char* name) {
@@ -46,14 +29,11 @@ static XMLElement* NextSiblingElementNS(XMLElement* elem, const char* localName)
     return nullptr;
 }
 
-GpxTrack loadGpxTrack(const string& path) {
+GpxTrack get_gpx_track(const stdstring& path) {
     XMLDocument doc;
     GpxTrack gpxTrack{};
     if (doc.LoadFile(path.c_str()) != XML_SUCCESS)
-    {
-        std::cerr << "Failed to load GPX file: " << path << std::endl;
         return gpxTrack;
-    }
 
     XMLElement* gpx = doc.RootElement();
     if (!gpx) 
@@ -91,17 +71,5 @@ GpxTrack loadGpxTrack(const string& path) {
         }
     }
 
-    return move(gpxTrack);
-}
-
-void maintest() {
-    auto track = loadGpxTrack("/media/uwe/Daten/Bilder/Fotos/2024/Tracks/2024-01-29-16-04.gpx");
-    //auto track = loadGpxTrack("/media/uwe/Daten/Bilder/Fotos/2024/Tracks/2024-03-10-12-44.gpx");
-    // std::cout << "Loaded " << track.size() << " points.\n";
-    // if (!track.empty()) {
-    //     std::cout << "First: lat=" << track[0].lat
-    //               << ", lon=" << track[0].lon
-    //               << ", ele=" << track[0].ele
-    //               << ", time=" << track[0].time << "\n";
-
+    return gpxTrack;
 }

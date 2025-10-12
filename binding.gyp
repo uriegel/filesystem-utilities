@@ -8,8 +8,9 @@
             'source/get_exif_date_worker.cpp',
             'source/std_utils.cpp',
             'source/exif_reader.cpp',
-            'source/tinyxml2.cpp',
-            'source/tinytest.cpp'
+            'source/get_gpx_track_worker.cpp',
+            'source/gpx_track.cpp',
+            'source/tinyxml2.cpp'
         ],
         'include_dirs': [
             "<!@(node -p \"require('node-addon-api').include\")",

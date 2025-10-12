@@ -5,15 +5,16 @@ const process = require("process");
 const fsa = fs.promises;
 const exec = childProcess.exec;
 
-// TODO: readTrack(gpx: string): retrieve TrackInfo async in javascript async
+// TODO: readTrack(gpx: string): get async result
 // TODO: c++ getFiles indexing fileItems
 // TODO: c++ getFiles throwing exceptions like napi-rs
 // TODO: c++ getFiles only hidden via parameter, can be set in new function getFilesAsync
 // TODO: c++ getFiles when constructing Napi result, count files and dirs and return it
 // TODO: getExifInfoAsync returning ExifResult like napi-rs
 // TODO: DateTime always as javascript Date, it converts correctly to json
+// TODO: readTrack: add missing fields
 // TODO: Windows version
-
+ 
 var FileResult;
 (function (FileResult) {
     FileResult[FileResult["Success"] = 0] = "Success";
@@ -142,6 +143,7 @@ if (process.platform == "linux") {
     exports.createFolder = createFolder
     exports.getFileSizeSync = inner.getFileSizeSync
     exports.getFileSize = inner.getFileSize
+    exports.getGpxTrackAsync = inner.getGpxTrackAsync
 } else {
     const createFolder = async path => {
         try {

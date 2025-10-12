@@ -165,21 +165,7 @@ private:
 	bool is_little_endian{ false };
 };
 
-void maintest();
-
-void Mach()  {
-	maintest();
-	printf("Das ist eine Ausgabe");
-}
-
 uint64_t get_exif_info(const stdstring& file) {
-
-
-
-	Mach();
-
-
-
 	Exif_reader er(file);
 	auto res = er.initialize();
 	if (!res)
