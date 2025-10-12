@@ -5,13 +5,11 @@ const process = require("process");
 const fsa = fs.promises;
 const exec = childProcess.exec;
 
-// TODO: c++ getFiles indexing fileItems
 // TODO: c++ getFiles throwing exceptions like napi-rs
-// TODO: c++ getFiles only hidden via parameter, can be set in new function getFilesAsync
-// TODO: c++ getFiles when constructing Napi result, count files and dirs and return it
 // TODO: getExifInfoAsync returning ExifResult like napi-rs
 // TODO: DateTime always as javascript Date, it converts correctly to json
 // TODO: readTrack: add missing fields
+// TODO: getDrives: /daten
 // TODO: Windows version
  
 var FileResult;
@@ -122,7 +120,7 @@ if (process.platform == "linux") {
     }
 
     exports.getFiles = async path => {
-        const items = await inner.getFiles(path)
+        const items = await inner.getFiles(path, true)
         let dirs = items.filter(n => n.isDirectory)
         let files = items.filter(n => !n.isDirectory)
         return dirs.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()))
@@ -130,11 +128,19 @@ if (process.platform == "linux") {
     }
     
     exports.getFilesAsync = async (path, isHidden) => {
-        const items = await inner.getFiles(path, isHidden == true)
-        let dirs = items.filter(n => n.isDirectory)
-        let files = items.filter(n => !n.isDirectory)
-        return dirs.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()))
+        const fileItems = await inner.getFiles(path, isHidden == true)
+        let dirs = fileItems.filter(n => n.isDirectory)
+        let files = fileItems.filter(n => !n.isDirectory)
+        let dirCount = dirs.length
+        let fileCount = files.length
+        const items =  dirs.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()))
             .concat(files.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase())))
+        return {
+            dirCount,
+            fileCount,
+            path,
+            items
+        }
     }
 
     exports.getDrives = getDrives            
@@ -168,7 +174,6 @@ if (process.platform == "linux") {
         }
     }
     exports.getFiles = inner.getFiles
-    exports.getFilesAsync = inner.getFilesAsync
     exports.getDrives = inner.getDrives
     exports.getIcon = inner.getIcon
     exports.createFolder = createFolder

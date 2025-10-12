@@ -49,32 +49,6 @@ void Get_gpx_track_worker::OnOK() {
     obj.Set("trackPoints", array);
 
     deferred.Resolve(obj);
-    // auto err_code = get<0>(files_result);
-    // auto err_msg = get<1>(files_result);
-    // auto items = get<2>(files_result);
-    // if (err_code == 0) {
-    //     auto array = Array::New(Env(), items.size());
-    //     int i{0};
-    //     for(auto item: items) {
-    //         auto obj = Object::New(Env());
-
-    //         obj.Set("name", nodestring::New(Env(), item.name));
-    //         obj.Set("size", Number::New(Env(), static_cast<double>(item.size)));
-    //         napi_value time;
-    //         napi_create_date(Env(), static_cast<double>(item.time), &time);
-    //         obj.Set("time", time);
-    //         obj.Set("isDirectory", Boolean::New(Env(), item.is_directory));
-    //         obj.Set("isHidden", Boolean::New(Env(), item.is_hidden));
-
-    //         array.Set(i++, obj);
-    //     }
-    //     deferred.Resolve(array);
-    // } else {
-    //     auto obj = Object::New(Env());
-    //     obj.Set("code", Number::New(Env(), (int)err_code));
-    //     obj.Set("description", String::New(Env(), err_msg));
-    //     deferred.Reject(obj);
-    // }
 }
 
 Value GetGpxTrack(const CallbackInfo& info) {

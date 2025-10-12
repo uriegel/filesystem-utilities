@@ -16,6 +16,7 @@ interface DriveItem {
 
 interface FileItem {
     name: string
+    idx?: number
     isDirectory: boolean
     isHidden?: boolean
     size?: number 

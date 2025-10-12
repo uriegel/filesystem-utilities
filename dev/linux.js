@@ -17,6 +17,9 @@ const wait = time => new Promise(res => {
     var str = JSON.stringify(fileItems)
     console.log("fileItems", str)
 
+    const fileItems2 = await addon.getFilesAsync("/home/uwe", true)
+    console.log("fileItems2", fileItems2)
+
     try {
         const nofileItems = await addon.getFilesAsync("/lost+found")
         console.log("nofileItems", nofileItems)

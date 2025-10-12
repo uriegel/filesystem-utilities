@@ -12,13 +12,14 @@ using namespace std;
 
 class Get_files_worker : public AsyncWorker {
 public:
-    Get_files_worker(const Napi::Env& env, const stdstring& directory)
+    Get_files_worker(const Napi::Env& env, const stdstring& directory, bool show_hidden)
     : AsyncWorker(env)
     , directory(directory)
+    , show_hidden(show_hidden)
     , deferred(Promise::Deferred::New(Env())) {}
     ~Get_files_worker() {}
 
-    void Execute () { files_result = move(get_files(directory)); }
+    void Execute () { files_result = move(get_files(directory, show_hidden)); }
 
     void OnOK();
 
@@ -26,6 +27,7 @@ public:
 
 private:
     stdstring directory;
+    bool show_hidden;
     Promise::Deferred deferred;
     tuple<int, string, vector<File_item>> files_result;
 };
@@ -49,6 +51,7 @@ void Get_files_worker::OnOK() {
             obj.Set("time", time);
             obj.Set("isDirectory", Boolean::New(Env(), item.is_directory));
             obj.Set("isHidden", Boolean::New(Env(), item.is_hidden));
+            obj.Set("idx", Number::New(Env(), i+1));
 
             array.Set(i++, obj);
         }
@@ -63,7 +66,8 @@ void Get_files_worker::OnOK() {
 
 Value GetFiles(const CallbackInfo& info) {
     auto directory = (stdstring)info[0].As<nodestring>();
-    auto worker = new Get_files_worker(info.Env(), directory);
+    auto show_hidden = info[1].As<Boolean>().Value();
+    auto worker = new Get_files_worker(info.Env(), directory, show_hidden);
     worker->Queue();
     return worker->Promise();
 }
