@@ -7,7 +7,9 @@
             'source/get_icon_worker.cpp',
             'source/get_exif_date_worker.cpp',
             'source/std_utils.cpp',
-            'source/exif_reader.cpp'
+            'source/exif_reader.cpp',
+            'source/tinyxml2.cpp',
+            'source/tinytest.cpp'
         ],
         'include_dirs': [
             "<!@(node -p \"require('node-addon-api').include\")",

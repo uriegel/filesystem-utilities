@@ -6,7 +6,8 @@ const fsa = fs.promises;
 const exec = childProcess.exec;
 
 // TODO: exif time to iso string
-// TODO: readTrack(gpx: string): read gpx via tinyxml2
+// TODO: readTrack(gpx: string): retrieve TrackPoint[] in javascript async
+// TODO: readTrack(gpx: string): retrieve TrackInfo[] with TrackPoints in javascript async
 // TODO: getFilesAsync: GetFilesResult and exceptions
 // TODO: c++ getFiles indexing fileItems
 // TODO: c++ getFiles throwing exceptions like napi-rs
