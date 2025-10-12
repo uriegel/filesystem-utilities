@@ -3,14 +3,22 @@
 #include <vector>
 #include <string>
 #include <cstring> // for strchr
-
+using namespace std;
 using namespace tinyxml2;
 
 struct GpxPoint {
     double lat = 0.0;
     double lon = 0.0;
     double ele = 0.0;
-    std::string time;
+    string time;
+};
+
+struct GpxTrack {
+    double distance = 0.0;
+    int duration = 0;
+    string date;
+    string name;
+    vector<GpxPoint> trackPoints{};
 };
 
 // Helper: strip XML namespace prefix (e.g. "gpx:trkpt" → "trkpt")
@@ -38,19 +46,30 @@ static XMLElement* NextSiblingElementNS(XMLElement* elem, const char* localName)
     return nullptr;
 }
 
-std::vector<GpxPoint> loadGpxTrack(const std::string& path) {
-    std::vector<GpxPoint> track;
+GpxTrack loadGpxTrack(const string& path) {
     XMLDocument doc;
-
-    if (doc.LoadFile(path.c_str()) != XML_SUCCESS) {
+    GpxTrack gpxTrack{};
+    if (doc.LoadFile(path.c_str()) != XML_SUCCESS)
+    {
         std::cerr << "Failed to load GPX file: " << path << std::endl;
-        return track;
+        return gpxTrack;
     }
 
     XMLElement* gpx = doc.RootElement();
-    if (!gpx) return track;
+    if (!gpx) 
+        return gpxTrack;
 
     for (XMLElement* trk = FirstChildElementNS(gpx, "trk"); trk; trk = NextSiblingElementNS(trk, "trk")) {
+        for (XMLElement* info = FirstChildElementNS(trk, "info"); info; info = NextSiblingElementNS(info, "info")) {
+            if (XMLElement* ele = FirstChildElementNS(info, "distance"))
+                ele->QueryDoubleText(&gpxTrack.distance);
+            if (XMLElement* ele = FirstChildElementNS(info, "duration"))
+                ele->QueryIntText(&gpxTrack.duration);
+            if (XMLElement* ele = FirstChildElementNS(info, "name"))
+                gpxTrack.name = ele->GetText();
+            if (XMLElement* ele = FirstChildElementNS(info, "date"))
+                gpxTrack.date = ele->GetText();
+        }
         for (XMLElement* trkseg = FirstChildElementNS(trk, "trkseg"); trkseg; trkseg = NextSiblingElementNS(trkseg, "trkseg")) {
             for (XMLElement* trkpt = FirstChildElementNS(trkseg, "trkpt"); trkpt; trkpt = NextSiblingElementNS(trkpt, "trkpt")) {
                 GpxPoint point{};
@@ -67,21 +86,22 @@ std::vector<GpxPoint> loadGpxTrack(const std::string& path) {
                 if (XMLElement* time = FirstChildElementNS(trkpt, "time"))
                     point.time = time->GetText() ? time->GetText() : "";
 
-                track.push_back(point);
+                gpxTrack.trackPoints.push_back(point);
             }
         }
     }
 
-    return track;
+    return move(gpxTrack);
 }
 
 void maintest() {
-    auto track = loadGpxTrack("/media/uwe/Daten/Bilder/Fotos/2024/Tracks/2024-03-10-12-44.gpx");
-    std::cout << "Loaded " << track.size() << " points.\n";
-    if (!track.empty()) {
-        std::cout << "First: lat=" << track[0].lat
-                  << ", lon=" << track[0].lon
-                  << ", ele=" << track[0].ele
-                  << ", time=" << track[0].time << "\n";
-    }
+    auto track = loadGpxTrack("/media/uwe/Daten/Bilder/Fotos/2024/Tracks/2024-01-29-16-04.gpx");
+    //auto track = loadGpxTrack("/media/uwe/Daten/Bilder/Fotos/2024/Tracks/2024-03-10-12-44.gpx");
+    // std::cout << "Loaded " << track.size() << " points.\n";
+    // if (!track.empty()) {
+    //     std::cout << "First: lat=" << track[0].lat
+    //               << ", lon=" << track[0].lon
+    //               << ", ele=" << track[0].ele
+    //               << ", time=" << track[0].time << "\n";
+
 }

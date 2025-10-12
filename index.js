@@ -5,8 +5,7 @@ const process = require("process");
 const fsa = fs.promises;
 const exec = childProcess.exec;
 
-// TODO: readTrack(gpx: string): retrieve TrackPoint[] in javascript async
-// TODO: readTrack(gpx: string): retrieve TrackInfo[] with TrackPoints in javascript async
+// TODO: readTrack(gpx: string): retrieve TrackInfo async in javascript async
 // TODO: c++ getFiles indexing fileItems
 // TODO: c++ getFiles throwing exceptions like napi-rs
 // TODO: c++ getFiles only hidden via parameter, can be set in new function getFilesAsync
