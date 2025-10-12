@@ -49,6 +49,22 @@ declare module 'filesystem-utilities' {
         fileCount: number
         path: string
     }
+
+    export interface GpxPoint {
+        lat: number
+        lon: number
+        ele: number
+        time: string
+    }
+
+    export interface GpxTrack {
+        name: string
+        distance: number
+        duration: number
+        date: string
+        trackPoints: GpxPoint[]
+    }
+
     function getDrives(): Promise<DriveItem[]>
     function getFiles(directory: string): Promise<FileItem[]>
     function getFilesAsync(path: string, isHidden?: boolean): Promise<FileItemsResult>
@@ -59,5 +75,5 @@ declare module 'filesystem-utilities' {
     function createFolder(path: string): Promise<void>
     function copyFile(source: string, target: string, progress: (currentSize: number, totalSize: number)=>void, overwrite?: boolean): Promise<void>
     function moveFile(source: string, target: string, progress: (currentSize: number, totalSize: number) => void, overwrite?: boolean): Promise<void>    
-    function getGpxTrackAsync(path: string): Promise<void>
+    function getGpxTrackAsync(path: string): Promise<GpxTrack>
 }

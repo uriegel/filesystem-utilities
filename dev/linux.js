@@ -7,8 +7,10 @@ const wait = time => new Promise(res => {
 
 ;(async () => {
 
-    await addon.getGpxTrackAsync("/media/uwe/Daten/Bilder/Fotos/2024/Tracks/2024-01-29-16-04.gpx")
-    await addon.getGpxTrackAsync("/media/uwe/Daten/Bilder/Fotos/2024/Tracks/2024-03-10-12-44.gpx")
+    const trk = await addon.getGpxTrackAsync("/media/uwe/Daten/Bilder/Fotos/2024/Tracks/2024-01-29-16-04.gpx")
+    console.log("trk",trk)
+    const trk2 = await addon.getGpxTrackAsync("/media/uwe/Daten/Bilder/Fotos/2024/Tracks/2024-03-10-12-44.gpx")
+    console.log("trk2",trk2)
 
     const fileItems = await addon.getFilesAsync("/home/uwe")
     console.log("fileItems", fileItems)

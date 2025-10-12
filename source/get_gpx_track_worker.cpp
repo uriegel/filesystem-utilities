@@ -28,6 +28,27 @@ private:
 void Get_gpx_track_worker::OnOK() {
     HandleScope scope(Env());
 
+    auto obj = Object::New(Env());
+
+    obj.Set("name", nodestring::New(Env(), gpx_track.name));
+    obj.Set("distance", Number::New(Env(), static_cast<double>(gpx_track.distance)));
+    obj.Set("duration", Number::New(Env(), static_cast<int>(gpx_track.duration)));
+    obj.Set("date", nodestring::New(Env(), gpx_track.date));
+
+    auto array = Array::New(Env(), gpx_track.trackPoints.size());
+    int i{0};
+    for(auto item: gpx_track.trackPoints) {
+        auto pnt = Object::New(Env());
+
+        pnt.Set("lat", Number::New(Env(), item.lat));
+        pnt.Set("lon", Number::New(Env(), item.lon));
+        pnt.Set("ele", Number::New(Env(), item.ele));
+        pnt.Set("time", nodestring::New(Env(), item.time));
+        array.Set(i++, pnt);
+    }
+    obj.Set("trackPoints", array);
+
+    deferred.Resolve(obj);
     // auto err_code = get<0>(files_result);
     // auto err_msg = get<1>(files_result);
     // auto items = get<2>(files_result);

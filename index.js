@@ -5,7 +5,6 @@ const process = require("process");
 const fsa = fs.promises;
 const exec = childProcess.exec;
 
-// TODO: readTrack(gpx: string): get async result
 // TODO: c++ getFiles indexing fileItems
 // TODO: c++ getFiles throwing exceptions like napi-rs
 // TODO: c++ getFiles only hidden via parameter, can be set in new function getFilesAsync
