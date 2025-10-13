@@ -15,7 +15,9 @@ public:
     , extension(extension) {}
     ~Get_icon_worker() {}
 
-    void Execute () { icon_bytes = move(get_icon(extension)); }
+    void Execute () { 
+        icon_bytes = move(get_icon(extension)); 
+    }
 
     void OnOK();
 

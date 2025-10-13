@@ -3,6 +3,7 @@
 #include "../get_icon_worker.h"
 #include <gio/gio.h>
 #include <gtk/gtk.h>
+#include <iostream>
 using namespace Napi;
 using namespace std;
 
@@ -30,6 +31,7 @@ std::vector<char> get_icon(const std::string& extension) {
         if (icon)
             g_object_unref(icon);
         auto filename = gtk_icon_info_get_filename(icon_info);
+        cout << "icon file" << " - " << (char *)filename;
         ifstream input(filename, ios::binary);
         vector<char> result(istreambuf_iterator<char>(input), {});
         // if (icon_info)
