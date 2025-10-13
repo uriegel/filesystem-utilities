@@ -12,14 +12,14 @@ using namespace std;
 
 class Get_exif_infos_worker : public AsyncWorker {
 public:
-    Get_exif_infos_worker(const Napi::Env& env, const vector<stdstring>& files)
+    Get_exif_infos_worker(const Napi::Env& env, const vector<ExifInfosInput>& input)
     : AsyncWorker(env)
     , deferred(Promise::Deferred::New(Env())) 
-    , files(files)
+    , input(input)
    {} 
     ~Get_exif_infos_worker() {}
 
-    void Execute () { exif_date = get_exif_date("file"s); }
+    void Execute () { exif_date = get_exif_infos(input); }
 
     void OnOK();
 
@@ -27,7 +27,7 @@ public:
 
 private:
     Promise::Deferred deferred;
-    vector<stdstring> files;
+    vector<ExifInfosInput> input;
     uint64_t exif_date;
 };
 
@@ -43,13 +43,19 @@ void Get_exif_infos_worker::OnOK() {
 }
 
 Value GetExifInfosAsync(const CallbackInfo& info) {
-    auto pathes = info[0].As<Array>();
-    auto count = pathes.Length();
-    vector<stdstring> files;
-    for (auto i = 0u; i < count; i++) 
-        files.push_back(pathes.Get(i).As<nodestring>());
+    auto inputs = info[0].As<Array>();
+    auto count = inputs.Length();
+    vector<ExifInfosInput> input;
+    for (auto i = 0u; i < count; i++) {
+        auto val = inputs.Get(i);
+        auto obj = val.As<Object>();
+        ExifInfosInput eii;
+        eii.path = obj.Get("path").As<nodestring>();
+        eii.idx = obj.Get("idx").As<Number>().Int32Value();
+        input.push_back(eii);
+    }
 
-    auto worker = new Get_exif_infos_worker(info.Env(), files);
+    auto worker = new Get_exif_infos_worker(info.Env(), input);
     worker->Queue();
     return worker->GetPromise();
 }

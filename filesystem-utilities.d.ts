@@ -71,12 +71,17 @@ declare module 'filesystem-utilities' {
         message: string
     }
 
+    export interface ExifInfosInput {
+        path: string,
+        idx: number
+    }
+
     function getDrives(): Promise<DriveItem[]>
     function getFiles(directory: string): Promise<FileItem[]>
     function getFilesAsync(path: string, isHidden?: boolean): Promise<FileItemsResult>
     function getIcon(ext: string): Promise<Buffer>
     function getExifDate(file: string): Promise<Date | null>
-    function getExifInfoAsync(files: string[]): Promise<Date|null>
+    function getExifInfoAsync(files: ExifInfosInput[]): Promise<Date|null>
     function getFileVersion(file: string): Promise<VersionInfo|null>
     function trash(path: string | string[]): Promise<void>
     function createFolder(path: string): Promise<void>

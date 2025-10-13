@@ -5,6 +5,7 @@
 #elif LINUX
     #include "linux/platform.h"
 #endif
+#include "get_exif_infos_worker.h"
 
 uint64_t get_exif_date(const stdstring& file);
-uint64_t get_exif_info(const stdstring& file);
+uint64_t get_exif_infos(std::vector<ExifInfosInput>& input);

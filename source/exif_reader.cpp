@@ -165,6 +165,9 @@ private:
 	bool is_little_endian{ false };
 };
 
+uint64_t get_exif_info(vector<ExifInfosInput>& input) {
+}
+
 uint64_t get_exif_info(const stdstring& file) {
 	Exif_reader er(file);
 	auto res = er.initialize();
