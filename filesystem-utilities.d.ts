@@ -87,6 +87,7 @@ declare module 'filesystem-utilities' {
     function getFiles(directory: string): Promise<FileItem[]>
     function getFilesAsync(path: string, isHidden?: boolean): Promise<FileItemsResult>
     function getIcon(ext: string): Promise<Buffer>
+    function getIconFromName(name: string): Promise<Buffer>
     function getExifDate(file: string): Promise<Date | null>
     function getExifInfosAsync(files: ExifInfosInput[]): Promise<ExifInfo[]>
     function getFileVersion(file: string): Promise<VersionInfo|null>

@@ -146,6 +146,7 @@ if (process.platform == "linux") {
 
     exports.getDrives = getDrives            
     exports.getIcon = inner.getIcon
+    exports.getIconFromName = inner.getIconFromName
     exports.createFolder = createFolder
     exports.getFileSizeSync = inner.getFileSizeSync
     exports.getFileSize = inner.getFileSize

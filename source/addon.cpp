@@ -8,6 +8,7 @@
 #elif LINUX
     #include "linux/platform.h"
     #include "linux/copy_worker.h"
+    #include "get_icon_from_name_worker.h"
 #endif
 #include "get_files_worker.h"
 #include "get_icon_worker.h"
@@ -30,6 +31,7 @@ Object Init(Env env, Object exports) {
     exports.Set(String::New(env, "copy"), Function::New(env, Copy));
     exports.Set(String::New(env, "getGpxTrackAsync"), Function::New(env, GetGpxTrack));
 #if LINUX
+    exports.Set(String::New(env, "getIconFromName"), Function::New(env, GetIconFromName));
 #endif
 #if WINDOWS    
     exports.Set(String::New(env, "getDrives"), Function::New(env, GetDrives));
