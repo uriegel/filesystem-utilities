@@ -12,7 +12,7 @@ public:
     Get_icon_from_name_worker(const Napi::Env& env, const stdstring& name)
     : AsyncWorker(env)
     , deferred(Promise::Deferred::New(Env())) 
-    , extension(name) {}
+    , name(name) {}
     ~Get_icon_from_name_worker() {}
 
     void Execute () { 

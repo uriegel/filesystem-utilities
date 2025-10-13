@@ -70,6 +70,7 @@
                 'sources': [ 
                     'source/linux/files.cpp',
                     'source/linux/icon.cpp',
+                    'source/get_icon_from_name_worker.cpp',
                     'source/linux/copy_worker.cpp',
                     'source/linux/trash_worker.cpp'
                 ]
