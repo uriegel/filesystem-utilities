@@ -22,6 +22,7 @@ void checkInitializeIcons() {
 //bool svg
 std::vector<char> get_icon(const std::string& extension) {
     //if (extension.length() > 0) {
+        cout << "default gtk theme" << " - " << default_theme << endl;
         auto type = g_content_type_guess(extension.c_str(), nullptr, 0, nullptr);
         auto icon = g_content_type_get_icon(type);
         if (type)
@@ -31,7 +32,7 @@ std::vector<char> get_icon(const std::string& extension) {
         if (icon)
             g_object_unref(icon);
         auto filename = gtk_icon_info_get_filename(icon_info);
-        cout << "icon file" << " - " << (char *)filename;
+        cout << "icon file" << " - " << (char *)filename << endl;
         ifstream input(filename, ios::binary);
         vector<char> result(istreambuf_iterator<char>(input), {});
         // if (icon_info)
