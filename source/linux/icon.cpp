@@ -18,6 +18,7 @@ void checkInitializeIcons() {
     }
 }
 
+//bool svg
 std::vector<char> get_icon(const std::string& extension) {
     //if (extension.length() > 0) {
         auto type = g_content_type_guess(extension.c_str(), nullptr, 0, nullptr);
@@ -25,7 +26,7 @@ std::vector<char> get_icon(const std::string& extension) {
         if (type)
             g_free(type);
         auto names = g_themed_icon_get_names((GThemedIcon*)icon);
-        auto icon_info = gtk_icon_theme_choose_icon(default_theme, (const gchar**)names, 16, (GtkIconLookupFlags)2);
+        auto icon_info = gtk_icon_theme_choose_icon(default_theme, (const gchar**)names, 16, (GtkIconLookupFlags)0);
         if (icon)
             g_object_unref(icon);
         auto filename = gtk_icon_info_get_filename(icon_info);
