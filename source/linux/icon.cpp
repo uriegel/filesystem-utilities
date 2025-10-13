@@ -4,6 +4,8 @@
 #include <gio/gio.h>
 #include <gtk/gtk.h>
 #include <iostream>
+#include <thread>
+#include <chrono>
 using namespace Napi;
 using namespace std;
 
@@ -22,7 +24,6 @@ void checkInitializeIcons() {
 //bool svg
 std::vector<char> get_icon(const std::string& extension) {
     //if (extension.length() > 0) {
-        cout << "default gtk theme" << " - " << default_theme << endl;
         auto type = g_content_type_guess(extension.c_str(), nullptr, 0, nullptr);
         auto icon = g_content_type_get_icon(type);
         if (type)
@@ -32,7 +33,21 @@ std::vector<char> get_icon(const std::string& extension) {
         if (icon)
             g_object_unref(icon);
         auto filename = gtk_icon_info_get_filename(icon_info);
-        cout << "icon file" << " - " << (char *)filename << endl;
+        auto filename_char = (char *)filename;
+        if (strncmp(filename_char, "/org/gkt", 8) != 0) {
+            cout << "icon file" << " - " << (char *)filename << endl;
+            this_thread::sleep_for(chrono::milliseconds(500));
+            type = g_content_type_guess(extension.c_str(), nullptr, 0, nullptr);
+            icon = g_content_type_get_icon(type);
+            if (type)
+                g_free(type);
+            names = g_themed_icon_get_names((GThemedIcon*)icon);
+            icon_info = gtk_icon_theme_choose_icon(default_theme, (const gchar**)names, 16, (GtkIconLookupFlags)0);
+            if (icon)
+                g_object_unref(icon);
+            filename = gtk_icon_info_get_filename(icon_info);
+            cout << "icon file" << " - " << (char *)filename << endl;
+        }
         ifstream input(filename, ios::binary);
         vector<char> result(istreambuf_iterator<char>(input), {});
         // if (icon_info)
