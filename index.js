@@ -5,7 +5,6 @@ const process = require("process");
 const fsa = fs.promises;
 const exec = childProcess.exec;
 
-// TODO: c++ getFiles throwing exceptions like napi-rs
 // TODO: getExifInfoAsync returning ExifResult like napi-rs
 // TODO: DateTime always as javascript Date, it converts correctly to json
 // TODO: readTrack: add missing fields

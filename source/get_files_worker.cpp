@@ -57,10 +57,11 @@ void Get_files_worker::OnOK() {
         }
         deferred.Resolve(array);
     } else {
-        auto obj = Object::New(Env());
-        obj.Set("code", Number::New(Env(), (int)err_code));
-        obj.Set("description", String::New(Env(), err_msg));
-        deferred.Reject(obj);
+        Napi::Object errObj = Env().Global()
+            .Get("Error").As<Napi::Function>()
+            .New({ Napi::String::New(Env(), err_msg) });        
+        errObj.Set("code", Number::New(Env(), (int)err_code));
+        deferred.Reject(errObj);
     }
 }
 

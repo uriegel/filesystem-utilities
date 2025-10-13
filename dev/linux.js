@@ -12,6 +12,10 @@ const wait = time => new Promise(res => {
     const trk2 = await addon.getGpxTrackAsync("/media/uwe/Daten/Bilder/Fotos/2024/Tracks/2024-03-10-12-44.gpx")
     console.log("trk2",trk2)
 
+    const fileItemsArray = await addon.getFiles("/home/uwe")
+    console.log("fileItemsArray", fileItemsArray)
+
+
     const fileItems = await addon.getFilesAsync("/home/uwe")
     console.log("fileItems", fileItems)
     var str = JSON.stringify(fileItems)
@@ -35,7 +39,6 @@ const wait = time => new Promise(res => {
     }
 
     const exifDate = await addon.getExifDate("/media/uwe/Video/Uwe/Dokumente/20131116_095204.jpg")
-    const exifTime = 
     console.log(new Date().getTime())
     console.log(exifDate)
     console.log(JSON.stringify({

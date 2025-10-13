@@ -29,7 +29,8 @@ public:
     static void FileProgressCallback(int64_t current, int64_t total, void* p) {
         auto progress = (AsyncProgressWorker<CopyFileProgress>::ExecutionProgress*)p;
         auto data = CopyFileProgress { current, total };
-        progress->Send(&data, sizeof(data));
+        // TODO progress->Send(&data, sizeof(data));
+        progress->Send(&data, 1);
     }
 
     void Execute(const ExecutionProgress& progress) { 

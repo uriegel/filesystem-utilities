@@ -66,6 +66,11 @@ declare module 'filesystem-utilities' {
         trackPoints: GpxPoint[]
     }
 
+    export interface ErrorType {
+        code: number,
+        message: string
+    }
+
     function getDrives(): Promise<DriveItem[]>
     function getFiles(directory: string): Promise<FileItem[]>
     function getFilesAsync(path: string, isHidden?: boolean): Promise<FileItemsResult>

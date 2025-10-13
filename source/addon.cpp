@@ -17,6 +17,10 @@
 using namespace Napi;
 
 Object Init(Env env, Object exports) {
+
+    std::setlocale(LC_MESSAGES, "");
+    std::setlocale(LC_CTYPE, "");
+
     exports.Set(String::New(env, "getFiles"), Function::New(env, GetFiles));
     exports.Set(String::New(env, "getIcon"), Function::New(env, GetIcon));
     exports.Set(String::New(env, "getExifDate"), Function::New(env, GetExifDate));
