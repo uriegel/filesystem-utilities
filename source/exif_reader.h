@@ -8,4 +8,4 @@
 #include "get_exif_infos_worker.h"
 
 uint64_t get_exif_date(const stdstring& file);
-uint64_t get_exif_infos(std::vector<ExifInfosInput>& input);
+std::vector<ExifInfo> get_exif_infos(std::vector<ExifInfosInput>& input);

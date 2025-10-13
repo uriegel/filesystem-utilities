@@ -14,11 +14,12 @@ const wait = time => new Promise(res => {
         testt: exifDate
     }))
 
-    const exifDate2 = await addon.getExifInfosAsync([
+    const exifInfos = await addon.getExifInfosAsync([
         { path: "/media/uwe/Video/Uwe/Dokumente/20131116_095204.jpg", idx: 2 },
         { path: "/media/uwe/Video/Uwe/Dokumente/Traktor.jpg", idx: 5 },
         { path:"/media/uwe/Daten/Bilder/Fotos/20250109_120425.jpg", idx: 7 }
     ])
+    console.log("exifInfos", exifInfos)
 
     const trk = await addon.getGpxTrackAsync("/media/uwe/Daten/Bilder/Fotos/2024/Tracks/2024-01-29-16-04.gpx")
     console.log("trk",trk)

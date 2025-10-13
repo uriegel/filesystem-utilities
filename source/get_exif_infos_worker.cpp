@@ -19,7 +19,7 @@ public:
    {} 
     ~Get_exif_infos_worker() {}
 
-    void Execute () { exif_date = get_exif_infos(input); }
+    void Execute () { exif_infos = get_exif_infos(input); }
 
     void OnOK();
 
@@ -28,18 +28,24 @@ public:
 private:
     Promise::Deferred deferred;
     vector<ExifInfosInput> input;
-    uint64_t exif_date;
+    vector<ExifInfo> exif_infos;
 };
 
 void Get_exif_infos_worker::OnOK() {
     HandleScope scope(Env());
-    if (exif_date && exif_date < 0x3BA87F85800) {
-        napi_value time;
-        napi_create_date(Env(), static_cast<double>(exif_date), &time);
-        deferred.Resolve(time);
+    auto array = Array::New(Env(), exif_infos.size());
+    int i{0};
+    for(auto item: exif_infos) {
+        auto obj = Object::New(Env());
+        obj.Set("idx", Number::New(Env(), static_cast<int>(item.idx)));
+        napi_value date;
+        napi_create_date(Env(), static_cast<double>(item.date), &date);
+        obj.Set("date", date);
+        obj.Set("latitude", Number::New(Env(), static_cast<double>(item.latitude)));
+        obj.Set("longitude", Number::New(Env(), static_cast<double>(item.longitude)));
+        array.Set(i++, obj);
     }
-    else 
-        deferred.Resolve(Env().Null());
+    deferred.Resolve(array);
 }
 
 Value GetExifInfosAsync(const CallbackInfo& info) {

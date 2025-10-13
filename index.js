@@ -5,13 +5,13 @@ const process = require("process");
 const fsa = fs.promises;
 const exec = childProcess.exec;
 
-// TODO: getExifInfosAsync input: vec<idx, path>, result with idx, but not empty exifs
-// TODO: getExifInfosAsync returning ExifResult like napi-rs
-// TODO: cancelling getExifInfosAsync with requestId
-// TODO: DateTime always as javascript Date, it converts correctly to json
-// TODO: readTrack: add missing fields
 // TODO: getDrives: /daten
 // TODO: Windows version
+// TODO: Test in Commander
+
+// TODO: cancelling getExifInfosAsync with requestId 
+// TODO: readTrack: add missing fields
+// TODO: DateTime always as javascript Date, it converts correctly to json
  
 var FileResult;
 (function (FileResult) {

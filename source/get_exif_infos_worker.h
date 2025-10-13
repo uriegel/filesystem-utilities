@@ -11,4 +11,11 @@ struct ExifInfosInput {
     stdstring path;
 };
 
+struct ExifInfo {
+    int idx;
+    uint64_t date;
+    double latitude;
+    double longitude;
+};
+
 Napi::Value GetExifInfosAsync(const Napi::CallbackInfo& info);

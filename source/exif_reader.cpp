@@ -165,14 +165,17 @@ private:
 	bool is_little_endian{ false };
 };
 
-uint64_t get_exif_info(vector<ExifInfosInput>& input) {
-}
-
-uint64_t get_exif_info(const stdstring& file) {
+ExifInfo get_exif_info(const stdstring& file, int idx) {
 	Exif_reader er(file);
 	auto res = er.initialize();
 	if (!res)
-        return 0;
+       	return ExifInfo {
+			idx,
+			0,
+			0,
+			0, 
+		};
+
 	bool success;
 	string result;
 
@@ -199,7 +202,12 @@ uint64_t get_exif_info(const stdstring& file) {
 	double longitude = 0;
 	if (success)
 		longitude = double_result;
-	return unix_time;
+	return ExifInfo {
+		idx,
+		unix_time,
+		latitude,
+		longitude, 
+	};
 }
 
 uint64_t get_exif_date(const stdstring& file) {
@@ -452,3 +460,14 @@ char get_tiff_field_length(uint16_t tiff_data_type)
 	}
 }
 
+vector<ExifInfo> get_exif_infos(vector<ExifInfosInput>& input) {
+	vector<ExifInfo> output;
+	
+	for (auto& eii: input) {
+		auto ret = get_exif_info(eii.path, eii.idx);
+		if (ret.date != 0 || ret.latitude != 0 || ret.longitude != 0)
+			output.push_back(ret);
+	}
+
+	return output;
+}
