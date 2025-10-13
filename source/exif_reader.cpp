@@ -461,10 +461,6 @@ char get_tiff_field_length(uint16_t tiff_data_type)
 	}
 }
 
-#include <thread>
-#include <chrono>
-
-
 vector<ExifInfo> get_exif_infos(vector<ExifInfosInput>& input, stdstring cancellation) {
 	vector<ExifInfo> output;
 
@@ -473,8 +469,6 @@ vector<ExifInfo> get_exif_infos(vector<ExifInfosInput>& input, stdstring cancell
 	for (auto& eii: input) {
 		if (is_cancelled(cancellation))
 			return vector<ExifInfo>();
-
-		this_thread::sleep_for(chrono::milliseconds(1000));
 
 		auto ret = get_exif_info(eii.path, eii.idx);
 		if (ret.date != 0 || ret.latitude != 0 || ret.longitude != 0)

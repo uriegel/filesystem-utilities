@@ -25,7 +25,6 @@ const wait = time => new Promise(res => {
         { path:"/media/uwe/Daten/Bilder/Fotos/20250109_120425.jpg", idx: 7 }
     ], "Känzel")
 
-
     console.log("exifInfosTest", exifInfosTest)
 
     const drives = await addon.getDrives()
