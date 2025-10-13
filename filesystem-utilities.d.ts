@@ -16,7 +16,7 @@ interface DriveItem {
 
 interface FileItem {
     name: string
-    idx?: number
+    idx: number
     isDirectory: boolean
     isHidden?: boolean
     size?: number 
@@ -88,7 +88,7 @@ declare module 'filesystem-utilities' {
     function getFilesAsync(path: string, isHidden?: boolean): Promise<FileItemsResult>
     function getIcon(ext: string): Promise<Buffer>
     function getExifDate(file: string): Promise<Date | null>
-    function getExifInfoAsync(files: ExifInfosInput[]): Promise<ExifInfo>
+    function getExifInfosAsync(files: ExifInfosInput[]): Promise<ExifInfo[]>
     function getFileVersion(file: string): Promise<VersionInfo|null>
     function trash(path: string | string[]): Promise<void>
     function createFolder(path: string): Promise<void>
