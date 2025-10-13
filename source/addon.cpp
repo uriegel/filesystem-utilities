@@ -12,6 +12,7 @@
 #include "get_files_worker.h"
 #include "get_icon_worker.h"
 #include "get_exif_date_worker.h"
+#include "get_exif_infos_worker.h"
 #include "trash_worker.h"
 #include "get_gpx_track_worker.h"
 using namespace Napi;
@@ -24,6 +25,7 @@ Object Init(Env env, Object exports) {
     exports.Set(String::New(env, "getFiles"), Function::New(env, GetFiles));
     exports.Set(String::New(env, "getIcon"), Function::New(env, GetIcon));
     exports.Set(String::New(env, "getExifDate"), Function::New(env, GetExifDate));
+    exports.Set(String::New(env, "getExifInfosAsync"), Function::New(env, GetExifInfosAsync));
     exports.Set(String::New(env, "trash"), Function::New(env, Trash));
     exports.Set(String::New(env, "copy"), Function::New(env, Copy));
     exports.Set(String::New(env, "getGpxTrackAsync"), Function::New(env, GetGpxTrack));

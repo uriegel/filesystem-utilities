@@ -7,6 +7,18 @@ const wait = time => new Promise(res => {
 
 ;(async () => {
 
+    const exifDate = await addon.getExifDate("/media/uwe/Video/Uwe/Dokumente/20131116_095204.jpg")
+    console.log(new Date().getTime())
+    console.log(exifDate)
+    console.log(JSON.stringify({
+        testt: exifDate
+    }))
+
+    const exifDate2 = await addon.getExifInfosAsync([
+        "/media/uwe/Video/Uwe/Dokumente/20131116_095204.jpg",
+        "/media/uwe/Daten/Bilder/Fotos/20250109_120425.jpg",
+    ])
+
     const trk = await addon.getGpxTrackAsync("/media/uwe/Daten/Bilder/Fotos/2024/Tracks/2024-01-29-16-04.gpx")
     console.log("trk",trk)
     const trk2 = await addon.getGpxTrackAsync("/media/uwe/Daten/Bilder/Fotos/2024/Tracks/2024-03-10-12-44.gpx")
@@ -37,13 +49,6 @@ const wait = time => new Promise(res => {
     } catch (e) {
         console.log("err", e)
     }
-
-    const exifDate = await addon.getExifDate("/media/uwe/Video/Uwe/Dokumente/20131116_095204.jpg")
-    console.log(new Date().getTime())
-    console.log(exifDate)
-    console.log(JSON.stringify({
-        testt: exifDate
-    }))
 
     const items = await addon.getDrives()
 

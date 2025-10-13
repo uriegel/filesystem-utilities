@@ -200,9 +200,6 @@ uint64_t get_exif_info(const stdstring& file) {
 }
 
 uint64_t get_exif_date(const stdstring& file) {
-
-	auto toest = get_exif_info(file);
-
 	Exif_reader er(file);
 	auto res = er.initialize();
 	if (!res)

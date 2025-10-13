@@ -5,7 +5,9 @@ const process = require("process");
 const fsa = fs.promises;
 const exec = childProcess.exec;
 
-// TODO: getExifInfoAsync returning ExifResult like napi-rs
+// TODO: getExifInfosAsync input: vec<idx, path>, result with idx, but not empty exifs
+// TODO: getExifInfosAsync returning ExifResult like napi-rs
+// TODO: cancelling getExifInfosAsync with requestId
 // TODO: DateTime always as javascript Date, it converts correctly to json
 // TODO: readTrack: add missing fields
 // TODO: getDrives: /daten
@@ -31,6 +33,7 @@ const requireAddon = () => {
 
 const inner = requireAddon()
 exports.getExifDate = inner.getExifDate;
+exports.getExifInfosAsync = inner.getExifInfosAsync;
 exports.getFileVersion = inner.getFileVersion;
 exports.trash = inner.trash
 exports.copy = inner.copy

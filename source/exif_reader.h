@@ -7,3 +7,4 @@
 #endif
 
 uint64_t get_exif_date(const stdstring& file);
+uint64_t get_exif_info(const stdstring& file);
