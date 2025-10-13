@@ -7,6 +7,9 @@ const wait = time => new Promise(res => {
 
 ;(async () => {
 
+    const drives = await addon.getDrives()
+    console.log("drives", drives)
+
     const exifDate = await addon.getExifDate("/media/uwe/Video/Uwe/Dokumente/20131116_095204.jpg")
     console.log(new Date().getTime())
     console.log(exifDate)
@@ -51,8 +54,6 @@ const wait = time => new Promise(res => {
     } catch (e) {
         console.log("err", e)
     }
-
-    const items = await addon.getDrives()
 
     const iconPath = ".js"
     const icon = await addon.getIcon(iconPath)

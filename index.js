@@ -5,7 +5,6 @@ const process = require("process");
 const fsa = fs.promises;
 const exec = childProcess.exec;
 
-// TODO: getDrives: /daten
 // TODO: Windows version
 // TODO: Test in Commander
 
