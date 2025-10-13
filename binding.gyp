@@ -18,8 +18,8 @@
             "<!@(node -p \"var a = require('node-addon-api').include; var b = a.substr(0, a.length - 15); b + 'event-source-base' + a[a.length-1]\")"
         ],
         'dependencies': ["<!(node -p \"require('node-addon-api').gyp\")"],
-        "cflags": ["-Wall", "-std=c++17"],
-        'cflags_cc': ["-Wall", "-std=c++17"],
+        "cflags": ["-Wall", "-std=c++20"],
+        'cflags_cc': ["-Wall", "-std=c++20"],
         'cflags!': [ '-fno-exceptions' ],
         'cflags_cc!': [ '-fno-exceptions' ],
         'link_settings': {
@@ -35,7 +35,7 @@
                     "VCCLCompilerTool": {
                         "ExceptionHandling": 1,
     					'AdditionalOptions': [
-						    '-std:c++17',
+						    '-std:c++20',
 						]
                     }
                 },

@@ -5,13 +5,15 @@ const process = require("process");
 const fsa = fs.promises;
 const exec = childProcess.exec;
 
-// TODO: Windows version
 // TODO: Test in Commander
 
-// TODO: cancelling getExifInfosAsync with requestId 
+// TODO: cancelling getExifInfosAsync with requestId
 // TODO: readTrack: add missing fields
 // TODO: DateTime always as javascript Date, it converts correctly to json
- 
+
+// TODO: Windows version: getFiles with exceptions
+// TODO: Windows version: getTrackInfo string <-> wstring <-> char*
+
 var FileResult;
 (function (FileResult) {
     FileResult[FileResult["Success"] = 0] = "Success";
