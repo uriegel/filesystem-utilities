@@ -12,14 +12,15 @@ using namespace std;
 
 class Get_exif_infos_worker : public AsyncWorker {
 public:
-    Get_exif_infos_worker(const Napi::Env& env, const vector<ExifInfosInput>& input)
+    Get_exif_infos_worker(const Napi::Env& env, const vector<ExifInfosInput>& input, stdstring cancellation)
     : AsyncWorker(env)
     , deferred(Promise::Deferred::New(Env())) 
     , input(input)
+    , cancellation(cancellation)
    {} 
     ~Get_exif_infos_worker() {}
 
-    void Execute () { exif_infos = get_exif_infos(input); }
+    void Execute () { exif_infos = get_exif_infos(input, cancellation); }
 
     void OnOK();
 
@@ -28,6 +29,7 @@ public:
 private:
     Promise::Deferred deferred;
     vector<ExifInfosInput> input;
+    stdstring cancellation;
     vector<ExifInfo> exif_infos;
 };
 
@@ -61,7 +63,9 @@ Value GetExifInfosAsync(const CallbackInfo& info) {
         input.push_back(eii);
     }
 
-    auto worker = new Get_exif_infos_worker(info.Env(), input);
+    auto cancelation = (info.Length() > 1) ? info[1].As<nodestring>() : stdstring();
+
+    auto worker = new Get_exif_infos_worker(info.Env(), input, cancelation);
     worker->Queue();
     return worker->GetPromise();
 }

@@ -36,6 +36,7 @@ exports.getExifInfosAsync = inner.getExifInfosAsync;
 exports.getFileVersion = inner.getFileVersion;
 exports.trash = inner.trash
 exports.copy = inner.copy
+exports.cancel = inner.cancel
 
 if (process.platform == "linux") {
     const runCmd = cmd => new Promise(res => exec(cmd, (_, stdout) => res(stdout)))

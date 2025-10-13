@@ -7,6 +7,27 @@ const wait = time => new Promise(res => {
 
 ;(async () => {
 
+
+    setTimeout(() => addon.cancel("Känzel"), 2000)
+
+    const exifInfosTest = await addon.getExifInfosAsync([
+        { path: "/media/uwe/Video/Uwe/Dokumente/20131116_095204.jpg", idx: 2 },
+        { path: "/media/uwe/Video/Uwe/Dokumente/Traktor.jpg", idx: 5 },
+        { path: "/media/uwe/Daten/Bilder/Fotos/20250109_120425.jpg", idx: 7 },
+        { path: "/media/uwe/Video/Uwe/Dokumente/20131116_095204.jpg", idx: 2 },
+        { path: "/media/uwe/Video/Uwe/Dokumente/Traktor.jpg", idx: 5 },
+        { path:"/media/uwe/Daten/Bilder/Fotos/20250109_120425.jpg", idx: 7 },
+        { path: "/media/uwe/Video/Uwe/Dokumente/20131116_095204.jpg", idx: 2 },
+        { path: "/media/uwe/Video/Uwe/Dokumente/Traktor.jpg", idx: 5 },
+        { path:"/media/uwe/Daten/Bilder/Fotos/20250109_120425.jpg", idx: 7 },
+        { path: "/media/uwe/Video/Uwe/Dokumente/20131116_095204.jpg", idx: 2 },
+        { path: "/media/uwe/Video/Uwe/Dokumente/Traktor.jpg", idx: 5 },
+        { path:"/media/uwe/Daten/Bilder/Fotos/20250109_120425.jpg", idx: 7 }
+    ], "Känzel")
+
+
+    console.log("exifInfosTest", exifInfosTest)
+
     const drives = await addon.getDrives()
     console.log("drives", drives)
 

@@ -16,6 +16,7 @@
 #include "get_exif_infos_worker.h"
 #include "trash_worker.h"
 #include "get_gpx_track_worker.h"
+#include "cancellation.h"
 using namespace Napi;
 
 Object Init(Env env, Object exports) {
@@ -30,6 +31,7 @@ Object Init(Env env, Object exports) {
     exports.Set(String::New(env, "trash"), Function::New(env, Trash));
     exports.Set(String::New(env, "copy"), Function::New(env, Copy));
     exports.Set(String::New(env, "getGpxTrackAsync"), Function::New(env, GetGpxTrack));
+    exports.Set(String::New(env, "cancel"), Function::New(env, Cancel));
 #if LINUX
     exports.Set(String::New(env, "getIconFromName"), Function::New(env, GetIconFromName));
 #endif
