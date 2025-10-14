@@ -56,6 +56,8 @@ declare module 'filesystem-utilities' {
         lon: number
         ele: number
         time: string
+        heartrate: number
+        velocity: number
     }
 
     export interface GpxTrack {
@@ -63,6 +65,7 @@ declare module 'filesystem-utilities' {
         distance: number
         duration: number
         date: string
+        averageSpeed: number
         trackPoints: GpxPoint[]
     }
 
