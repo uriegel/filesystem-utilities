@@ -34,6 +34,7 @@ void Get_gpx_track_worker::OnOK() {
     obj.Set("distance", Number::New(Env(), static_cast<double>(gpx_track.distance)));
     obj.Set("duration", Number::New(Env(), static_cast<int>(gpx_track.duration)));
     obj.Set("date", nodestring::New(Env(), gpx_track.date));
+    obj.Set("averageSpeed", Number::New(Env(), static_cast<int>(gpx_track.averageSpeed)));
 
     auto array = Array::New(Env(), gpx_track.trackPoints.size());
     int i{0};
@@ -44,6 +45,8 @@ void Get_gpx_track_worker::OnOK() {
         pnt.Set("lon", Number::New(Env(), item.lon));
         pnt.Set("ele", Number::New(Env(), item.ele));
         pnt.Set("time", nodestring::New(Env(), item.time));
+        pnt.Set("heartrate", Number::New(Env(), item.heartrate));
+        pnt.Set("velocity", Number::New(Env(), item.velocity));
         array.Set(i++, pnt);
     }
     obj.Set("trackPoints", array);
