@@ -11,6 +11,8 @@ struct GpxPoint {
     double lon = 0.0;
     double ele = 0.0;
     stdstring time;
+    int heartrate = 0;
+    double velocity = 0;
 };
 
 struct GpxTrack {
@@ -18,6 +20,7 @@ struct GpxTrack {
     int duration = 0;
     stdstring date;
     stdstring name;
+    double averageSpeed = 0;
     std::vector<GpxPoint> trackPoints{};
 };
 

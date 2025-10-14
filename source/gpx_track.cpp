@@ -49,6 +49,8 @@ GpxTrack get_gpx_track(const stdstring& path) {
                 ele->QueryDoubleText(&gpxTrack.distance);
             if (XMLElement* ele = FirstChildElementNS(info, "duration"))
                 ele->QueryIntText(&gpxTrack.duration);
+            if (XMLElement* ele = FirstChildElementNS(info, "averageSpeed"))
+                ele->QueryDoubleText(&gpxTrack.averageSpeed);
 #ifdef LINUX                    
             if (XMLElement* ele = FirstChildElementNS(info, "name"))
                 gpxTrack.name = ele->GetText();
@@ -67,6 +69,12 @@ GpxTrack get_gpx_track(const stdstring& path) {
                 // Optional: read elevation
                 if (XMLElement* ele = FirstChildElementNS(trkpt, "ele"))
                     ele->QueryDoubleText(&point.ele);
+
+                if (XMLElement* ele = FirstChildElementNS(trkpt, "speed"))
+                    ele->QueryDoubleText(&point.velocity);
+
+                if (XMLElement* ele = FirstChildElementNS(trkpt, "heartrate"))
+                    ele->QueryIntText(&point.heartrate);
 
 #ifdef LINUX                                        
                 // Optional: read timestamp
