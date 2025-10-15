@@ -5,10 +5,6 @@ const process = require("process");
 const fsa = fs.promises;
 const exec = childProcess.exec;
 
-// TODO: cancelling getExifInfosAsync with requestId
-// TODO: readTrack: add missing fields
-// TODO: DateTime always as javascript Date, it converts correctly to json
-
 // TODO: Windows version: getFiles with exceptions
 // TODO: Windows version: getTrackInfo string <-> wstring <-> char*
 
@@ -37,6 +33,9 @@ exports.getFileVersion = inner.getFileVersion;
 exports.trash = inner.trash
 exports.copy = inner.copy
 exports.cancel = inner.cancel
+exports.getIconFromName = inner.getIconFromName
+exports.getIcon = inner.getIcon
+exports.getGpxTrackAsync = inner.getGpxTrackAsync
 
 if (process.platform == "linux") {
     const runCmd = cmd => new Promise(res => exec(cmd, (_, stdout) => res(stdout)))
@@ -146,12 +145,9 @@ if (process.platform == "linux") {
     }
 
     exports.getDrives = getDrives            
-    exports.getIcon = inner.getIcon
-    exports.getIconFromName = inner.getIconFromName
     exports.createFolder = createFolder
     exports.getFileSizeSync = inner.getFileSizeSync
     exports.getFileSize = inner.getFileSize
-    exports.getGpxTrackAsync = inner.getGpxTrackAsync
 } else {
     const createFolder = async path => {
         try {
@@ -178,7 +174,6 @@ if (process.platform == "linux") {
     }
     exports.getFiles = inner.getFiles
     exports.getDrives = inner.getDrives
-    exports.getIcon = inner.getIcon
     exports.createFolder = createFolder
     // TODO: echo "password" | sudo -S -s -- nautilus
 }

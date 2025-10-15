@@ -12,7 +12,8 @@
             'source/get_gpx_track_worker.cpp',
             'source/gpx_track.cpp',
             'source/tinyxml2.cpp',
-            'source/cancellation.cpp'
+            'source/cancellation.cpp',
+            'source/get_icon_from_name_worker.cpp'
         ],
         'include_dirs': [
             "<!@(node -p \"require('node-addon-api').include\")",
@@ -71,7 +72,6 @@
                 'sources': [ 
                     'source/linux/files.cpp',
                     'source/linux/icon.cpp',
-                    'source/get_icon_from_name_worker.cpp',
                     'source/linux/copy_worker.cpp',
                     'source/linux/trash_worker.cpp'
                 ]

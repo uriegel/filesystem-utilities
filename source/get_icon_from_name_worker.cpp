@@ -1,9 +1,13 @@
 #include <napi.h>
 #include <vector>
-#include "wstring.h"
 #include "get_icon_worker.h"
 #include "icon.h"
 #include "std_utils.h"
+#if WINDOWS
+    #include "windows/platform.h"
+#elif LINUX
+    #include "linux/platform.h"
+#endif
 using namespace Napi;
 using namespace std;
 
