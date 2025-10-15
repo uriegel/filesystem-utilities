@@ -20,11 +20,6 @@
 #include "get_icon_from_name_worker.h"
 using namespace Napi;
 
-
-#if WINDOWS
-extern std::wstring ROOT_PATH;
-#endif
-
 Object Init(Env env, Object exports) {
 #if LINUX
     std::setlocale(LC_MESSAGES, "");
@@ -43,17 +38,6 @@ Object Init(Env env, Object exports) {
     exports.Set(String::New(env, "getDrives"), Function::New(env, GetDrives));
     exports.Set(String::New(env, "getFileVersion"), Function::New(env, GetFileVersion));
     exports.Set(String::New(env, "createDirectory"), Function::New(env, CreateDirectory1));
-    auto global = env.Global();
-    auto process = global.Get("process").As<Napi::Object>();
-    auto mainModule = process.Get("mainModule").As<Napi::Object>();
-    auto filename = mainModule.Get("filename");
-    if (filename.IsString()) {
-        auto path = std::filesystem::path(filename.As<Napi::String>().Utf8Value());
-        auto test = path.parent_path().parent_path();
-        auto aua = test;
-        ROOT_PATH = aua.wstring().c_str();
-    }
-
 #endif
     return exports;    
 }

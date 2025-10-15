@@ -6,10 +6,9 @@
 #include <iterator>
 #include <Gdiplus.h>
 #include "../icon.h"
+#include "images.h"
 using namespace std;
 using namespace Gdiplus;
-
-wstring ROOT_PATH;
 
 ULONG_PTR gdiplus_token{0};
 CLSID png_clsid{0};
@@ -151,67 +150,13 @@ vector<char> extract_icon(wstring icon_path) {
 }
 
 vector<char> extract_icon_from_name(wstring icon_name) {
-    HICON icon{nullptr};
-	HICON iconLarge;
-
-	MessageBoxW(0, (ROOT_PATH + L"\\WindowsDrive.png"s).c_str(), ROOT_PATH.c_str(), MB_OK);
-
-	ExtractIconExW((ROOT_PATH + L"\\WindowsDrive.png"s).c_str(), 0, &iconLarge, &icon, 1);
-	DestroyIcon(iconLarge);
-
-    ICONINFO icon_info{ 0 };
-	GetIconInfo(icon, &icon_info);
-
-    auto dc = GetDC(nullptr);
-
-    BITMAP bm{ 0 };
-	GetObject(icon_info.hbmColor, sizeof(bm), &bm);
-
-    BITMAPINFO bmi{ 0 };
-	bmi.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
-	bmi.bmiHeader.biWidth = bm.bmWidth;
-	bmi.bmiHeader.biHeight = -bm.bmHeight;
-	bmi.bmiHeader.biPlanes = 1;
-	bmi.bmiHeader.biBitCount = 32;
-	bmi.bmiHeader.biCompression = BI_RGB;
-
-    int number_of_bits = bm.bmWidth * bm.bmHeight;
-	vector<int> pixels(number_of_bits);
-	GetDIBits(dc, icon_info.hbmColor, 0, bm.bmHeight, pixels.data(), &bmi, DIB_RGB_COLORS);
-
-    // Check whether the color bitmap has an alpha channel.
-	// (On Windows 7, all file icons have an alpha channel.)
-	auto has_alpha{ false };
-	for (int i = 0; i < number_of_bits; i++)
-		if ((pixels[i] & 0xff000000) != 0) {
-			has_alpha = TRUE;
-			break;
-		}
-
-    // If no alpha values available, apply the mask bitmap
-	if (!has_alpha)
-	{
-		// Extract the mask bitmap
-		vector<int> mask_bits(number_of_bits);
-		GetDIBits(dc, icon_info.hbmMask, 0, bm.bmHeight, mask_bits.data(), &bmi, DIB_RGB_COLORS);
-		// Copy the mask alphas into the color bits
-		for (int i = 0; i < number_of_bits; i++)
-			if (mask_bits[i] == 0)
-				pixels[i] |= 0xff000000;
+	if (icon_name == L"drive-removable-media"s) {
+		vector<char> result(Drive_png, Drive_png + Drive_png_len);
+		return result;
+	} else {
+		vector<char> result(RemovableDrive_png, RemovableDrive_png + RemovableDrive_png_len);
+		return result;
 	}
-
-	ReleaseDC(nullptr, dc);
-	DeleteObject(icon_info.hbmColor);
-	DeleteObject(icon_info.hbmMask);        
-
-    // Create GDI+ Bitmap
-	auto bmp = make_unique<Bitmap>(bm.bmWidth, bm.bmHeight, bm.bmWidth * 4, PixelFormat32bppARGB, reinterpret_cast<BYTE*>(pixels.data()));
-
-    vector<char> result;
-    Memory_stream ms(result);
-	bmp->Save(&ms, &png_clsid);
-	DestroyIcon(icon);    
-    return result;
 }
 
 vector<char> get_icon(const wstring& extension) {
