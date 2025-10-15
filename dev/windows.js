@@ -11,7 +11,9 @@ const wait = time => new Promise(res => {
     const drives = await addon.getDrives()
     console.log("drives", drives)
 
-
+    const files = await addon.getFilesAsync("C:\\", true)
+    console.log("files", files)
+    
     const iconPath = "C:\\Windows\\regedit.exe"
     const icon = await addon.getIcon(iconPath)
 

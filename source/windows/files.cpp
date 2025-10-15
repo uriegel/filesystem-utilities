@@ -22,7 +22,7 @@ tuple<int, string, vector<File_item>> get_files(const wstring& directory, bool s
     auto ret = FindFirstFileW(search_string.c_str(), &w32fd);
     while (FindNextFileW(ret, &w32fd) == TRUE) {
         auto isHidden = (w32fd.dwFileAttributes & FILE_ATTRIBUTE_HIDDEN) == FILE_ATTRIBUTE_HIDDEN;
-        if (w32fd.cFileName[0] != L'.' || w32fd.cFileName[1] != L'.')
+        if ((!isHidden || show_hidden) && (w32fd.cFileName[0] != L'.' || w32fd.cFileName[1] != L'.'))
             items.emplace_back(
                 w32fd.cFileName,
                 (w32fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) == FILE_ATTRIBUTE_DIRECTORY,

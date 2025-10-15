@@ -37,6 +37,22 @@ exports.getIconFromName = inner.getIconFromName
 exports.getIcon = inner.getIcon
 exports.getGpxTrackAsync = inner.getGpxTrackAsync
 
+exports.getFilesAsync = async (path, isHidden) => {
+    const fileItems = await inner.getFiles(path, isHidden == true)
+    let dirs = fileItems.filter(n => n.isDirectory)
+    let files = fileItems.filter(n => !n.isDirectory)
+    let dirCount = dirs.length
+    let fileCount = files.length
+    const items =  dirs.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()))
+        .concat(files.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase())))
+    return {
+        dirCount,
+        fileCount,
+        path,
+        items
+    }
+}
+
 if (process.platform == "linux") {
     const runCmd = cmd => new Promise(res => exec(cmd, (_, stdout) => res(stdout)))
 
@@ -128,22 +144,6 @@ if (process.platform == "linux") {
             .concat(files.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase())))
     }
     
-    exports.getFilesAsync = async (path, isHidden) => {
-        const fileItems = await inner.getFiles(path, isHidden == true)
-        let dirs = fileItems.filter(n => n.isDirectory)
-        let files = fileItems.filter(n => !n.isDirectory)
-        let dirCount = dirs.length
-        let fileCount = files.length
-        const items =  dirs.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()))
-            .concat(files.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase())))
-        return {
-            dirCount,
-            fileCount,
-            path,
-            items
-        }
-    }
-
     exports.getDrives = getDrives            
     exports.createFolder = createFolder
     exports.getFileSizeSync = inner.getFileSizeSync
@@ -175,5 +175,4 @@ if (process.platform == "linux") {
     exports.getFiles = inner.getFiles
     exports.getDrives = inner.getDrives
     exports.createFolder = createFolder
-    // TODO: echo "password" | sudo -S -s -- nautilus
 }
