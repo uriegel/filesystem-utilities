@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <string>
 #include "platform.h"
 
 enum class Drive_type
@@ -11,16 +12,7 @@ enum class Drive_type
 	NETWORK
 };
 
-constexpr std::array<wstring_view, 5> drive_type_names = {
-    L"UNKNOWN", L"HARDDRIVE", L"ROM", L"REMOVABLE", L"NETWORK"
-};
-
-constexpr std::wstring_view to_string(Drive_type dt) {
-    for (std::size_t i = 0; i < drive_type_names.size(); ++i)
-        if (drive_type_names[i] == dt)
-            return drive_type_names[i];
-    return L"UNKNOWN";
-}
+std::string drivetype_to_string(Drive_type dt);
 
 struct Drive_item {
 	const stdstring name;

@@ -88,3 +88,20 @@ vector<Drive_item> get_drives() {
 	// drive_items.erase(erase_it, drive_items.end());
 	return result;
 }
+
+string drivetype_to_string(Drive_type dt) {
+	switch (dt) {
+		case Drive_type::UNKNOWN:
+			return "UNKNOWN"s;
+		case Drive_type::HARDDRIVE:
+			return "HARDDRIVE"s;
+		case Drive_type::ROM:
+			return "ROM"s;
+		case Drive_type::REMOVABLE:
+			return "REMOVABLE"s;
+		case Drive_type::NETWORK:
+			return "NETWORK"s;
+		default:
+			return "UNKNOWN"s;
+	}
+}

@@ -2,6 +2,7 @@
     "files.associations": {
         "*.ui": "xml",
         "optional": "cpp",
-        "tuple": "cpp"
+        "tuple": "cpp",
+        "iosfwd": "cpp"
     }
 }

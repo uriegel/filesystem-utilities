@@ -153,8 +153,14 @@ vector<char> extract_icon_from_name(wstring icon_name) {
 	if (icon_name == L"drive-removable-media"s) {
 		vector<char> result(Drive_png, Drive_png + Drive_png_len);
 		return result;
-	} else {
+	} else if (icon_name == L"media-removable"s) {
 		vector<char> result(RemovableDrive_png, RemovableDrive_png + RemovableDrive_png_len);
+		return result;
+	} else if (icon_name == L"drive-windows"s) {
+		vector<char> result(WindowsDrive_png, WindowsDrive_png + WindowsDrive_png_len);
+		return result;
+	} else {
+		vector<char> result;
 		return result;
 	}
 }
