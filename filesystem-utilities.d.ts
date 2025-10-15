@@ -1,20 +1,21 @@
-declare enum DriveType {
-	UNKNOWN,
-	HARDDRIVE,
-	ROM,
-	REMOVABLE,
-	NETWORK
-}
+export type UNKNOWN = "UNKNOWN"
+export type HARDDRIVE = "HARDDRIVE"
+export type ROM = "ROM"
+export type REMOVABLE = "REMOVABLE"
+export type NETWORK = "NETWORK"
 
-interface DriveItem {
+export type DriveType = UNKNOWN | HARDDRIVE | ROM | REMOVABLE | NETWORK
+
+export interface DriveItem {
     name: string
     description: string
     size?: number
     type: DriveType 
     mountPoint?: string
+    isMounted?: boolean
 }
 
-interface FileItem {
+export interface FileItem {
     name: string
     idx: number
     isDirectory: boolean

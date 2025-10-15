@@ -69,7 +69,7 @@ if (process.platform == "linux") {
             return {
                 description: getString(2, 3),
                 name: trimName(getString(1, 2)),
-                type: 1, // TODO: Drive types enum DriveType
+                type: "HARDDRIVE", // TODO: Drive types enum DriveType
                 mountPoint: mount,
                 isMounted: !!mount,
                 driveType: driveString.substring(columnsPositions[4]).trim(),
