@@ -8,6 +8,8 @@ wstring format_message(int last_error) {
     nullptr, last_error, 0, reinterpret_cast<wchar_t*>(&message), 0, nullptr);
     wstring result(message);
     LocalFree(message);
+    while (!result.empty() && iswspace(result.back()))
+        result.pop_back();
     return result;
 }
 

@@ -13,6 +13,6 @@ string format_error(int last_error) {
         case 13:
             return "ACCESS_DENIED"s;
         default:
-            return "GENERAL"s;
+            return "UNKNOWN"s;
     }
 }
