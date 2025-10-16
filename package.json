@@ -1,6 +1,6 @@
 {
   "name": "filesystem-utilities",
-  "version": "6.4.1",
+  "version": "6.5.0",
   "description": "File system utilities for Node.js",
   "main": "index.js",
   "gypfile": true,
@@ -18,6 +18,12 @@
     "do publish test": "npm publish --dry-run"
   },
   "types": "filesystem-utilities.d.ts",
+  "dependencies": {
+    "node-addon-api": "^8.5.0"
+  },
+  "devDependencies": {
+    "bindings": "^1.5.0"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/uriegel/filesystem-utils.git"
@@ -33,10 +39,4 @@
     "url": "https://github.com/uriegel/filesystem-utils/issues"
   },
   "homepage": "https://github.com/uriegel/filesystem-utils#readme",
-  "dependencies": {
-    "node-addon-api": "^8.5.0"
-  },
-  "devDependencies": {
-    "bindings": "^1.5.0"
-  }
 }
