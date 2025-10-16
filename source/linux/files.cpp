@@ -2,13 +2,13 @@
 #include <string>
 #include <dirent.h>
 #include <sys/stat.h>
-#include <cerrno>
 #include <cstring>
 #include <iostream>
 #include "../files.h"
+#include "../error.h"
 using namespace std;
 
-tuple<int, int, string, vector<File_item>> get_files(const string& path, bool show_hidden) {
+tuple<int, string, string, vector<File_item>> get_files(const string& path, bool show_hidden) {
     vector<File_item> items;
 
     auto dp = opendir(path.c_str());
@@ -23,10 +23,10 @@ tuple<int, int, string, vector<File_item>> get_files(const string& path, bool sh
             }
         }
         closedir(dp);
-        tuple<int, int, string, vector<File_item>> result(0, "", move(items));
+        tuple<int, string, string, vector<File_item>> result(0, "", "", move(items));
         return result;
     } else {
-        tuple<int, int, string, vector<File_item>> result(errno, std::strerror(errno), move(items));
+        tuple<int, string, string, vector<File_item>> result(errno, format_error(errno), format_message(errno), move(items));
         return result;
     }
 }
