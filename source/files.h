@@ -23,4 +23,4 @@ struct File_item {
 #include <iostream>
 #include <tuple>
 
-std::tuple<int, std::string, std::vector<File_item>> get_files(const stdstring& directory, bool show_hidden);
+std::tuple<int, stdstring, stdstring, std::vector<File_item>> get_files(const stdstring& directory, bool show_hidden);

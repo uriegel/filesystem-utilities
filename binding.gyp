@@ -52,7 +52,8 @@
                     'source/windows/get_file_version_worker.cpp',
                     'source/windows/create_directory_worker.cpp',
                     'source/windows/trash_worker.cpp',
-                    'source/windows/copy_worker.cpp'
+                    'source/windows/copy_worker.cpp',
+                    'source/windows/error.cpp'
                 ],
                 "libraries": [ 
                     "gdiplus.lib",
@@ -73,7 +74,8 @@
                     'source/linux/files.cpp',
                     'source/linux/icon.cpp',
                     'source/linux/copy_worker.cpp',
-                    'source/linux/trash_worker.cpp'
+                    'source/linux/trash_worker.cpp',
+                    'source/linux/error.cpp'
                 ]
             }],
         ]          

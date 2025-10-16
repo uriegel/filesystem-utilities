@@ -5,15 +5,6 @@
 #include "..\std_utils.h"
 using namespace std;
 
-string format_message(int last_error) {
-    char* message{nullptr};
-    FormatMessageA(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
-    nullptr, last_error, 0, reinterpret_cast<char*>(&message), 0, nullptr);
-    string result(message);
-    LocalFree(message);
-    return result;
-}
-
 wstring combine_path(wstring path, const wstring& path_to_combine) {
     if (path.length() > 0 && path[path.length() - 1] != L'\\')
         path.append(L"\\");
@@ -26,3 +17,26 @@ void start_elevated() {
 	GetModuleFileNameW(nullptr, bytes.data(), bytes.size());
 	ShellExecuteW(nullptr, L"runas", bytes.data(), nullptr, nullptr, SW_SHOW);
  }
+
+ string convertToString(const wstring &wstr) {
+    int size_needed = WideCharToMultiByte(CP_UTF8, 0, 
+                                        wstr.c_str(), (int)wstr.size(), 
+                                        nullptr, 0, nullptr, nullptr);
+    string str(size_needed, 0);
+    WideCharToMultiByte(CP_UTF8, 0, 
+                        wstr.c_str(), (int)wstr.size(), 
+                        &str[0], size_needed, nullptr, nullptr);
+    return str;
+}
+
+wstring convertToWString(const string &str) {
+    if (str.empty()) return {};
+    int size_needed = MultiByteToWideChar(CP_UTF8, 0,
+                                          str.c_str(), (int)str.size(),
+                                          nullptr, 0);
+    std::wstring wstr(size_needed, 0);
+    MultiByteToWideChar(CP_UTF8, 0,
+                        str.c_str(), (int)str.size(),
+                        &wstr[0], size_needed);
+    return wstr;    
+}

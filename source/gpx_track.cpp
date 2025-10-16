@@ -1,6 +1,10 @@
+#include <vector>
 #include "tinyxml2.h"
 #include "gpx_track.h"
-#include <vector>
+#include "std_utils.h"
+#if WINDOWS
+    #include "windows/utils.h"
+#endif 
 using namespace std;
 using namespace tinyxml2;
 
@@ -35,7 +39,7 @@ GpxTrack get_gpx_track(const stdstring& path) {
 #ifdef LINUX    
     if (doc.LoadFile(path.c_str()) != XML_SUCCESS)
 #else    
-    if (doc.LoadFile("path.c_str()") != XML_SUCCESS)
+    if (doc.LoadFile(convertToString(path).c_str()) != XML_SUCCESS)
 #endif    
         return gpxTrack;
 
@@ -56,6 +60,11 @@ GpxTrack get_gpx_track(const stdstring& path) {
                 gpxTrack.name = ele->GetText();
             if (XMLElement* ele = FirstChildElementNS(info, "date"))
                 gpxTrack.date = ele->GetText();
+#else
+            if (XMLElement* ele = FirstChildElementNS(info, "name"))
+                gpxTrack.name = convertToWString(ele->GetText());
+            if (XMLElement* ele = FirstChildElementNS(info, "date"))
+                gpxTrack.date = convertToWString(ele->GetText());
 #endif                    
         }
         for (XMLElement* trkseg = FirstChildElementNS(trk, "trkseg"); trkseg; trkseg = NextSiblingElementNS(trkseg, "trkseg")) {
@@ -77,9 +86,11 @@ GpxTrack get_gpx_track(const stdstring& path) {
                     ele->QueryIntText(&point.heartrate);
 
 #ifdef LINUX                                        
-                // Optional: read timestamp
                 if (XMLElement* time = FirstChildElementNS(trkpt, "time"))
                     point.time = time->GetText() ? time->GetText() : "";
+#else
+                if (XMLElement* time = FirstChildElementNS(trkpt, "time"))
+                    point.time = convertToWString(time->GetText() ? time->GetText() : "");
 #endif
                 gpxTrack.trackPoints.push_back(point);
             }

@@ -29,23 +29,25 @@ private:
     stdstring directory;
     bool show_hidden;
     Promise::Deferred deferred;
-    tuple<int, string, vector<File_item>> files_result;
+    tuple<int, stdstring, stdstring, vector<File_item>> files_result;
 };
 
 void Get_files_worker::OnOK() {
     HandleScope scope(Env());
 
-    auto err_code = get<0>(files_result);
-    auto err_msg = get<1>(files_result);
-    auto items = get<2>(files_result);
-    if (err_code == 0) {
+    auto native_err_code = get<0>(files_result);
+    auto err_code = get<1>(files_result);
+    auto err_msg = get<2>(files_result);
+    auto items = get<3>(files_result);
+    if (native_err_code == 0) {
         auto array = Array::New(Env(), items.size());
         int i{0};
         for(auto item: items) {
             auto obj = Object::New(Env());
 
             obj.Set("name", nodestring::New(Env(), item.name));
-            obj.Set("size", Number::New(Env(), static_cast<double>(item.size)));
+            if (item.size != 0 || !item.is_directory)
+                obj.Set("size", Number::New(Env(), static_cast<double>(item.size)));
             napi_value time;
             napi_create_date(Env(), static_cast<double>(item.time), &time);
             obj.Set("time", time);
@@ -59,8 +61,9 @@ void Get_files_worker::OnOK() {
     } else {
         Napi::Object errObj = Env().Global()
             .Get("Error").As<Napi::Function>()
-            .New({ Napi::String::New(Env(), err_msg) });        
-        errObj.Set("code", Number::New(Env(), (int)err_code));
+            .New({ nodestring::New(Env(), err_msg) });        
+        errObj.Set("error", nodestring::New(Env(), err_code));
+        errObj.Set("nativeError", Number::New(Env(), (int)native_err_code));
         deferred.Reject(errObj);
     }
 }

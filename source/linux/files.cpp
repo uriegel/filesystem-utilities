@@ -8,7 +8,7 @@
 #include "../files.h"
 using namespace std;
 
-tuple<int, string, vector<File_item>> get_files(const string& path, bool show_hidden) {
+tuple<int, int, string, vector<File_item>> get_files(const string& path, bool show_hidden) {
     vector<File_item> items;
 
     auto dp = opendir(path.c_str());
@@ -23,10 +23,10 @@ tuple<int, string, vector<File_item>> get_files(const string& path, bool show_hi
             }
         }
         closedir(dp);
-        tuple<int, string, vector<File_item>> result(0, "", move(items));
+        tuple<int, int, string, vector<File_item>> result(0, "", move(items));
         return result;
     } else {
-        tuple<int, string, vector<File_item>> result(errno, std::strerror(errno), move(items));
+        tuple<int, int, string, vector<File_item>> result(errno, std::strerror(errno), move(items));
         return result;
     }
 }

@@ -159,6 +159,15 @@ vector<char> extract_icon_from_name(wstring icon_name) {
 	} else if (icon_name == L"drive-windows"s) {
 		vector<char> result(WindowsDrive_png, WindowsDrive_png + WindowsDrive_png_len);
 		return result;
+	} else if (icon_name == L"folder-open"s) {
+		vector<char> result(Folder_png, Folder_png + Folder_png_len);
+		return result;
+	} else if (icon_name == L"user-home"s) {
+		vector<char> result(Home_png, Home_png + Home_png_len);
+		return result;
+	} else if (icon_name == L"go-up"s) {
+		vector<char> result(Go_up_png, Go_up_png + Go_up_png_len);
+		return result;
 	} else {
 		vector<char> result;
 		return result;

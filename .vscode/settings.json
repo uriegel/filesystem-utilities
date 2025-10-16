@@ -3,6 +3,8 @@
         "*.ui": "xml",
         "optional": "cpp",
         "tuple": "cpp",
-        "iosfwd": "cpp"
+        "iosfwd": "cpp",
+        "vector": "cpp",
+        "type_traits": "cpp"
     }
 }

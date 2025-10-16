@@ -37,8 +37,8 @@ exports.getIconFromName = inner.getIconFromName
 exports.getIcon = inner.getIcon
 exports.getGpxTrackAsync = inner.getGpxTrackAsync
 
-exports.getFilesAsync = async (path, isHidden) => {
-    const fileItems = await inner.getFiles(path, isHidden == true)
+exports.getFilesAsync = async (path, showHidden) => {
+    const fileItems = await inner.getFiles(path, showHidden == true)
     let dirs = fileItems.filter(n => n.isDirectory)
     let files = fileItems.filter(n => !n.isDirectory)
     let dirCount = dirs.length
@@ -95,7 +95,7 @@ if (process.platform == "linux") {
         }
 
         const homedir = require('os').homedir()
-        const itemOffers = [{ name: "~", description: "home", mountPoint: homedir, isMounted: true, type: 1, isRoot: false }]
+        const itemOffers = [{ name: "~", description: "home", mountPoint: homedir, isMounted: true, type: "HOME", isRoot: false }]
             .concat(driveStrings
                 .slice(1)
                 .map(constructDrives)

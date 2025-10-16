@@ -1,9 +1,18 @@
 #include <windows.h>
+#include <shlobj.h>
 #include <array>
 #include <vector>
 #include "drives.h"
 #include "../std_utils.h"
 using namespace std;
+
+wstring getHomeDirectory() {
+    wchar_t path[MAX_PATH];
+    if (SUCCEEDED(SHGetFolderPathW(nullptr, CSIDL_PROFILE, nullptr, 0, path))) 
+        return wstring(path);
+    else
+		return L"C:\\"s;
+}
 
 class file_handle
 {
@@ -82,6 +91,14 @@ vector<Drive_item> get_drives() {
 			});
 		});
 
+	result.insert(result.begin(), move(Drive_item {
+		getHomeDirectory(),
+		L"Start"s,
+		(uint64_t)-1,
+		Drive_type::HOME,
+		true
+	}));
+
 	// auto erase_it = remove_if(drive_items.begin(), drive_items.end(), [](const Drive_item & val) {
 	// 	return !val.is_mounted;
 	// 	});
@@ -101,6 +118,8 @@ string drivetype_to_string(Drive_type dt) {
 			return "REMOVABLE"s;
 		case Drive_type::NETWORK:
 			return "NETWORK"s;
+		case Drive_type::HOME:
+			return "HOME"s;
 		default:
 			return "UNKNOWN"s;
 	}

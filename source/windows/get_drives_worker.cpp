@@ -34,7 +34,8 @@ void Get_drives_worker::OnOK() {
 
         obj.Set("name", nodestring::New(Env(), item.name));
         obj.Set("description", nodestring::New(Env(), item.description));
-        obj.Set("size", Number::New(Env(), static_cast<double>(item.size)));
+        if (item.size != -1)
+            obj.Set("size", Number::New(Env(), static_cast<double>(item.size)));
         obj.Set("type", String::New(Env(), drivetype_to_string(item.type))); 
         obj.Set("isMounted", Boolean::New(Env(), item.is_mounted));
 

@@ -11,11 +11,31 @@ const wait = time => new Promise(res => {
     const drives = await addon.getDrives()
     console.log("drives", drives)
 
-    const files = await addon.getFilesAsync("C:\\", true)
+    const files = await addon.getFilesAsync("C:\\users\\urieg", false)
     console.log("files", files)
     
+    const filesHidden = await addon.getFilesAsync("C:\\users\\urieg", true)
+    console.log("filesHidden", filesHidden)
+
+    try {
+        const filesNoAccess = await addon.getFilesAsync("C:\\MSOCache", true)
+        console.log("filesHidden", filesHidden)
+    } catch (e) {
+        console.log("error", e)
+    }
+
+    try {
+        const filesNo = await addon.getFilesAsync("C:\\Fantasie", true)
+        console.log("filesNo", filesNo)
+    } catch (e) {
+        console.log("error", e)
+    }
+
     const iconPath = "C:\\Windows\\regedit.exe"
     const icon = await addon.getIcon(iconPath)
+
+    const gpx = await addon.getGpxTrackAsync("C:\\Users\\urieg\\2024-01-29-16-04.gpx")
+    const gpxNo = await addon.getGpxTrackAsync("C:\\Users\\urieg\\2024-01-29-16-0No.gpx")
 
     try {
         await addon.createFolder("C:\\Users\\urieg\\OneDrive\\Desktop\\Ordner")

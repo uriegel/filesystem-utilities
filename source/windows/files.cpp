@@ -2,6 +2,7 @@
 #include <vector>
 #include <string>
 #include "../files.h"
+#include "../error.h"
 using namespace std;
 
 uint64_t convert_windowstime_to_unixtime(const FILETIME& ft) {
@@ -11,7 +12,7 @@ uint64_t convert_windowstime_to_unixtime(const FILETIME& ft) {
 	return (ull.QuadPart / 10000000ULL - 11644473600ULL) * 1000;
 }
 
-tuple<int, string, vector<File_item>> get_files(const wstring& directory, bool show_hidden) {
+tuple<int, wstring, wstring, vector<File_item>> get_files(const wstring& directory, bool show_hidden) {
     auto search_string = (directory[directory.length()-1] == L'\\' || directory[directory.length()-1] == L'/') 
         ? directory + L"*.*"s
         : directory + L"\\*.*"s;
@@ -20,8 +21,14 @@ tuple<int, string, vector<File_item>> get_files(const wstring& directory, bool s
 	vector<File_item> items;
     WIN32_FIND_DATAW w32fd{ 0 };
     auto ret = FindFirstFileW(search_string.c_str(), &w32fd);
+    if (ret == INVALID_HANDLE_VALUE) {
+        auto err = GetLastError();
+        tuple<int, wstring, wstring, vector<File_item>> result(err, format_error(err), format_message(err), items);
+        return result;
+    }
+
     while (FindNextFileW(ret, &w32fd) == TRUE) {
-        auto isHidden = (w32fd.dwFileAttributes & FILE_ATTRIBUTE_HIDDEN) == FILE_ATTRIBUTE_HIDDEN;
+        auto isHidden = ((w32fd.dwFileAttributes & FILE_ATTRIBUTE_HIDDEN) == FILE_ATTRIBUTE_HIDDEN) || w32fd.cFileName[0] == L'.';
         if ((!isHidden || show_hidden) && (w32fd.cFileName[0] != L'.' || w32fd.cFileName[1] != L'.'))
             items.emplace_back(
                 w32fd.cFileName,
@@ -32,6 +39,6 @@ tuple<int, string, vector<File_item>> get_files(const wstring& directory, bool s
         );
     }
 	FindClose(ret);
-    tuple<int, string, vector<File_item>> result(0, "", move(items));
+    tuple<int, wstring, wstring, vector<File_item>> result(0, L""s, L""s, move(items));
 	return result;
 }

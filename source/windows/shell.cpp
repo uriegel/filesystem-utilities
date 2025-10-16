@@ -3,6 +3,7 @@
 #include "shell.h"
 #include "utils.h"
 #include "..\std_utils.h"
+#include "..\error.h"
 using namespace std;
 using namespace Napi;
 
@@ -51,7 +52,7 @@ void delete_directory(wstring path) {
     auto result = SHFileOperationW(&op);
 }
 
-void create_directory(const wstring& path, string& error, int& error_code) {
+void create_directory(const wstring& path, wstring& error, int& error_code) {
     error_code = CreateDirectoryW(path.c_str(), nullptr) ? 0 : GetLastError();
     if (error_code == 5) {
         wchar_t temp[MAX_PATH];
@@ -90,7 +91,7 @@ void create_directory(const wstring& path, string& error, int& error_code) {
         delete_directory(tempDirectory);
 
         if (error_code != 0) {
-            error = "Konnte den Ordner nicht anlegen";
+            error = L"Konnte den Ordner nicht anlegen"s;
             return;
         }
     }

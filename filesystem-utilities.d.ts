@@ -3,8 +3,9 @@ export type HARDDRIVE = "HARDDRIVE"
 export type ROM = "ROM"
 export type REMOVABLE = "REMOVABLE"
 export type NETWORK = "NETWORK"
+export type HOME = "HOME"
 
-export type DriveType = UNKNOWN | HARDDRIVE | ROM | REMOVABLE | NETWORK
+export type DriveType = UNKNOWN | HARDDRIVE | ROM | REMOVABLE | NETWORK | HOME
 
 export interface DriveItem {
     name: string
@@ -70,8 +71,15 @@ declare module 'filesystem-utilities' {
         trackPoints: GpxPoint[]
     }
 
-    export interface ErrorType {
-        code: number,
+    export type ACCESS_DENIED = "ACCESS_DENIED"
+    export type PATH_NOT_FOUND = "PATH_NOT_FOUND"
+    export type GENERAL = "GENERAL"
+
+    export type ErrorType = ACCESS_DENIED | PATH_NOT_FOUND | GENERAL
+
+    export interface SystemError {
+        error: ErrorType,
+        nativeError: number,
         message: string
     }
 
@@ -89,7 +97,7 @@ declare module 'filesystem-utilities' {
 
     function getDrives(): Promise<DriveItem[]>
     function getFiles(directory: string): Promise<FileItem[]>
-    function getFilesAsync(path: string, isHidden?: boolean): Promise<FileItemsResult>
+    function getFilesAsync(path: string, showHidden?: boolean): Promise<FileItemsResult>
     function getIcon(ext: string): Promise<Buffer>
     function getIconFromName(name: string): Promise<Buffer>
     function getExifDate(file: string): Promise<Date | null>
