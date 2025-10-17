@@ -1,12 +1,10 @@
-Object.defineProperty(exports, "__esModule", { value: true });
-const childProcess = require("child_process");
-const fs = require('fs');
-const process = require("process");
-const fsa = fs.promises;
-const exec = childProcess.exec;
-
-// TODO: Windows version: getFiles with exceptions
-// TODO: Windows version: getTrackInfo string <-> wstring <-> char*
+Object.defineProperty(exports, "__esModule", { value: true })
+const childProcess = require("child_process")
+const fs = require('fs')
+const process = require("process")
+const fsa = fs.promises
+const exec = childProcess.exec
+const spawn = childProcess.spawn 
 
 var FileResult;
 (function (FileResult) {
@@ -142,6 +140,10 @@ if (process.platform == "linux") {
         let files = items.filter(n => !n.isDirectory)
         return dirs.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()))
             .concat(files.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase())))
+    }
+
+    exports.processFile = path => {
+    	spawn("xdg-open", [`${path}`])   
     }
     
     exports.getDrives = getDrives            
