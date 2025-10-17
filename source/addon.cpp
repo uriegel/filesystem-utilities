@@ -6,6 +6,7 @@
     #include "windows/get_file_version_worker.h"
     #include "windows/create_directory_worker.h"
     #include "windows/copy_worker.h"
+    #include "windows/process_file.h"
 #elif LINUX
     #include "linux/platform.h"
     #include "linux/copy_worker.h"
@@ -18,6 +19,7 @@
 #include "get_gpx_track_worker.h"
 #include "cancellation.h"
 #include "get_icon_from_name_worker.h"
+
 using namespace Napi;
 
 Object Init(Env env, Object exports) {
@@ -38,6 +40,9 @@ Object Init(Env env, Object exports) {
     exports.Set(String::New(env, "getDrives"), Function::New(env, GetDrives));
     exports.Set(String::New(env, "getFileVersion"), Function::New(env, GetFileVersion));
     exports.Set(String::New(env, "createDirectory"), Function::New(env, CreateDirectory1));
+    exports.Set(String::New(env, "openFile"), Function::New(env, OpenFile));
+    exports.Set(String::New(env, "openFileWith"), Function::New(env, OpenFileWith));
+    exports.Set(String::New(env, "showFileProperties"), Function::New(env, ShowFileProperties));
 #endif
     return exports;    
 }

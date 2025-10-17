@@ -6,6 +6,7 @@
 #endif
 #include "cancellation.h"
 using namespace std;
+using namespace Napi;
 
 map<stdstring, bool> cancellations;
 
@@ -28,8 +29,8 @@ void cancel(stdstring cancellation) {
         cancellations[cancellation] = true;
 }
 
-Napi::Value Cancel(const Napi::CallbackInfo& info) {
-    Napi::Env env = info.Env();
+Value Cancel(const CallbackInfo& info) {
+    Env env = info.Env();
     auto cancellation = (stdstring)info[0].As<nodestring>();
     cancel(cancellation);
 

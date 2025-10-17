@@ -164,15 +164,25 @@ declare module 'filesystem-utilities' {
     function getGpxTrackAsync(path: string): Promise<GpxTrack>
     
      /**
-     * Cancel an operation by calling this function with the cancellation token you have also set in the operation to cancel
+     * Cancels an operation by calling this function with the cancellation token you have also set in the operation to cancel
      */
     function cancel(cancellation: string): void
 
     /**
-     * Open a file, or alternatively (in Windows) show properties or show "open with" dialog
+     * Opens a file
      * @param path File path
-     * @param showProperties show file properties in Windows
-     * @param openWith show file 'open with...' dialog in Windows
      */
-    function processFile(path: string, showProperties?: boolean, openWith?: boolean): void    
+    function openFile(path: string): void    
+
+    /**
+     * Opens a file in Windows by showing "open with" dialog
+     * @param path File path
+     */
+    function openFileWith(path: string): void    
+
+    /**
+     * Shows file properties in Windows
+     * @param path File path
+     */
+    function showFileProperties(path: string): void    
 }

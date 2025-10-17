@@ -5,7 +5,7 @@ const wait = time => new Promise(res => {
     setTimeout(() => res(), time)
 })
     
-addon.processFile("/home/uwe/20180701_202919.mp4")
+addon.openFile("/home/uwe/20180701_202919.mp4")
 
 ;(async () => {
     setTimeout(() => addon.cancel("Känzel"), 2000)

@@ -142,9 +142,12 @@ if (process.platform == "linux") {
             .concat(files.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase())))
     }
 
-    exports.processFile = path => {
+    exports.openFile = path => {
     	spawn("xdg-open", [`${path}`])   
     }
+
+    exports.openFileWith = () => { }
+    exports.showFileProperties = () => { }
     
     exports.getDrives = getDrives            
     exports.createFolder = createFolder
@@ -177,4 +180,7 @@ if (process.platform == "linux") {
     exports.getFiles = inner.getFiles
     exports.getDrives = inner.getDrives
     exports.createFolder = createFolder
+    exports.openFile = inner.openFile    
+    exports.openFileWith = inner.openFileWith
+    exports.showFileProperties = inner.showFileProperties
 }

@@ -6,6 +6,10 @@ const wait = time => new Promise(res => {
     setTimeout(() => res(), time)
 })
 
+addon.openFile("c:\\users\\urieg\\Downloads\\index.html")
+addon.openFileWith("c:\\users\\urieg\\Downloads\\index.html")
+addon.showFileProperties("c:\\users\\urieg\\Downloads\\index.html")
+    
 ; (async () => {
     
     const drives = await addon.getDrives()
