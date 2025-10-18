@@ -151,7 +151,7 @@ if (process.platform == "linux") {
     
     exports.getDrives = getDrives    
     
-     exports.copyFiles = async (sourcePath, targetPath, items, options) => {
+    exports.copyFiles = async (sourcePath, targetPath, items, options) => {
         let idx = 0        
         for (const item of items) {
             const source = path.join(sourcePath, item)
@@ -190,6 +190,13 @@ if (process.platform == "linux") {
     }
     exports.getFiles = inner.getFiles
     exports.getDrives = inner.getDrives
+
+    exports.copyFiles = async (sourcePath, targetPath, items, options) => {
+        const source = items.map(n => path.join(sourcePath, n)) 
+        const target = items.map(n => path.join(targetPath, n)) 
+        await inner.copy(source, target)
+    }
+
     exports.createFolder = createFolder
     exports.openFile = inner.openFile    
     exports.openFileWith = inner.openFileWith

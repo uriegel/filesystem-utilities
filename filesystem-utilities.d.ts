@@ -165,7 +165,7 @@ declare module 'filesystem-utilities' {
          */
         overwrite?: boolean,
         /**
-         * Progress callback function
+         * Progress callback function, only working on Linux. On Windows there is a builtin progress dialog from the shell
          * @param fileIndex index of the copied file
          * @param currentBytes current bytes copied of the current file
          * @param currentTotalBytes total bytes of the current file

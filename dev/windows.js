@@ -6,12 +6,17 @@ const wait = time => new Promise(res => {
     setTimeout(() => res(), time)
 })
 
-addon.openFile("c:\\users\\urieg\\Downloads\\index.html")
-addon.openFileWith("c:\\users\\urieg\\Downloads\\index.html")
-addon.showFileProperties("c:\\users\\urieg\\Downloads\\index.html")
+
+// addon.openFile("c:\\users\\urieg\\Downloads\\index.html")
+// addon.openFileWith("c:\\users\\urieg\\Downloads\\index.html")
+// addon.showFileProperties("c:\\users\\urieg\\Downloads\\index.html")
     
 ; (async () => {
     
+
+    await addon.copyFiles("D:\\Videos", "c:\\Projekte", ["HD\\Tribute1.mkv", "HD\\Tribute2.mkv"])
+    await addon.copyFiles("D:\\Videos\\HD", "c:\\windows", [ "Tribute1.mkv", "Tribute2.mkv"])
+
     const drives = await addon.getDrives()
     console.log("drives", drives)
 

@@ -9,4 +9,3 @@ sudo dnf install gcc-c++ gtk3-devel
 ``` 
 sudo apt-get install build-essential libgtk-3-dev
 ``` 
-
