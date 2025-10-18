@@ -1,6 +1,7 @@
 Object.defineProperty(exports, "__esModule", { value: true })
 const childProcess = require("child_process")
 const fs = require('fs')
+const path = require('path')
 const process = require("process")
 const fsa = fs.promises
 const exec = childProcess.exec
@@ -29,7 +30,6 @@ exports.getExifDate = inner.getExifDate;
 exports.getExifInfosAsync = inner.getExifInfosAsync;
 exports.getFileVersion = inner.getFileVersion;
 exports.trash = inner.trash
-exports.copy = inner.copy
 exports.cancel = inner.cancel
 exports.getIconFromName = inner.getIconFromName
 exports.getIcon = inner.getIcon
@@ -149,7 +149,18 @@ if (process.platform == "linux") {
     exports.openFileWith = () => { }
     exports.showFileProperties = () => { }
     
-    exports.getDrives = getDrives            
+    exports.getDrives = getDrives    
+    
+     exports.copyFiles = async (sourcePath, targetPath, items, options) => {
+        let idx = 0        
+        for (const item of items) {
+            const source = path.join(sourcePath, item)
+            const target = path.join(targetPath, item)
+            await inner.copy(source, target, options?.progressCallback ? (c, t) => options.progressCallback(idx, c, t) : ((c, t) => { }))
+            idx++
+        }
+    }
+
     exports.createFolder = createFolder
     exports.getFileSizeSync = inner.getFileSizeSync
     exports.getFileSize = inner.getFileSize

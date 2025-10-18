@@ -154,9 +154,37 @@ declare module 'filesystem-utilities' {
     function getFileVersion(file: string): Promise<VersionInfo | null>
     function trash(path: string | string[]): Promise<void>
     function createFolder(path: string): Promise<void>
-    function copyFile(source: string, target: string, progress: (currentSize: number, totalSize: number)=>void, overwrite?: boolean): Promise<void>
-    function moveFile(source: string, target: string, progress: (currentSize: number, totalSize: number) => void, overwrite?: boolean): Promise<void>    
+
+
+    /**
+     * 
+     */
+    type CopyOptions = {
+        /**
+         * error when target file exits or overwrite it?
+         */
+        overwrite?: boolean,
+        /**
+         * Progress callback function
+         * @param fileIndex index of the copied file
+         * @param currentBytes current bytes copied of the current file
+         * @param currentTotalBytes total bytes of the current file
+         * @param completeBytes total bytes copied so far
+         * @param completeTotalBytes total bytes of all flies to be copied
+         */
+        progressCallback?: (fileIndex: number, currentBytes, currentTotalBytes, completeBytes, completeTotalBytes) => {}
+    }
     
+    /**
+     * Copy files <items> from <sourcePath> to <targetPath>. Sub pathes in <items> will be copied to sub pathes in <targetPath> (will be generated there if necessary)
+     * @param sourcePath source path of items to be copied
+     * @param targetPath target path of the copied items
+     * @param items the file names of the items to be copied
+     * @param options: options of Type CopyOptions
+     * @throws ErrorType
+     */
+    function copyFiles(sourcePath: string, targetPath: string, items: string[], options?: CopyOptions): Promise<void>
+        
     /**
      * Retrieves the content of a gpx track as JSON output
      * @param path File path to a gpx track

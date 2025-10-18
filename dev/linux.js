@@ -8,8 +8,20 @@ const wait = time => new Promise(res => {
 addon.openFile("/home/uwe/20180701_202919.mp4")
 
 ;(async () => {
-    setTimeout(() => addon.cancel("Känzel"), 2000)
+    try {
+        addon.trash("/home/uwe/test")
+        await addon.copyFiles("/home/uwe/Projekte/filesystem-utilities", "/home/uwe/test", ["index.js", "package.json"])
+        await addon.copyFiles("/media/uwe/Daten/Videos/", "/home/uwe/test", ["2010.mp4"], {
+            progressCallback: (idx, c, t) => console.log(`Progress js ${idx} ${c}, ${t}`)
+        }) 
+    } catch (err) {
+        // TODO already exists
+        // TODO access denied
+        // TODO path not found
+        console.log(err)
+    }    
 
+    setTimeout(() => addon.cancel("Känzel"), 2000)
     const exifInfosTest = await addon.getExifInfosAsync([
         { path: "/media/uwe/Video/Uwe/Dokumente/20131116_095204.jpg", idx: 2 },
         { path: "/media/uwe/Video/Uwe/Dokumente/Traktor.jpg", idx: 5 },

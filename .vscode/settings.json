@@ -5,6 +5,7 @@
         "tuple": "cpp",
         "iosfwd": "cpp",
         "vector": "cpp",
-        "type_traits": "cpp"
+        "type_traits": "cpp",
+        "string_view": "cpp"
     }
 }
