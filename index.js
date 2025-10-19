@@ -27,14 +27,14 @@ const requireAddon = () => {
 
 const inner = requireAddon()
 exports.getExifDate = inner.getExifDate;
-exports.getExifInfosAsync = inner.getExifInfosAsync;
+exports.getExifInfos = inner.getExifInfosAsync;
 exports.getFileVersion = inner.getFileVersion;
 exports.cancel = inner.cancel
 exports.getIconFromName = inner.getIconFromName
 exports.getIcon = inner.getIcon
 exports.getGpxTrackAsync = inner.getGpxTrackAsync
 
-exports.getFilesAsync = async (path, showHidden) => {
+exports.getFiles = async (path, showHidden) => {
     const fileItems = await inner.getFiles(path, showHidden == true)
     let dirs = fileItems.filter(n => n.isDirectory)
     let files = fileItems.filter(n => !n.isDirectory)
@@ -137,14 +137,6 @@ if (process.platform == "linux") {
         }
     }
 
-    exports.getFiles = async path => {
-        const items = await inner.getFiles(path, true)
-        let dirs = items.filter(n => n.isDirectory)
-        let files = items.filter(n => !n.isDirectory)
-        return dirs.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()))
-            .concat(files.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase())))
-    }
-
     exports.openFile = path => {
     	spawn("xdg-open", [`${path}`])   
     }
@@ -191,7 +183,6 @@ if (process.platform == "linux") {
             }
         }
     }
-    exports.getFiles = inner.getFiles
     exports.getDrives = inner.getDrives
 
     exports.copyFiles = async (sourcePath, targetPath, items, options) => {
@@ -213,4 +204,6 @@ if (process.platform == "linux") {
 // TODO delete multiple files Linux ok
 // TODO delete path not found Linux ok
 // TODO delete access denied Linux ok
+// TODO getFileVersion (s)
+// TODO createFolder
 // TODO 7 without ..async and deprecated functions

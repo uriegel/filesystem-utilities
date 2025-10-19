@@ -5,52 +5,33 @@ export type REMOVABLE = "REMOVABLE"
 export type NETWORK = "NETWORK"
 export type HOME = "HOME"
 
-export type DriveType = UNKNOWN | HARDDRIVE | ROM | REMOVABLE | NETWORK | HOME
-
-export interface DriveItem {
-    name: string
-    description: string
-    size?: number
-    type: DriveType 
-    mountPoint?: string
-    isMounted?: boolean
-}
-
-export interface FileItem {
-    name: string
-    idx: number
-    isDirectory: boolean
-    isHidden?: boolean
-    size?: number 
-    time?: Date
-}
-
-interface VersionInfo {
-    major: number
-    minor: number
-    build: number
-    patch: number
-}
-
 declare module 'filesystem-utilities' {
-    enum FileResult {
-        Success,
-        Unknown,
-        AccessDenied,
-        FileExists,
-        FileNotFound,
-        TrashNotPossible
-    }
-    interface FileException {
-        res: number
-        description: FileResult
+
+    export type DriveType = UNKNOWN | HARDDRIVE | ROM | REMOVABLE | NETWORK | HOME
+
+    export interface DriveItem {
+        name: string
+        description: string
+        size?: number
+        type: DriveType 
+        mountPoint?: string
+        isMounted?: boolean
     }
 
-    export interface FileItemsResult {
-        items: FileItem[]
-        dirCount: number  
-        fileCount: number
-        path: string
+    export interface FileItem {
+        name: string
+        idx: number
+        isDirectory: boolean
+        isHidden?: boolean
+        size?: number 
+        time?: Date
+    }
+
+    export interface VersionInfo {
+        major: number
+        minor: number
+        build: number
+        patch: number
     }
 
     export interface GpxPoint {
@@ -104,17 +85,10 @@ declare module 'filesystem-utilities' {
     /**
      * Retrieves all files from a directory. 
      * @param path parent directory containing directories and files to be retrieved
-     * @deprecated use getFilesAsync instead
-     */
-    function getFiles(directory: string): Promise<FileItem[]>
-
-    /**
-     * Retrieves all files from a directory. 
-     * @param path parent directory containing directories and files to be retrieved
      * @param showHidden When 'true', retrieves hidden files too
      * @throws ErrorType
      */
-    function getFilesAsync(path: string, showHidden?: boolean): Promise<FileItemsResult>
+    function getFiles(path: string, showHidden?: boolean): Promise<FileItemsResult>
     
     /**
      * Retrieves system icon in 16x16, as png or svg for dedicated file extensions
@@ -150,7 +124,7 @@ declare module 'filesystem-utilities' {
      * @param cancellation When included as string, the oeration can be cancelled by calling function 'cancel' with this string as parameter
      * @returns An array of exif informations. Each entry belongs to the file path entry with the same index
      */
-    function getExifInfosAsync(files: ExifInfosInput[], cancellation?: string): Promise<ExifInfo[]>
+    function getExifInfos(files: ExifInfosInput[], cancellation?: string): Promise<ExifInfo[]>
     
     
     function getFileVersion(file: string): Promise<VersionInfo | null>
@@ -200,7 +174,7 @@ declare module 'filesystem-utilities' {
      * Retrieves the content of a gpx track as JSON output
      * @param path File path to a gpx track
      */
-    function getGpxTrackAsync(path: string): Promise<GpxTrack>
+    function getGpxTrack(path: string): Promise<GpxTrack>
     
      /**
      * Cancels an operation by calling this function with the cancellation token you have also set in the operation to cancel
