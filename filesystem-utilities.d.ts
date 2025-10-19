@@ -176,11 +176,11 @@ declare module 'filesystem-utilities' {
          * @param completeBytes total bytes copied so far
          * @param completeTotalBytes total bytes of all flies to be copied
          */
-        progressCallback?: (fileIndex: number, currentBytes, currentTotalBytes, completeBytes, completeTotalBytes) => {}
+        progressCallback?: (fileIndex: number, currentBytes: number, currentTotalBytes: number, completeBytes: number, completeTotalBytes: number) => {}
     }
     
     /**
-     * Copy files <items> from <sourcePath> to <targetPath>. Sub pathes in <items> will be copied to sub pathes in <targetPath> (will be generated there if necessary)
+     * Copy files 'items' from 'sourcePath'>' to 'targetPath'. Sub pathes in 'items' will be copied to sub pathes in 'targetPath' (will be generated there if necessary)
      * @param sourcePath source path of items to be copied
      * @param targetPath target path of the copied items
      * @param items the file names of the items to be copied
