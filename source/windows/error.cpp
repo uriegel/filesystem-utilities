@@ -20,6 +20,11 @@ wstring format_error(int last_error) {
         case 5:
             return L"ACCESS_DENIED"s;
         default:
-            return L"GENERAL"s;
+            return L"UNKNOWN"s;
     }
+}
+
+tuple<int, wstring, wstring> make_result(int last_error) {
+    tuple<int, wstring, wstring> result(last_errror, format_error(last_error), format_message(last_error));
+    return result;
 }

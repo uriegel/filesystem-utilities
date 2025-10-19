@@ -9,8 +9,9 @@ const wait = time => new Promise(res => {
 
 ;(async () => {
     try {
-       // await addon.trash("/etc/debian_version")
-        //    await addon.trash(["/home/uwe/test/indexnicht da.js", "/home/uwe/test/2010.mp4"] )
+        //await addon.trash("/etc/debian_version")
+        //await addon.trash(["/home/uwe/test/indexnicht da.js", "/home/uwe/test/2010.mp4"] )
+        await addon.trash(["/home/uwe/test"] )
         
         await addon.copyFiles("/home/uwe/Projekte/filesystem-utilities", "/home/uwe/test", ["index.js", "package.json"])
         await addon.copyFiles("/media/uwe/Daten/Videos/", "/home/uwe/test", ["2010.mp4"], {

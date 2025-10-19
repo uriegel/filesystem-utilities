@@ -25,8 +25,6 @@ tuple<int, string, string, vector<File_item>> get_files(const string& path, bool
         closedir(dp);
         tuple<int, string, string, vector<File_item>> result(0, "", "", move(items));
         return result;
-    } else {
-        tuple<int, string, string, vector<File_item>> result(errno, format_error(errno), format_message(errno), move(items));
-        return result;
-    }
+    } else 
+        return tuple_cat(make_result(errno), make_tuple(move(items)));
 }

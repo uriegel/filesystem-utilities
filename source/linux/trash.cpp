@@ -13,7 +13,7 @@ tuple<int, string, string> delete_files(const vector<string>& files) {
         GError* error{nullptr};
         if (!g_file_trash(path_file, nullptr, &error)) {
             if (error) {
-                tuple<int, string, string> result(error->code, format_gerror(error->code), error->message);
+                auto result = make_result(errno, error);
                 g_error_free(error);
                 g_object_unref(path_file);
                 return result;
