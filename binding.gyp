@@ -13,7 +13,8 @@
             'source/gpx_track.cpp',
             'source/tinyxml2.cpp',
             'source/cancellation.cpp',
-            'source/get_icon_from_name_worker.cpp'
+            'source/get_icon_from_name_worker.cpp',
+            'source/trash_worker.cpp'
         ],
         'include_dirs': [
             "<!@(node -p \"require('node-addon-api').include\")",
@@ -51,7 +52,7 @@
                     'source/windows/get_drives_worker.cpp',
                     'source/windows/get_file_version_worker.cpp',
                     'source/windows/create_directory_worker.cpp',
-                    'source/windows/trash_worker.cpp',
+                    'source/windows/trash.cpp',
                     'source/windows/copy_worker.cpp',
                     'source/windows/error.cpp',
                     'source/windows/process_file.cpp'
@@ -75,7 +76,7 @@
                     'source/linux/files.cpp',
                     'source/linux/icon.cpp',
                     'source/linux/copy_worker.cpp',
-                    'source/linux/trash_worker.cpp',
+                    'source/linux/trash.cpp',
                     'source/linux/error.cpp'
                 ]
             }],

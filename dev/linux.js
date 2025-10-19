@@ -5,15 +5,19 @@ const wait = time => new Promise(res => {
     setTimeout(() => res(), time)
 })
     
-addon.openFile("/home/uwe/20180701_202919.mp4")
+// addon.openFile("/home/uwe/20180701_202919.mp4")
 
 ;(async () => {
     try {
-        addon.trash("/home/uwe/test")
+       // await addon.trash("/etc/debian_version")
+        //    await addon.trash(["/home/uwe/test/indexnicht da.js", "/home/uwe/test/2010.mp4"] )
+        
         await addon.copyFiles("/home/uwe/Projekte/filesystem-utilities", "/home/uwe/test", ["index.js", "package.json"])
         await addon.copyFiles("/media/uwe/Daten/Videos/", "/home/uwe/test", ["2010.mp4"], {
             progressCallback: (idx, c, t) => console.log(`Progress js ${idx} ${c}, ${t}`)
         }) 
+        await addon.trash(["/home/uwe/test/index.js", "/home/uwe/test/2010.mp4"] )
+
     } catch (err) {
         // TODO already exists
         // TODO access denied

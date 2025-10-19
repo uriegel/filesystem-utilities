@@ -29,7 +29,6 @@ const inner = requireAddon()
 exports.getExifDate = inner.getExifDate;
 exports.getExifInfosAsync = inner.getExifInfosAsync;
 exports.getFileVersion = inner.getFileVersion;
-exports.trash = inner.trash
 exports.cancel = inner.cancel
 exports.getIconFromName = inner.getIconFromName
 exports.getIcon = inner.getIcon
@@ -109,6 +108,10 @@ if (process.platform == "linux") {
         const unmounted = items.filter(n => !n.isMounted)
         return mounted.concat(unmounted)
     }    
+
+    exports.trash = async files => {
+        await inner.trash(Array.isArray(files) ? files : [files])
+    }
 
     const createFolder = async path => {
         try {
@@ -202,3 +205,12 @@ if (process.platform == "linux") {
     exports.openFileWith = inner.openFileWith
     exports.showFileProperties = inner.showFileProperties
 }
+// TODO copy already exists
+// TODO copy access denied
+// TODO copy path not found
+// TODO copy move
+// TODO copy overwrite
+// TODO delete multiple files
+// TODO delete path not found
+// TODO delete access denied
+// TODO 7 without ..async and deprecated functions

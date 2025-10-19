@@ -73,8 +73,10 @@ declare module 'filesystem-utilities' {
 
     export type ACCESS_DENIED = "ACCESS_DENIED"
     export type PATH_NOT_FOUND = "PATH_NOT_FOUND"
+    export type TRASH_NOT_POSSIBLE = "TRASH_NOT_POSSIBLE"
     
-    export type ErrorType = ACCESS_DENIED | PATH_NOT_FOUND | UNKNOWN
+    
+    export type ErrorType = ACCESS_DENIED | PATH_NOT_FOUND | TRASH_NOT_POSSIBLE| UNKNOWN
 
     export interface SystemError {
         error: ErrorType,
@@ -152,9 +154,14 @@ declare module 'filesystem-utilities' {
     
     
     function getFileVersion(file: string): Promise<VersionInfo | null>
-    function trash(path: string | string[]): Promise<void>
     function createFolder(path: string): Promise<void>
 
+    /**
+     * Deletes files/a file to the trash
+     * @param files the file/s to delete
+     * @throws ErrorType
+     */
+    function trash(files: string|string[]): Promise<void>
 
     /**
      * 
