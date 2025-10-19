@@ -52,7 +52,6 @@
                     'source/windows/get_drives_worker.cpp',
                     'source/windows/get_file_version_worker.cpp',
                     'source/windows/create_directory_worker.cpp',
-                    'source/windows/trash.cpp',
                     'source/windows/copy_worker.cpp',
                     'source/windows/error.cpp',
                     'source/windows/process_file.cpp'

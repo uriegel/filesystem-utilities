@@ -7,16 +7,6 @@ const fsa = fs.promises
 const exec = childProcess.exec
 const spawn = childProcess.spawn 
 
-var FileResult;
-(function (FileResult) {
-    FileResult[FileResult["Success"] = 0] = "Success";
-    FileResult[FileResult["Unknown"] = 1] = "Unknown";
-    FileResult[FileResult["AccessDenied"] = 2] = "AccessDenied";
-    FileResult[FileResult["FileExists"] = 3] = "FileExists";
-    FileResult[FileResult["FileNotFound"] = 4] = "FileNotFound";
-    FileResult[FileResult["TrashNotPossible"] = 5] = "TrashNotPossible";
-})(FileResult = exports.FileResult || (exports.FileResult = {}));
-
 const requireAddon = () => {
     try {
         return require("./build/Release/filesystem-utilities")        
@@ -32,7 +22,7 @@ exports.getFileVersion = inner.getFileVersion;
 exports.cancel = inner.cancel
 exports.getIconFromName = inner.getIconFromName
 exports.getIcon = inner.getIcon
-exports.getGpxTrackAsync = inner.getGpxTrackAsync
+exports.getGpxTrack = inner.getGpxTrackAsync
 
 exports.getFiles = async (path, showHidden) => {
     const fileItems = await inner.getFiles(path, showHidden == true)
@@ -48,6 +38,10 @@ exports.getFiles = async (path, showHidden) => {
         path,
         items
     }
+}
+
+exports.trash = async files => {
+    await inner.trash(Array.isArray(files) ? files : [files])
 }
 
 if (process.platform == "linux") {
@@ -108,10 +102,6 @@ if (process.platform == "linux") {
         const unmounted = items.filter(n => !n.isMounted)
         return mounted.concat(unmounted)
     }    
-
-    exports.trash = async files => {
-        await inner.trash(Array.isArray(files) ? files : [files])
-    }
 
     const createFolder = async path => {
         try {
@@ -201,9 +191,7 @@ if (process.platform == "linux") {
 // TODO copy path not found
 // TODO copy move
 // TODO copy overwrite
-// TODO delete multiple files Linux ok
-// TODO delete path not found Linux ok
-// TODO delete access denied Linux ok
+
 // TODO getFileVersion (s)
 // TODO createFolder
-// TODO 7 without ..async and deprecated functions
+// TODO rename

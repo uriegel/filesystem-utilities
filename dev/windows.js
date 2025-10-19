@@ -13,9 +13,15 @@ const wait = time => new Promise(res => {
     
 ; (async () => {
     
+    try {
+        //await addon.trash("c:\\Projekte\\hd");
+        await addon.trash(["c:\\windows\\Tribute12.mkv", "c:\\windows\\Tribute2.mkv"])
+        await addon.copyFiles("D:\\Videos", "c:\\Projekte", ["HD\\Tribute1.mkv", "HD\\Tribute2.mkv"])
+        await addon.copyFiles("D:\\Videos\\HD", "c:\\windows", ["Tribute1.mkv", "Tribute2.mkv"])
 
-    await addon.copyFiles("D:\\Videos", "c:\\Projekte", ["HD\\Tribute1.mkv", "HD\\Tribute2.mkv"])
-    await addon.copyFiles("D:\\Videos\\HD", "c:\\windows", [ "Tribute1.mkv", "Tribute2.mkv"])
+    } catch (e) {
+        console.log(e)
+    }
 
     const drives = await addon.getDrives()
     console.log("drives", drives)

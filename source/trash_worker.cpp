@@ -2,12 +2,13 @@
 #include <vector>
 #include "trash_worker.h"
 #if WINDOWS
-#include "windows/platform.h"
-#include "windows/trash.h"
+    #include "windows/platform.h"
+    #include "windows/shell.h"
 #elif LINUX
-#include "linux/platform.h"
-#include "trash.h"
+    #include "linux/platform.h"
+    #include "trash.h"
 #endif
+
 using namespace Napi;
 using namespace std;
 

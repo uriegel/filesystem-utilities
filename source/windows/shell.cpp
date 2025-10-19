@@ -96,10 +96,10 @@ void create_directory(const wstring& path, wstring& error, int& error_code) {
         }
     }
     else if (error_code != 0)
-        error = format_message(error_code).c_str();
+        error = L""; // TODO format_message(error_code).c_str();
 }
 
-void delete_files(const vector<wstring>& files, wstring& error_description, FileResult& error_code) {
+std::tuple<int, stdstring, stdstring> delete_files(const vector<wstring>& files) {
     SHFILEOPSTRUCTW op;
     op.hwnd = nullptr;
     op.wFunc = FO_DELETE;
@@ -113,23 +113,11 @@ void delete_files(const vector<wstring>& files, wstring& error_description, File
     op.hNameMappings = nullptr;
     op.lpszProgressTitle = nullptr;
     auto res = SHFileOperationW(&op);
-    switch (res) {
-        case 0: 
-            break;
-        default:
-            error_description = L"Konnte nicht löschen";
-            error_code = FileResult::Unknown;
-            break;
-    }
-            //         case 1:
-            //             result = FileResult::FileNotFound;
-            //             break;
-            //         case 2:
-            //             result = FileResult::FileExists;
-            //             break;
-            //         case 14:
-            //             result = FileResult::AccessDenied;
-            //             break;
+    if (res == 0) {
+        tuple<int, wstring, wstring> result(0, L""s, L""s);
+        return result;
+    } else
+        return make_result(res);
 }
 
 void copy_files(const vector<wstring>& source_pathes, const vector<wstring>& target_pathes, bool move, string& error, int& error_code) {

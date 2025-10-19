@@ -55,9 +55,10 @@ declare module 'filesystem-utilities' {
     export type ACCESS_DENIED = "ACCESS_DENIED"
     export type PATH_NOT_FOUND = "PATH_NOT_FOUND"
     export type TRASH_NOT_POSSIBLE = "TRASH_NOT_POSSIBLE"
+    export type CANCELLED = "CANCELLED"
     
     
-    export type ErrorType = ACCESS_DENIED | PATH_NOT_FOUND | TRASH_NOT_POSSIBLE| UNKNOWN
+    export type ErrorType = ACCESS_DENIED | PATH_NOT_FOUND | TRASH_NOT_POSSIBLE| CANCELLED | UNKNOWN
 
     export interface SystemError {
         error: ErrorType,

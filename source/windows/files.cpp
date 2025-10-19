@@ -23,8 +23,7 @@ tuple<int, wstring, wstring, vector<File_item>> get_files(const wstring& directo
     auto ret = FindFirstFileW(search_string.c_str(), &w32fd);
     if (ret == INVALID_HANDLE_VALUE) {
         auto err = GetLastError();
-        tuple<int, wstring, wstring, vector<File_item>> result(err, format_error(err), format_message(err), items);
-        return result;
+        return tuple_cat(make_result(err), make_tuple(move(items)));
     }
 
     while (FindNextFileW(ret, &w32fd) == TRUE) {

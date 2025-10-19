@@ -1,7 +1,6 @@
 #include <napi.h>
 #include <gtk/gtk.h>
 #include "../trash_worker.h"
-#include "../FileResult.h"
 #include "../error.h"
 using namespace Napi;
 using namespace std;
