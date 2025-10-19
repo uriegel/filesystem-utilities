@@ -165,6 +165,10 @@ declare module 'filesystem-utilities' {
          */
         overwrite?: boolean,
         /**
+         * Moves the specified files instead of copying
+         */
+        move?: boolean
+        /**
          * Progress callback function, only working on Linux. On Windows there is a builtin progress dialog from the shell
          * @param fileIndex index of the copied file
          * @param currentBytes current bytes copied of the current file
