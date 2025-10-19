@@ -22,6 +22,8 @@ string format_gerror(int g_error) {
     switch (g_error) {
         case 1:
             return "PATH_NOT_FOUND"s;
+        case 2:
+            return "FILE_EXISTS"s;
         case 14:
             return "ACCESS_DENIED"s;
         case 15:
@@ -33,9 +35,11 @@ string format_gerror(int g_error) {
 
 string format_g_message(int last_error, int g_error, string message) {
     cerr << "Error occurred: " << message.c_str() << endl;
-    switch (last_error) {
+    switch (g_error) {
         case 1:
             return "Datei nicht gefunden"s;
+        case 2:
+            return "Zieldatei existiert bereits"s;
         case 14:
             return "Zugriff verweigert"s;
         case 15:

@@ -1,7 +1,7 @@
 #include <napi.h>
 #include <gtk/gtk.h>
 #include "copy_worker.h"
-#include "../FileResult.h"
+#include "../error.h"
 using namespace Napi;
 using namespace std;
 
@@ -16,7 +16,6 @@ public:
     : AsyncProgressWorker(env)
     , callback(Persistent(callback))
     , deferred(Promise::Deferred::New(Env())) 
-    , result(FileResult::Success)
     , source_file(source_file)
     , target_file(target_file)
     , overwrite(overwrite)
@@ -51,28 +50,14 @@ public:
                 : g_file_copy(source, dest, (GFileCopyFlags)(0), nullptr, FileProgressCallback, (void*)&progress, &error); 
         }
         if (!success) {
-            if (!error)
-                result = FileResult::Unknown;
-            else {
-                error_description = error->message;
-                switch (error->code) {
-                    case 1:
-                        result = FileResult::FileNotFound;
-                        break;
-                    case 2:
-                        result = FileResult::FileExists;
-                        break;
-                    case 14:
-                        result = FileResult::AccessDenied;
-                        break;
-                    default:
-                        result = FileResult::Unknown;
-                        break;
-                }
+            if (error) {
+                files_result = make_result(errno, error);
+                g_error_free(error);
+                g_object_unref(source);
+                g_object_unref(dest);
+                return;
             }
         }
-        if (error)
-            g_error_free(error);
         g_object_unref(source);
         g_object_unref(dest);
     }
@@ -91,8 +76,7 @@ public:
 private:
     FunctionReference callback;
     Promise::Deferred deferred;
-    FileResult result;
-    string error_description;
+    tuple<int, string, string> files_result;
     string source_file;
     string target_file;
     bool overwrite;
@@ -101,13 +85,19 @@ private:
 
 void Copy_file_worker::OnOK() {
     HandleScope scope(Env());
-    if (result == FileResult::Success)
+
+    auto native_err_code = get<0>(files_result);
+    auto err_code = get<1>(files_result);
+    auto err_msg = get<2>(files_result);
+    if (native_err_code == 0) 
         deferred.Resolve(Env().Null());
     else {
-        auto obj = Object::New(Env());
-        obj.Set("fileResult", Number::New(Env(), (int)result));
-        obj.Set("description", String::New(Env(), error_description));
-        deferred.Reject(obj);
+        Napi::Object errObj = Env().Global()
+            .Get("Error").As<Napi::Function>()
+            .New({ nodestring::New(Env(), err_msg) });        
+        errObj.Set("error", nodestring::New(Env(), err_code));
+        errObj.Set("nativeError", Number::New(Env(), (int)native_err_code));
+        deferred.Reject(errObj);
     }
 }
 

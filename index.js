@@ -141,7 +141,7 @@ if (process.platform == "linux") {
         for (const item of items) {
             const source = path.join(sourcePath, item)
             const target = path.join(targetPath, item)
-            await inner.copy(source, target, options?.progressCallback ? (c, t) => options.progressCallback(idx, c, t) : ((c, t) => { }))
+            await inner.copy(source, target, options?.progressCallback ? (c, t) => options.progressCallback(idx, c, t) : ((c, t) => { }), options?.move || false, options?.overwrite || false)
             idx++
         }
     }
@@ -186,11 +186,11 @@ if (process.platform == "linux") {
     exports.openFileWith = inner.openFileWith
     exports.showFileProperties = inner.showFileProperties
 }
-// TODO copy already exists
-// TODO copy access denied
-// TODO copy path not found
-// TODO copy move
-// TODO copy overwrite
+// TODO copy already exists (Windows)
+// TODO copy access denied (Windows)
+// TODO copy path not found (Windows)
+// TODO copy overwrite (Windows)
+// TODO copy move (Windows)
 
 // TODO getFileVersion (s)
 // TODO createFolder
