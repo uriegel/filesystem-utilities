@@ -210,7 +210,7 @@ if (process.platform == "linux") {
 // TODO copy path not found
 // TODO copy move
 // TODO copy overwrite
-// TODO delete multiple files
-// TODO delete path not found
-// TODO delete access denied
+// TODO delete multiple files Linux ok
+// TODO delete path not found Linux ok
+// TODO delete access denied Linux ok
 // TODO 7 without ..async and deprecated functions
