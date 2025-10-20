@@ -120,7 +120,7 @@ std::tuple<int, stdstring, stdstring> delete_files(const vector<wstring>& files)
         return make_result(res);
 }
 
-void copy_files(const vector<wstring>& source_pathes, const vector<wstring>& target_pathes, bool move, string& error, int& error_code) {
+void copy_files(const vector<wstring>& source_pathes, const vector<wstring>& target_pathes, bool overwrite, bool move, string& error, int& error_code) {
     SHFILEOPSTRUCTW op{0};
     op.wFunc = move ? FO_MOVE : FO_COPY;
     op.fAnyOperationsAborted = FALSE;
@@ -134,7 +134,7 @@ void copy_files(const vector<wstring>& source_pathes, const vector<wstring>& tar
     target_buffer[target_buffer.length() - 1] = 0;
     op.pTo = target_buffer.c_str();
 
-    op.fFlags = FOF_NOCONFIRMATION | FOF_NOCONFIRMMKDIR;
+    op.fFlags = overwrite ? FOF_NOCONFIRMATION | FOF_NOCONFIRMMKDIR : FOF_NOCONFIRMMKDIR;
     if (target_pathes.size() > 1)
         op.fFlags |= FOF_MULTIDESTFILES;
     error_code = SHFileOperationW(&op);

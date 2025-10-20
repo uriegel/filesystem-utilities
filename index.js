@@ -178,7 +178,7 @@ if (process.platform == "linux") {
     exports.copyFiles = async (sourcePath, targetPath, items, options) => {
         const source = items.map(n => path.join(sourcePath, n)) 
         const target = items.map(n => path.join(targetPath, n)) 
-        await inner.copy(source, target)
+        await inner.copy(source, target, options?.move || false, options?.overwrite || false)
     }
 
     exports.createFolder = createFolder
@@ -186,11 +186,8 @@ if (process.platform == "linux") {
     exports.openFileWith = inner.openFileWith
     exports.showFileProperties = inner.showFileProperties
 }
-// TODO copy already exists (Windows)
-// TODO copy access denied (Windows)
+// TODO copy: error handling Windows
 // TODO copy path not found (Windows)
-// TODO copy overwrite (Windows)
-// TODO copy move (Windows)
 
 // TODO getFileVersion (s)
 // TODO createFolder
