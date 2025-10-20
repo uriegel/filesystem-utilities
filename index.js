@@ -150,42 +150,18 @@ if (process.platform == "linux") {
     exports.getFileSize = inner.getFileSize
     exports.getFileVersion = async () => null
 } else {
-    const createFolder = async path => {
-        try {
-            await inner.createDirectory(path)
-        } catch (e) {
-            switch (e.code) {
-                case -13:
-                    throw ({
-                        res: FileResult.AccessDenied,
-                        description: e.description
-                    })
-                case 183:
-                    throw ({
-                        res: FileResult.FileExists,
-                        description: e.description
-                    })
-                default:
-                    throw ({
-                        res: FileResult.Unknown,
-                        description: e.description
-                    })
-            }
-        }
-    }
+    exports.createFolder = inner.createFolder
     exports.getDrives = inner.getDrives
+    exports.openFile = inner.openFile    
+    exports.openFileWith = inner.openFileWith
+    exports.showFileProperties = inner.showFileProperties
+    exports.getFileVersion = inner.getFileVersion;
 
     exports.copyFiles = async (sourcePath, targetPath, items, options) => {
         const source = items.map(n => path.join(sourcePath, n)) 
         const target = items.map(n => path.join(targetPath, n)) 
         await inner.copy(source, target, options?.move || false, options?.overwrite || false)
     }
-
-    exports.createFolder = createFolder
-    exports.openFile = inner.openFile    
-    exports.openFileWith = inner.openFileWith
-    exports.showFileProperties = inner.showFileProperties
-    exports.getFileVersion = inner.getFileVersion;
 }
-// TODO createFolder async because of UAC, with error handling
+// TODO createFolder with error handling (Linux)
 // TODO rename async because of UAC, with error handling

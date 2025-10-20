@@ -20,6 +20,8 @@ wstring format_error(int last_error) {
             return L"PATH_NOT_FOUND"s;
         case 5:
             return L"ACCESS_DENIED"s;
+        case 183:
+            return L"FILE_EXISTS"s;
         case 1223:
             return L"CANCELLED"s;
         default:

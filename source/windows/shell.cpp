@@ -52,8 +52,8 @@ void delete_directory(wstring path) {
     auto result = SHFileOperationW(&op);
 }
 
-void create_directory(const wstring& path, wstring& error, int& error_code) {
-    error_code = CreateDirectoryW(path.c_str(), nullptr) ? 0 : GetLastError();
+tuple<int, wstring, wstring> create_directory(const wstring& path) {
+    auto error_code = CreateDirectoryW(path.c_str(), nullptr) ? 0 : GetLastError();
     if (error_code == 5) {
         wchar_t temp[MAX_PATH];
         GetTempPathW(MAX_PATH, temp);
@@ -89,14 +89,12 @@ void create_directory(const wstring& path, wstring& error, int& error_code) {
         op.lpszProgressTitle = nullptr;
         error_code = SHFileOperationW(&op);
         delete_directory(tempDirectory);
-
-        if (error_code != 0) {
-            error = L"Konnte den Ordner nicht anlegen"s;
-            return;
-        }
     }
-    else if (error_code != 0)
-        error = L""; // TODO format_message(error_code).c_str();
+    if (error_code == 0) {
+        tuple<int, wstring, wstring> result(0, L""s, L""s);
+        return result;
+    } else
+        return make_result(error_code);
 }
 
 tuple<int, stdstring, stdstring> delete_files(const vector<wstring>& files) {

@@ -56,9 +56,10 @@ declare module 'filesystem-utilities' {
     export type PATH_NOT_FOUND = "PATH_NOT_FOUND"
     export type TRASH_NOT_POSSIBLE = "TRASH_NOT_POSSIBLE"
     export type CANCELLED = "CANCELLED"
+    export type FILE_EXISTS = "FILE_EXISTS"
     
     
-    export type ErrorType = ACCESS_DENIED | PATH_NOT_FOUND | TRASH_NOT_POSSIBLE| CANCELLED | UNKNOWN
+    export type ErrorType = ACCESS_DENIED | PATH_NOT_FOUND | TRASH_NOT_POSSIBLE| CANCELLED | FILE_EXISTS | UNKNOWN
 
     export interface SystemError {
         error: ErrorType,
@@ -127,8 +128,17 @@ declare module 'filesystem-utilities' {
      */
     function getExifInfos(files: ExifInfosInput[], cancellation?: string): Promise<ExifInfo[]>
     
-    
+    /**
+     * Retrieves the file version info, if any, otherwise null. Only for Windows. On Linux the funtion returns null
+     * @param file 
+     */
     function getFileVersion(file: string): Promise<VersionInfo | null>
+
+    /**
+     * Creates a new folder 
+     * @param path path of the folder to be created
+     * @throws ErrorType
+     */    
     function createFolder(path: string): Promise<void>
 
     /**

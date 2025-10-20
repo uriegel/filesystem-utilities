@@ -14,6 +14,11 @@ const wait = time => new Promise(res => {
 ; (async () => {
     
     try {
+        await addon.createFolder("c:\\Projekte\\Neuer Ordner");
+        await addon.trash("c:\\Projekte\\Neuer Ordner");
+        await addon.createFolder("c:\\windows\\Neuer Ordner");
+        await addon.trash("c:\\windows\\Neuer Ordner");
+
         const version = await addon.getFileVersion("c:\\windows\\regedit.exe")
         console.log("version", version)
         await addon.copyFiles("D:\\Videos", "c:\\Projekte", ["HD\\Tribute12.mkv", "HD\\Tribute2.mkv"])

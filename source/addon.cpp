@@ -39,7 +39,7 @@ Object Init(Env env, Object exports) {
 #if WINDOWS    
     exports.Set(String::New(env, "getDrives"), Function::New(env, GetDrives));
     exports.Set(String::New(env, "getFileVersion"), Function::New(env, GetFileVersion));
-    exports.Set(String::New(env, "createDirectory"), Function::New(env, CreateDirectory1));
+    exports.Set(String::New(env, "createFolder"), Function::New(env, CreateFolder));
     exports.Set(String::New(env, "openFile"), Function::New(env, OpenFile));
     exports.Set(String::New(env, "openFileWith"), Function::New(env, OpenFileWith));
     exports.Set(String::New(env, "showFileProperties"), Function::New(env, ShowFileProperties));

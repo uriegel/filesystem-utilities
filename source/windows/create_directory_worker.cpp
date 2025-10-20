@@ -15,17 +15,22 @@ public:
     , deferred(Promise::Deferred::New(Env())) {}
     ~Create_directory_worker() {}
 
-    void Execute () { create_directory(path, error, error_code); }
+    void Execute () { copy_result = create_directory(path); }
 
     void OnOK() {
         HandleScope scope(Env());
-        if (error.empty())
+        auto native_err_code = get<0>(copy_result);
+        auto err_code = get<1>(copy_result);
+        auto err_msg = get<2>(copy_result);
+        if (native_err_code == 0) 
             deferred.Resolve(Env().Null());
         else {
-            auto obj = Object::New(Env());
-            obj.Set("description", WString::New(Env(), error.c_str()));
-            obj.Set("code", Number::New(Env(), static_cast<double>(error_code)));
-            deferred.Reject(obj);
+            Napi::Object errObj = Env().Global()
+                .Get("Error").As<Napi::Function>()
+                .New({ WString::New(Env(), err_msg) });        
+            errObj.Set("error", WString::New(Env(), err_code));
+            errObj.Set("nativeError", Number::New(Env(), (int)native_err_code));
+            deferred.Reject(errObj);
         }
     }
 
@@ -33,12 +38,11 @@ public:
 
 private:
     wstring path;
-    wstring error;
-    int error_code;
+    tuple<int, wstring, wstring> copy_result;
     Promise::Deferred deferred;
 };
 
-Value CreateDirectory1(const CallbackInfo& info) {
+Value CreateFolder(const CallbackInfo& info) {
     auto path = info[0].As<WString>().WValue();
     auto worker = new Create_directory_worker(info.Env(), path);
     worker->Queue();
