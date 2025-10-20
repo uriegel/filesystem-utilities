@@ -27,6 +27,13 @@ declare module 'filesystem-utilities' {
         time?: Date
     }
 
+    export interface FileItemsResult {
+        items: FileItem[]
+        dirCount: number  
+        fileCount: number
+        path: string
+    }
+
     export interface VersionInfo {
         major: number
         minor: number
