@@ -209,4 +209,13 @@ declare module 'filesystem-utilities' {
      * @param path File path
      */
     function showFileProperties(path: string): void    
+
+    /**
+     * Renames a file or directory
+     * @param path File path
+     * @param name File name 
+     * @param newName New file name
+     * @throws ErrorType
+     */
+    function rename(path: string, name: string, newName: string): void    
 }

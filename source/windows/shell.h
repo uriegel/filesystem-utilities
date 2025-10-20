@@ -11,3 +11,4 @@ std::tuple<int, std::wstring, std::wstring> rename(std::wstring name, std::wstri
 std::tuple<int, std::wstring, std::wstring> delete_files(const std::vector<std::wstring> &files);
 std::tuple<int, std::wstring, std::wstring> copy_files(const std::vector<std::wstring> &source_pathes, const std::vector<std::wstring> &target_pathes,
                                                        bool overwrite, bool move);
+std::tuple<int, std::wstring, std::wstring> rename(std::wstring name, std::wstring new_name);

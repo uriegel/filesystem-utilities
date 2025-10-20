@@ -156,6 +156,7 @@ if (process.platform == "linux") {
     exports.openFileWith = inner.openFileWith
     exports.showFileProperties = inner.showFileProperties
     exports.getFileVersion = inner.getFileVersion;
+    exports.rename = inner.rename;
 
     exports.copyFiles = async (sourcePath, targetPath, items, options) => {
         const source = items.map(n => path.join(sourcePath, n)) 
@@ -164,4 +165,4 @@ if (process.platform == "linux") {
     }
 }
 // TODO createFolder with error handling (Linux)
-// TODO rename async because of UAC, with error handling
+// TODO rename async because of UAC, with error handling (Linux)

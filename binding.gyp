@@ -54,7 +54,8 @@
                     'source/windows/create_directory_worker.cpp',
                     'source/windows/copy_worker.cpp',
                     'source/windows/error.cpp',
-                    'source/windows/process_file.cpp'
+                    'source/windows/process_file.cpp',
+                    'source/windows/rename_worker.cpp'
                 ],
                 "libraries": [ 
                     "gdiplus.lib",

@@ -15,7 +15,8 @@ const wait = time => new Promise(res => {
     
     try {
         await addon.createFolder("c:\\Projekte\\Neuer Ordner");
-        await addon.trash("c:\\Projekte\\Neuer Ordner");
+        await addon.rename("c:\\Projekte", "Neuer Ordner", "umbenannt");
+        await addon.trash("c:\\Projekte\\umbenannt");
         await addon.createFolder("c:\\windows\\Neuer Ordner");
         await addon.trash("c:\\windows\\Neuer Ordner");
 
