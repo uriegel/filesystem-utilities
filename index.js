@@ -109,18 +109,15 @@ if (process.platform == "linux") {
             switch (e.errno) {
                 case -13:
                     throw ({
-                        fileResult: FileResult.AccessDenied,
-                        description: e.stack
-                    })
-                case -17:
-                    throw ({
-                        fileResult: FileResult.FileExists,
-                        description: e.stack
+                        error: "ACCESS_DENIED",
+                        nativeError: -e.errno,
+                        message: "Zugriff verweigert"
                     })
                 default:
                     throw ({
-                        fileResult: FileResult.Unknown,
-                        description: "Unknown error occurred"
+                        error: "UNKNOWN",
+                        nativeError: -e.errno,
+                        message: "Fehler aufgetreten"
                     })
             }
         }
@@ -164,5 +161,4 @@ if (process.platform == "linux") {
         await inner.copy(source, target, options?.move || false, options?.overwrite || false)
     }
 }
-// TODO createFolder with error handling (Linux)
 // TODO rename async because of UAC, with error handling (Linux)

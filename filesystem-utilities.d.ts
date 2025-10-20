@@ -88,7 +88,7 @@ declare module 'filesystem-utilities' {
      * Retrieves all files from a directory. 
      * @param path parent directory containing directories and files to be retrieved
      * @param showHidden When 'true', retrieves hidden files too
-     * @throws ErrorType
+     * @throws SystemError
      */
     function getFiles(path: string, showHidden?: boolean): Promise<FileItemsResult>
     
@@ -137,14 +137,14 @@ declare module 'filesystem-utilities' {
     /**
      * Creates a new folder 
      * @param path path of the folder to be created
-     * @throws ErrorType
+     * @throws SystemError
      */    
     function createFolder(path: string): Promise<void>
 
     /**
      * Deletes files/a file to the trash
      * @param files the file/s to delete
-     * @throws ErrorType
+     * @throws SystemError
      */
     function trash(files: string|string[]): Promise<void>
 
@@ -177,7 +177,7 @@ declare module 'filesystem-utilities' {
      * @param targetPath target path of the copied items
      * @param items the file names of the items to be copied
      * @param options: options of Type CopyOptions
-     * @throws ErrorType
+     * @throws SystemError
      */
     function copyFiles(sourcePath: string, targetPath: string, items: string[], options?: CopyOptions): Promise<void>
         
@@ -215,7 +215,7 @@ declare module 'filesystem-utilities' {
      * @param path File path
      * @param name File name 
      * @param newName New file name
-     * @throws ErrorType
+     * @throws SystemError
      */
     function rename(path: string, name: string, newName: string): void    
 }
