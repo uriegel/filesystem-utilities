@@ -14,6 +14,8 @@ const wait = time => new Promise(res => {
 ; (async () => {
     
     try {
+        const version = await addon.getFileVersion("c:\\windows\\regedit.exe")
+        console.log("version", version)
         await addon.copyFiles("D:\\Videos", "c:\\Projekte", ["HD\\Tribute12.mkv", "HD\\Tribute2.mkv"])
         //await addon.trash("c:\\Projekte\\hd");
         await addon.trash(["c:\\windows\\Tribute1.mkv", "c:\\windows\\Tribute2.mkv"])

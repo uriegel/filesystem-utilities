@@ -18,7 +18,6 @@ const requireAddon = () => {
 const inner = requireAddon()
 exports.getExifDate = inner.getExifDate;
 exports.getExifInfos = inner.getExifInfosAsync;
-exports.getFileVersion = inner.getFileVersion;
 exports.cancel = inner.cancel
 exports.getIconFromName = inner.getIconFromName
 exports.getIcon = inner.getIcon
@@ -149,6 +148,7 @@ if (process.platform == "linux") {
     exports.createFolder = createFolder
     exports.getFileSizeSync = inner.getFileSizeSync
     exports.getFileSize = inner.getFileSize
+    exports.getFileVersion = async () => null
 } else {
     const createFolder = async path => {
         try {
@@ -185,7 +185,7 @@ if (process.platform == "linux") {
     exports.openFile = inner.openFile    
     exports.openFileWith = inner.openFileWith
     exports.showFileProperties = inner.showFileProperties
+    exports.getFileVersion = inner.getFileVersion;
 }
-// TODO getFileVersion (s)
-// TODO createFolder
-// TODO rename
+// TODO createFolder async because of UAC, with error handling
+// TODO rename async because of UAC, with error handling
