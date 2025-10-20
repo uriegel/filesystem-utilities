@@ -12,9 +12,10 @@ const wait = time => new Promise(res => {
         //await addon.trash("/etc/debian_version")
         //await addon.trash(["/home/uwe/test/indexnicht da.js", "/home/uwe/test/2010.mp4"] )
 
-        await addon.createFolder("/test2")
+        await addon.createFolder("/home/uwe/test")
+        await addon.rename("/home/uwe", "test", "umbenannt")
 
-        await addon.trash(["/home/uwe/test"] )
+        await addon.trash(["/home/uwe/umbenannt"] )
         
         await addon.copyFiles("/home/uwe/Projekte/filesystem-utilities", "/home/uwe/test", ["index.js", "package.json"])
         await addon.copyFiles("/media/uwe/Daten/Videos/", "/home/uwe/test", ["2010.mp4"], {

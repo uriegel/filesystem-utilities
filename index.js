@@ -124,6 +124,28 @@ if (process.platform == "linux") {
         }
     }
 
+    const rename = async (filePath, name, newName) => {
+        try {
+            await fsa.rename(path.join(filePath, name), path.join(filePath, newName))
+        } catch (e) {
+            const message = inner.getErrorMessage(-e.errno)
+            switch (e.errno) {
+                case -13:
+                    throw ({
+                        error: "ACCESS_DENIED",
+                        nativeError: -e.errno,
+                        message
+                    })
+                default:
+                    throw ({
+                        error: "UNKNOWN",
+                        nativeError: -e.errno,
+                        message
+                    })
+            }
+        }
+    }
+
     exports.openFile = path => {
     	spawn("xdg-open", [`${path}`])   
     }
@@ -144,6 +166,7 @@ if (process.platform == "linux") {
     }
 
     exports.createFolder = createFolder
+    exports.rename = rename
     exports.getFileSizeSync = inner.getFileSizeSync
     exports.getFileSize = inner.getFileSize
     exports.getFileVersion = async () => null
@@ -162,4 +185,4 @@ if (process.platform == "linux") {
         await inner.copy(source, target, options?.move || false, options?.overwrite || false)
     }
 }
-// TODO rename async because of UAC, with error handling (Linux)
+
