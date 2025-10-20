@@ -186,9 +186,6 @@ if (process.platform == "linux") {
     exports.openFileWith = inner.openFileWith
     exports.showFileProperties = inner.showFileProperties
 }
-// TODO copy: error handling Windows
-// TODO copy path not found (Windows)
-
 // TODO getFileVersion (s)
 // TODO createFolder
 // TODO rename

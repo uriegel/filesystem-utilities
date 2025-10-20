@@ -20,21 +20,25 @@ public:
     ~Copy_worker() {}
 
     void Execute () { 
-        if (source_pathes.size() == 1 && move)
-            rename(source_pathes[0], target_pathes[0], error, error_code); 
-        else
-            copy_files(source_pathes, target_pathes, overwrite, move, error, error_code); 
+        copy_result = source_pathes.size() == 1 && move
+            ? rename(source_pathes[0], target_pathes[0]) 
+            : copy_files(source_pathes, target_pathes, overwrite, move); 
     }
 
     void OnOK() {
         HandleScope scope(Env());
-        if (error.empty())
+        auto native_err_code = get<0>(copy_result);
+        auto err_code = get<1>(copy_result);
+        auto err_msg = get<2>(copy_result);
+        if (native_err_code == 0) 
             deferred.Resolve(Env().Null());
         else {
-            auto obj = Object::New(Env());
-            obj.Set("description", String::New(Env(), error.c_str()));
-            obj.Set("code", Number::New(Env(), static_cast<double>(error_code)));
-            deferred.Reject(obj);
+            Napi::Object errObj = Env().Global()
+                .Get("Error").As<Napi::Function>()
+                .New({ WString::New(Env(), err_msg) });        
+            errObj.Set("error", WString::New(Env(), err_code));
+            errObj.Set("nativeError", Number::New(Env(), (int)native_err_code));
+            deferred.Reject(errObj);
         }
     }
 
@@ -45,8 +49,7 @@ private:
     vector<wstring> target_pathes;
     bool overwrite;
     bool move;
-    string error;
-    int error_code;
+    tuple<int, wstring, wstring> copy_result;
     Promise::Deferred deferred;
 };
 

@@ -99,7 +99,7 @@ void create_directory(const wstring& path, wstring& error, int& error_code) {
         error = L""; // TODO format_message(error_code).c_str();
 }
 
-std::tuple<int, stdstring, stdstring> delete_files(const vector<wstring>& files) {
+tuple<int, stdstring, stdstring> delete_files(const vector<wstring>& files) {
     SHFILEOPSTRUCTW op;
     op.hwnd = nullptr;
     op.wFunc = FO_DELETE;
@@ -120,7 +120,7 @@ std::tuple<int, stdstring, stdstring> delete_files(const vector<wstring>& files)
         return make_result(res);
 }
 
-void copy_files(const vector<wstring>& source_pathes, const vector<wstring>& target_pathes, bool overwrite, bool move, string& error, int& error_code) {
+tuple<int, wstring, wstring> copy_files(const vector<wstring>& source_pathes, const vector<wstring>& target_pathes, bool overwrite, bool move) {
     SHFILEOPSTRUCTW op{0};
     op.wFunc = move ? FO_MOVE : FO_COPY;
     op.fAnyOperationsAborted = FALSE;
@@ -137,12 +137,15 @@ void copy_files(const vector<wstring>& source_pathes, const vector<wstring>& tar
     op.fFlags = overwrite ? FOF_NOCONFIRMATION | FOF_NOCONFIRMMKDIR : FOF_NOCONFIRMMKDIR;
     if (target_pathes.size() > 1)
         op.fFlags |= FOF_MULTIDESTFILES;
-    error_code = SHFileOperationW(&op);
-    if (error_code != 0) 
-        error = move ? "Konnte nicht verschieben" : "Konnte nicht kopieren";
+    auto error_code = SHFileOperationW(&op);
+    if (error_code == 0) {
+        tuple<int, wstring, wstring> result(0, L""s, L""s);
+        return result;
+    } else
+        return make_result(error_code);
 }
 
-void rename(wstring name, wstring new_name, string& error, int& error_code) {
+tuple<int, wstring, wstring> rename(wstring name, wstring new_name) {
     SHFILEOPSTRUCTW op;
     op.hwnd = nullptr;
     op.wFunc = FO_RENAME;
@@ -156,7 +159,10 @@ void rename(wstring name, wstring new_name, string& error, int& error_code) {
     op.fAnyOperationsAborted = FALSE;
     op.hNameMappings = nullptr;
     op.lpszProgressTitle = nullptr;
-    error_code = SHFileOperationW(&op);
-    if (error_code != 0) 
-        error = "Konnte nicht umbenennen";
+    auto error_code = SHFileOperationW(&op);
+    if (error_code == 0) {
+        tuple<int, wstring, wstring> result(0, L""s, L""s);
+        return result;
+    } else
+        return make_result(error_code);
 }

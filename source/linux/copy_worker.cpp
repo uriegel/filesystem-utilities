@@ -51,7 +51,7 @@ public:
         }
         if (!success) {
             if (error) {
-                files_result = make_result(errno, error);
+                copy_result = make_result(errno, error);
                 g_error_free(error);
                 g_object_unref(source);
                 g_object_unref(dest);
@@ -76,7 +76,7 @@ public:
 private:
     FunctionReference callback;
     Promise::Deferred deferred;
-    tuple<int, string, string> files_result;
+    tuple<int, string, string> copy_result;
     string source_file;
     string target_file;
     bool overwrite;
@@ -86,9 +86,9 @@ private:
 void Copy_file_worker::OnOK() {
     HandleScope scope(Env());
 
-    auto native_err_code = get<0>(files_result);
-    auto err_code = get<1>(files_result);
-    auto err_msg = get<2>(files_result);
+    auto native_err_code = get<0>(copy_result);
+    auto err_code = get<1>(copy_result);
+    auto err_msg = get<2>(copy_result);
     if (native_err_code == 0) 
         deferred.Resolve(Env().Null());
     else {
