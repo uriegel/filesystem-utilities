@@ -1,6 +1,7 @@
 #include <cerrno>
 #include <iostream>
 #include "../error.h"
+using namespace Napi;
 using namespace std;
 
 string format_message(int last_error) {
@@ -59,9 +60,8 @@ tuple<int, string, string> make_result(int last_error, GError* gerror) {
     return result;
 }
 
-// if (error) {
-//                 tuple<int, string, string> result(errno, format_error(errno), format_message(errno));
-//                 g_error_free(error);
-//                 g_object_unref(path_file);
-//                 return result;
-//             }
+Value GetErrorMessage(const CallbackInfo &info) {
+    auto err = info[0].As<Number>().Int32Value();
+    auto msg = format_message(err);
+    return nodestring::New(info.Env(), msg);
+}

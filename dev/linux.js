@@ -30,7 +30,7 @@ const wait = time => new Promise(res => {
         await addon.copyFiles("/home/uwe/Projekte/filesystem-utilities", "/home/uwe/test", ["index.js", "package.json"])
         await addon.copyFiles("/home/uwe/Projekte/filesystem-utilities", "/etc", ["index.js", "package.json"])
 
-    } catch (err) {
+    } catch (err) { 
         console.log(err)
     }    
 

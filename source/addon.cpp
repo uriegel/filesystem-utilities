@@ -11,6 +11,7 @@
 #elif LINUX
     #include "linux/platform.h"
     #include "linux/copy_worker.h"
+    #include "error.h"
 #endif
 #include "get_files_worker.h"
 #include "get_icon_worker.h"
@@ -27,6 +28,7 @@ Object Init(Env env, Object exports) {
 #if LINUX
     std::setlocale(LC_MESSAGES, "");
     std::setlocale(LC_CTYPE, "");
+    exports.Set(String::New(env, "getErrorMessage"), Function::New(env, GetErrorMessage));
 #endif
     exports.Set(String::New(env, "getFiles"), Function::New(env, GetFiles));
     exports.Set(String::New(env, "getIcon"), Function::New(env, GetIcon));

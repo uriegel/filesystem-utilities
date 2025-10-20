@@ -106,18 +106,19 @@ if (process.platform == "linux") {
         try {
             await fsa.mkdir(path, { recursive: true })   
         } catch (e) {
+            const message = inner.getErrorMessage(-e.errno)
             switch (e.errno) {
                 case -13:
                     throw ({
                         error: "ACCESS_DENIED",
                         nativeError: -e.errno,
-                        message: "Zugriff verweigert"
+                        message
                     })
                 default:
                     throw ({
                         error: "UNKNOWN",
                         nativeError: -e.errno,
-                        message: "Fehler aufgetreten"
+                        message
                     })
             }
         }

@@ -1,3 +1,4 @@
+#include <napi.h>
 #pragma once
 #if WINDOWS
     #include "windows/platform.h"
@@ -8,4 +9,5 @@
 std::tuple<int, stdstring, stdstring> make_result(int last_error);
 #if LINUX
 std::tuple<int, stdstring, stdstring> make_result(int last_error, GError* gerror);
+Napi::Value GetErrorMessage(const Napi::CallbackInfo &info);
 #endif
