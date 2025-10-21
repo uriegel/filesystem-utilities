@@ -156,6 +156,14 @@ declare module 'filesystem-utilities' {
     function trash(files: string|string[]): Promise<void>
 
     /**
+     * Copies a file
+     * @param sourceFile 
+     * @param targetFile 
+     * @throws SystemError
+     */
+    function copyFile(sourceFile: string, targetFile: string): Promise<void>
+
+    /**
      * 
      */
     type CopyOptions = {
@@ -171,11 +179,9 @@ declare module 'filesystem-utilities' {
          * Progress callback function, only working on Linux. On Windows there is a builtin progress dialog from the shell
          * @param fileIndex index of the copied file
          * @param currentBytes current bytes copied of the current file
-         * @param currentTotalBytes total bytes of the current file
-         * @param completeBytes total bytes copied so far
-         * @param completeTotalBytes total bytes of all flies to be copied
+         * @param totalBytes total bytes of all flies to be copied
          */
-        progressCallback?: (fileIndex: number, currentBytes: number, currentTotalBytes: number, completeBytes: number, completeTotalBytes: number) => {}
+        progressCallback?: (fileIndex: number, currentBytes: number, totalBytes: number) => {}
     }
     
     /**
