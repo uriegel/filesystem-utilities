@@ -181,7 +181,7 @@ declare module 'filesystem-utilities' {
          * @param currentBytes current bytes copied of the current file
          * @param totalBytes total bytes of all flies to be copied
          */
-        progressCallback?: (fileIndex: number, currentBytes: number, totalBytes: number) => {}
+        progressCallback?: (fileIndex: number, currentBytes: number, totalBytes: number) => void
     }
     
     /**
