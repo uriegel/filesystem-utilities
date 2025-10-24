@@ -176,6 +176,10 @@ declare module 'filesystem-utilities' {
          */
         move?: boolean
         /**
+         * When set, you can cancel the copy process with 'cancel(cancellation)'
+         */
+        cancellation?: string
+        /**
          * Progress callback function, only working on Linux. On Windows there is a builtin progress dialog from the shell
          * @param fileIndex index of the copied file
          * @param currentBytes current bytes copied of the current file

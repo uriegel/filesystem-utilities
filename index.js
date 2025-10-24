@@ -156,17 +156,13 @@ if (process.platform == "linux") {
     exports.getDrives = getDrives    
     
     exports.copyFiles = async (sourcePath, targetPath, items, options) => {
-        let idx = 0        
-        for (const item of items) {
-            const source = path.join(sourcePath, item)
-            const target = path.join(targetPath, item)
-            await inner.copy(source, target, options?.progressCallback ? (c, t) => options.progressCallback(idx, c, t) : ((c, t) => { }), options?.move || false, options?.overwrite || false)
-            idx++
-        }
+        // TODO loop in C++ to be able to get cancelled
+        let copyItems = items.map(item => ({ source: path.join(sourcePath, item), target: path.join(targetPath, item) }))
+        await inner.copy(copyItems, options?.progressCallback ? (idx, c, t) => options.progressCallback(idx, c, t) : (() => { }), options?.move || false, options?.overwrite || false, options?.cancellation || "")
     }
 
     exports.copyFile = async (source, target) => {
-        await inner.copy(source, target, (c, t) => { }, false, false)
+        await inner.copy([source, target], (c, t) => { }, false, false)
     }
 
     exports.createFolder = createFolder

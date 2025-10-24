@@ -18,8 +18,8 @@ const wait = time => new Promise(res => {
         await addon.trash(["/home/uwe/umbenannt"] )
         
         await addon.copyFiles("/home/uwe/Projekte/filesystem-utilities", "/home/uwe/test", ["index.js", "package.json"])
-        await addon.copyFiles("/media/uwe/Daten/Videos/", "/home/uwe/test", ["2010.mp4"], {
-            progressCallback: (idx, c, t) => console.log(`Progress js ${idx} ${c}, ${t}`)
+        await addon.copyFiles("/media/uwe/Daten/Videos/", "/home/uwe/test", ["2010.mp4", "2010.mp4"], {
+            progressCallback: (idx, c, t) => console.log(`Progress js ${idx} ${c}, ${t}`), overwrite: true
         }) 
         await addon.trash(["/home/uwe/test/index.js", "/home/uwe/test/2010.mp4"])
         await addon.copyFiles("/home/uwe/Projekte/filesystem-utilities", "/home/uwe/test", ["index.js", "package.json"], {

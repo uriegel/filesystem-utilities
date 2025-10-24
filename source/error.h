@@ -9,5 +9,6 @@
 std::tuple<int, stdstring, stdstring> make_result(int last_error);
 #if LINUX
 std::tuple<int, stdstring, stdstring> make_result(int last_error, GError* gerror);
+std::tuple<int, stdstring, stdstring> make_cancelled_result();
 Napi::Value GetErrorMessage(const Napi::CallbackInfo &info);
 #endif

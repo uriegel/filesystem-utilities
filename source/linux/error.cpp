@@ -50,6 +50,11 @@ string format_g_message(int last_error, int g_error, string message) {
     }
 }
 
+tuple<int, string, string> make_cancelled_result() {
+    tuple<int, string, string> result(-1, "CANCELLED", "Die Aktion wurde abgebrochen");
+    return result;
+}
+
 tuple<int, string, string> make_result(int last_error) {
     tuple<int, string, string> result(errno, format_error(last_error), format_message(last_error));
     return result;
