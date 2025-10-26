@@ -58,8 +58,8 @@ public:
             auto dest = g_file_new_for_path(item.target.c_str());
             GError* error{nullptr};
             bool success = move
-                ? g_file_move(source, dest, (GFileCopyFlags)(overwrite ? 1 : 0), nullptr, FileProgressCallback, (void*)&epd, &error)
-                : g_file_copy(source, dest, (GFileCopyFlags)(overwrite ? 1 : 0), nullptr, FileProgressCallback, (void*)&epd, &error);
+                ? g_file_move(source, dest, (overwrite ? G_FILE_COPY_OVERWRITE : G_FILE_COPY_NONE), nullptr, FileProgressCallback, (void*)&epd, &error)
+                : g_file_copy(source, dest, (overwrite ? G_FILE_COPY_OVERWRITE : G_FILE_COPY_NONE), nullptr, FileProgressCallback, (void*)&epd, &error);
             if (error && error->code == 1 && g_file_query_exists(source, nullptr)) {
                 g_error_free(error);
                 error = nullptr;

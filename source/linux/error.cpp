@@ -45,6 +45,8 @@ string format_g_message(int last_error, int g_error, string message) {
             return "Zugriff verweigert"s;
         case 15:
             return "Löschen in den Papierkorb nicht möglich"s;
+        case 25:
+            return "Rekursives Kopieren nicht möglich"s;
         default:
             return format_message(last_error);
     }
