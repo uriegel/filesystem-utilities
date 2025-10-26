@@ -6,11 +6,14 @@ wstring format_message(int last_error) {
     wchar_t* message{nullptr};
     FormatMessageW(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
     nullptr, last_error, 0, reinterpret_cast<wchar_t*>(&message), 0, nullptr);
-    wstring result(message);
-    LocalFree(message);
-    while (!result.empty() && iswspace(result.back()))
-        result.pop_back();
-    return result;
+    if (message != nullptr) {
+        wstring result(message);
+        LocalFree(message);
+        while (!result.empty() && iswspace(result.back()))
+            result.pop_back();
+        return result;
+    } else
+        return L"Unbekannter Fehler"s;
 }
 
 wstring format_error(int last_error) {
@@ -31,5 +34,10 @@ wstring format_error(int last_error) {
 
 tuple<int, wstring, wstring> make_result(int last_error) {
     tuple<int, wstring, wstring> result(last_error, format_error(last_error), format_message(last_error));
+    return result;
+}
+
+tuple<int, wstring, wstring> make_move_not_possible() {
+    tuple<int, wstring, wstring> result(-1, L"CANCELLED"s, L"Das Verzeichnis konnte nicht verschoben werden"s);
     return result;
 }

@@ -11,4 +11,6 @@ std::tuple<int, stdstring, stdstring> make_result(int last_error);
 std::tuple<int, stdstring, stdstring> make_result(int last_error, GError* gerror);
 std::tuple<int, stdstring, stdstring> make_cancelled_result();
 Napi::Value GetErrorMessage(const Napi::CallbackInfo &info);
+#else
+std::tuple<int, stdstring, stdstring> make_move_not_possible();
 #endif

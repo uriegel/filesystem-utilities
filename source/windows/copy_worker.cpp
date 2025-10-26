@@ -19,10 +19,11 @@ public:
 
     ~Copy_worker() {}
 
-    void Execute () { 
-        copy_result = source_pathes.size() == 1 && move
-            ? rename(source_pathes[0], target_pathes[0]) 
-            : copy_files(source_pathes, target_pathes, overwrite, move); 
+    void Execute () {
+        copy_result = copy_files(source_pathes, target_pathes, overwrite, move);
+        // copy_result = source_pathes.size() == 1 && move 
+        //     ? rename(source_pathes[0], target_pathes[0]) 
+        //     : copy_files(source_pathes, target_pathes, overwrite, move); 
     }
 
     void OnOK() {

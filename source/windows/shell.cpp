@@ -139,7 +139,9 @@ tuple<int, wstring, wstring> copy_files(const vector<wstring>& source_pathes, co
     if (error_code == 0) {
         tuple<int, wstring, wstring> result(0, L""s, L""s);
         return result;
-    } else
+    } else if (error_code == 115)
+        return make_move_not_possible();
+    else
         return make_result(error_code);
 }
 

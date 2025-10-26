@@ -14,6 +14,13 @@ const wait = time => new Promise(res => {
 ; (async () => {
     
     try {
+
+        try {
+            await addon.copyFiles("C:\\Users\\urieg", "C:\\Users\\urieg\\source", ["Test"], { move: true })
+        } catch (e) {
+            console.log("error", e)
+        }
+
         await addon.createFolder("c:\\Projekte\\Neuer Ordner");
         await addon.rename("c:\\Projekte", "Neuer Ordner", "umbenannt");
         await addon.trash("c:\\Projekte\\umbenannt");
