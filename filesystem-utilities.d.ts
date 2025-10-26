@@ -234,5 +234,5 @@ declare module 'filesystem-utilities' {
      * @param newName New file name
      * @throws SystemError
      */
-    function rename(path: string, name: string, newName: string): void    
+    function rename(path: string, name: string, newName: string): Promise<void>
 }

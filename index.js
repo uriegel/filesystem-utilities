@@ -156,7 +156,6 @@ if (process.platform == "linux") {
     exports.getDrives = getDrives    
     
     exports.copyFiles = async (sourcePath, targetPath, items, options) => {
-        // TODO loop in C++ to be able to get cancelled
         let copyItems = items.map(item => ({ source: path.join(sourcePath, item), target: path.join(targetPath, item) }))
         await inner.copy(copyItems, options?.progressCallback ? (idx, c, t) => options.progressCallback(idx, c, t) : (() => { }), options?.move || false, options?.overwrite || false, options?.cancellation || "")
     }
