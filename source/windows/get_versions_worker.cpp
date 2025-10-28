@@ -4,6 +4,7 @@
 #include "get_versions_worker.h"
 #include "platform.h"
 #include "..\cancellation.h"
+#include "file_version.h"
 using namespace Napi;
 using namespace std;
 
@@ -16,13 +17,17 @@ vector<VersionInfoResult> get_versions(vector<VersionsInput>& input, wstring can
 		if (is_cancelled(cancellation))
 			return vector<VersionInfoResult>();
 
-		
-        
-        // auto ret = get_exif_info(vi.path, vi.idx);
-		// if (ret.date != 0 || ret.latitude != 0 || ret.longitude != 0)
-		// 	output.push_back(ret);
-
-
+		auto version = get_file_info_version(vi.path);
+        if (version.has_value()) {
+            VersionInfoResult vir { vi.idx, { 
+                version.value().major,
+                version.value().minor,
+                version.value().build,
+                version.value().patch
+            } }; 
+            
+            output.push_back(vir);
+        }
 	}
 
 	unregister_cancellable(cancellation);

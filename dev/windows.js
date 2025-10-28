@@ -15,6 +15,8 @@ const wait = time => new Promise(res => {
 
         const icon1 = await addon.getIcon("//vme-test2024-1/c$/Program%20Files/caesar/CAEWebSrv/caesarWebServer.exe")
 
+        const versions = await addon.getVersionInfos([ { path: "C:\\Windows\\HelpPane.exe", idx: 1 }, { path: "C:\\Windows\\win.ini", idx: 2 }, { path: "C:\\Windows\\regedit.exe", idx: 3 } ])
+
 
 
     try {

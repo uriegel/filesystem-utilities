@@ -3,6 +3,8 @@
 #include "platform.h"
 
 struct Version_info {
+    Version_info() {}
+
     Version_info(int major, int minor, int build, int patch) 
     : major(major)
     , minor(minor)
