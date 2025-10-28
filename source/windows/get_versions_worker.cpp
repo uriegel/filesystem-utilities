@@ -3,17 +3,18 @@
 #include <optional>
 #include "get_versions_worker.h"
 #include "platform.h"
+#include "..\cancellation.h"
 using namespace Napi;
 using namespace std;
 
-vector<VersionInfo> get_versions(vector<VersionsInput>& input, wstring cancellation) {
-	vector<VersionInfo> output;
+vector<VersionInfoResult> get_versions(vector<VersionsInput>& input, wstring cancellation) {
+	vector<VersionInfoResult> output;
 
 	register_cancellable(cancellation);
 
 	for (auto& vi: input) {
 		if (is_cancelled(cancellation))
-			return vector<VersionInfo>();
+			return vector<VersionInfoResult>();
 
 		
         
@@ -34,11 +35,11 @@ public:
     Get_versions_worker(const Napi::Env& env, const vector<VersionsInput>& input, wstring cancellation)
     : AsyncWorker(env)
     , deferred(Promise::Deferred::New(Env()))
-    , input(input) {}
+    , input(input) 
     , cancellation(cancellation) {}
     ~Get_versions_worker() {}
 
-    void Execute () { version = get_versions(input, cancellation); }
+    void Execute () { versions = get_versions(input, cancellation); }
 
     void OnOK();
 
@@ -48,22 +49,28 @@ private:
     Napi::Promise::Deferred deferred;
     vector<VersionsInput> input;
     wstring cancellation;
-    optional<Version_info> version;
+    vector<VersionInfoResult> versions;
 };
 
 void Get_versions_worker::OnOK() {
     auto env = Env();
     HandleScope scope(env);
 
-    if (version.has_value()) {
+
+    auto array = Array::New(Env(), versions.size());
+    int i{0};
+    for(auto item: versions) {
         auto obj = Object::New(Env());
-        obj.Set("major", Number::New(Env(), static_cast<double>(version.value().major)));
-        obj.Set("minor", Number::New(Env(), static_cast<double>(version.value().minor)));
-        obj.Set("build", Number::New(Env(), static_cast<double>(version.value().build)));
-        obj.Set("patch", Number::New(Env(), static_cast<double>(version.value().patch)));
-        deferred.Resolve(obj);
-    } else 
-        deferred.Resolve(Env().Null());
+        obj.Set("idx", Number::New(Env(), static_cast<int>(item.idx)));
+        auto versionObj = Object::New(Env());
+        versionObj.Set("major", Number::New(Env(), static_cast<double>(item.info.major)));
+        versionObj.Set("minor", Number::New(Env(), static_cast<double>(item.info.minor)));
+        versionObj.Set("build", Number::New(Env(), static_cast<double>(item.info.build)));
+        versionObj.Set("patch", Number::New(Env(), static_cast<double>(item.info.patch)));
+        obj.Set("info", versionObj);
+        array.Set(i++, obj);
+    }
+    deferred.Resolve(array);
 }
 
 Value GetVersions(const CallbackInfo& info) {

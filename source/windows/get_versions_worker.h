@@ -13,4 +13,9 @@ struct VersionInfo {
     int patch;
 };
 
+struct VersionInfoResult {
+    int idx;
+    VersionInfo info;
+};
+
 Napi::Value GetVersions(const Napi::CallbackInfo& info);

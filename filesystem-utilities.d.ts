@@ -46,6 +46,11 @@ declare module 'filesystem-utilities' {
         patch: number
     }
 
+    export interface VersionInfoResult {
+        idx: number
+        info: VersionInfo
+    }
+
     export interface GpxPoint {
         lat: number
         lon: number
@@ -147,7 +152,7 @@ declare module 'filesystem-utilities' {
      * @param cancellation When included as string, the operation can be cancelled by calling function 'cancel' with this string as parameter
      * @returns An array of VersionInfo informations. Each entry belongs to the file path entry with the same index
      */
-    function getVersionInfos(files: VersionInput[], cancellation?: string): Promise<VersionInfo[]>
+    function getVersionInfos(files: VersionsInput[], cancellation?: string): Promise<VersionInfoResult[]>
     
     /**
      * Retrieves the file version info, if any, otherwise null. Only for Windows. On Linux the funtion returns null
