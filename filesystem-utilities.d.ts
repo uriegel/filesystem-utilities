@@ -34,6 +34,11 @@ declare module 'filesystem-utilities' {
         path: string
     }
 
+    export interface VersionsInput {
+        path: string,
+        idx: number
+    }
+
     export interface VersionInfo {
         major: number
         minor: number
@@ -130,10 +135,19 @@ declare module 'filesystem-utilities' {
      * 
      * Retrieves the exif datas of a png or jpg file, if included
      * @param file Pathes to the png or jpg files, together with an index.
-     * @param cancellation When included as string, the oeration can be cancelled by calling function 'cancel' with this string as parameter
+     * @param cancellation When included as string, the operation can be cancelled by calling function 'cancel' with this string as parameter
      * @returns An array of exif informations. Each entry belongs to the file path entry with the same index
      */
     function getExifInfos(files: ExifInfosInput[], cancellation?: string): Promise<ExifInfo[]>
+    
+    /**
+     * 
+     * Retrieves the file version of a exe or dll files in Windows, if included. Only available in Windows
+     * @param file Pathes to the exe or dll files, together with an index.
+     * @param cancellation When included as string, the operation can be cancelled by calling function 'cancel' with this string as parameter
+     * @returns An array of VersionInfo informations. Each entry belongs to the file path entry with the same index
+     */
+    function getVersionInfos(files: VersionInput[], cancellation?: string): Promise<VersionInfo[]>
     
     /**
      * Retrieves the file version info, if any, otherwise null. Only for Windows. On Linux the funtion returns null

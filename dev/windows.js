@@ -12,7 +12,11 @@ const wait = time => new Promise(res => {
 // addon.showFileProperties("c:\\users\\urieg\\Downloads\\index.html")
     
 ; (async () => {
-    
+
+        const icon1 = await addon.getIcon("//vme-test2024-1/c$/Program%20Files/caesar/CAEWebSrv/caesarWebServer.exe")
+
+
+
     try {
 
         try {

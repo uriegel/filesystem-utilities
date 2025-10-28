@@ -169,6 +169,7 @@ if (process.platform == "linux") {
     exports.getFileSizeSync = inner.getFileSizeSync
     exports.getFileSize = inner.getFileSize
     exports.getFileVersion = async () => null
+    exports.getVersionInfos = async () => []
 } else {
     exports.createFolder = inner.createFolder
     exports.getDrives = inner.getDrives
@@ -177,6 +178,7 @@ if (process.platform == "linux") {
     exports.showFileProperties = inner.showFileProperties
     exports.getFileVersion = inner.getFileVersion;
     exports.rename = inner.rename;
+    exports.getVersionInfos = inner.getVersionInfos;
 
     exports.copyFiles = async (sourcePath, targetPath, items, options) => {
         const source = items.map(n => path.join(sourcePath, n)) 
