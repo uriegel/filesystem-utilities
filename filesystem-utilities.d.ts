@@ -254,4 +254,13 @@ declare module 'filesystem-utilities' {
      * @throws SystemError
      */
     function rename(path: string, name: string, newName: string): Promise<void>
+
+    /**
+     * 
+     * @param share connect a network share like '\\\\host\\sharename' in Windows
+     * @param name the name to connect with, domain included: domain\\username
+     * @param passwd the password to connect with
+     * @throws SystemError 
+     */
+    function addNetworkShare(share: string, name: string, passwd: string): Promise<void>
 }
