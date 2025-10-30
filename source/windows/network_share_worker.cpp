@@ -3,10 +3,11 @@
 #include <winnetwk.h>
 #include "network_share_worker.h"
 #include "..\wstring.h"
+#include "..\error.h"
 using namespace Napi;
 using namespace std;
 
-int make_share(const wstring& share, const wstring& name, const wstring& passwd) {
+tuple<int, wstring, wstring> make_share(const wstring& share, const wstring& name, const wstring& passwd) {
 //    [DllImport("mpr.dll")]
 
     NETRESOURCEW nr = {
@@ -14,12 +15,17 @@ int make_share(const wstring& share, const wstring& name, const wstring& passwd)
         RESOURCETYPE_DISK,
         RESOURCEDISPLAYTYPE_SHARE,
         0,
-        (LPWSTR)share.c_str(),
         nullptr, 
+        (LPWSTR)share.c_str(),
         nullptr
     };
 
-    return WNetAddConnection2W(&nr, passwd.c_str(), name.c_str(), 0);
+    auto error_code = WNetAddConnection2W(&nr, passwd.c_str(), name.c_str(), 0);
+    if (error_code == 0) {
+        tuple<int, wstring, wstring> result(0, L""s, L""s);
+        return result;
+    } else
+        return make_result(error_code);
 }
 
 class Netwotk_share_worker : public AsyncWorker {
@@ -32,7 +38,7 @@ public:
     , passwd(passwd) {}
     ~Netwotk_share_worker() {}
 
-    void Execute () { make_share(share, name, passwd); }
+    void Execute () { result = make_share(share, name, passwd); }
 
     void OnOK();
 
@@ -43,10 +49,24 @@ private:
     wstring share;
     wstring name;
     wstring passwd;
+    tuple<int, wstring, wstring> result;
 };
 
 void Netwotk_share_worker::OnOK() {
-    
+    HandleScope scope(Env());
+    auto native_err_code = get<0>(result);
+    auto err_code = get<1>(result);
+    auto err_msg = get<2>(result);
+    if (native_err_code == 0) 
+        deferred.Resolve(Env().Null());
+    else {
+        Napi::Object errObj = Env().Global()
+            .Get("Error").As<Napi::Function>()
+            .New({ WString::New(Env(), err_msg) });        
+        errObj.Set("error", WString::New(Env(), err_code));
+        errObj.Set("nativeError", Number::New(Env(), (int)native_err_code));
+        deferred.Reject(errObj);
+    }
 }
 
 Value AddNetworkShare(const CallbackInfo& info) {
