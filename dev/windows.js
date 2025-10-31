@@ -12,7 +12,24 @@ const wait = time => new Promise(res => {
 // addon.showFileProperties("c:\\users\\urieg\\Downloads\\index.html")
     
 ; (async () => {
-    
+
+        try {
+            await addon.addNetworkShare("\\\\cas-w2016mc\\f$", "caseris\\uwe", "juliachiarA12!")
+        } catch (e) {
+            console.log("share", e)
+        }
+        try {
+            await addon.addNetworkShare("\\\\vme-win2016\\c$", "caseris\\caesarnt_test", "caesar12")
+        } catch (e) {
+            console.log("share", e)
+        }
+
+        const icon1 = await addon.getIcon("//vme-test2024-1/c$/Program%20Files/caesar/CAEWebSrv/caesarWebServer.exe")
+
+        const versions = await addon.getVersionInfos([ { path: "C:\\Windows\\HelpPane.exe", idx: 1 }, { path: "C:\\Windows\\win.ini", idx: 2 }, { path: "C:\\Windows\\regedit.exe", idx: 3 } ])
+
+
+
     try {
 
         try {

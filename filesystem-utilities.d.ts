@@ -34,11 +34,21 @@ declare module 'filesystem-utilities' {
         path: string
     }
 
+    export interface VersionsInput {
+        path: string,
+        idx: number
+    }
+
     export interface VersionInfo {
         major: number
         minor: number
         build: number
         patch: number
+    }
+
+    export interface VersionInfoResult {
+        idx: number
+        info: VersionInfo
     }
 
     export interface GpxPoint {
@@ -64,9 +74,13 @@ declare module 'filesystem-utilities' {
     export type TRASH_NOT_POSSIBLE = "TRASH_NOT_POSSIBLE"
     export type CANCELLED = "CANCELLED"
     export type FILE_EXISTS = "FILE_EXISTS"
+    export type WRONG_CREDENTIALS = "WRONG_CREDENTIALS"
+    export type NETWORK_NAME_NOT_FOUND = "NETWORK_NAME_NOT_FOUND"
     
     
-    export type ErrorType = ACCESS_DENIED | PATH_NOT_FOUND | TRASH_NOT_POSSIBLE| CANCELLED | FILE_EXISTS | UNKNOWN
+    
+    export type ErrorType = ACCESS_DENIED | PATH_NOT_FOUND | TRASH_NOT_POSSIBLE| CANCELLED 
+                            | FILE_EXISTS | WRONG_CREDENTIALS | NETWORK_NAME_NOT_FOUND| UNKNOWN
 
     export interface SystemError {
         error: ErrorType,
@@ -130,10 +144,19 @@ declare module 'filesystem-utilities' {
      * 
      * Retrieves the exif datas of a png or jpg file, if included
      * @param file Pathes to the png or jpg files, together with an index.
-     * @param cancellation When included as string, the oeration can be cancelled by calling function 'cancel' with this string as parameter
+     * @param cancellation When included as string, the operation can be cancelled by calling function 'cancel' with this string as parameter
      * @returns An array of exif informations. Each entry belongs to the file path entry with the same index
      */
     function getExifInfos(files: ExifInfosInput[], cancellation?: string): Promise<ExifInfo[]>
+    
+    /**
+     * 
+     * Retrieves the file version of a exe or dll files in Windows, if included. Only available in Windows
+     * @param file Pathes to the exe or dll files, together with an index.
+     * @param cancellation When included as string, the operation can be cancelled by calling function 'cancel' with this string as parameter
+     * @returns An array of VersionInfo informations. Each entry belongs to the file path entry with the same index
+     */
+    function getVersionInfos(files: VersionsInput[], cancellation?: string): Promise<VersionInfoResult[]>
     
     /**
      * Retrieves the file version info, if any, otherwise null. Only for Windows. On Linux the funtion returns null
@@ -235,4 +258,13 @@ declare module 'filesystem-utilities' {
      * @throws SystemError
      */
     function rename(path: string, name: string, newName: string): Promise<void>
+
+    /**
+     * 
+     * @param share connect a network share like '\\\\host\\sharename' in Windows
+     * @param name the name to connect with, domain included: domain\\username
+     * @param passwd the password to connect with
+     * @throws SystemError with ErrorType: WRONG_CREDENTIALS, ACCESS_DENIED or NETWORK_NAME_NOT_FOUND
+     */
+    function addNetworkShare(share: string, name: string, passwd: string): Promise<void>
 }
