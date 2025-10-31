@@ -74,9 +74,13 @@ declare module 'filesystem-utilities' {
     export type TRASH_NOT_POSSIBLE = "TRASH_NOT_POSSIBLE"
     export type CANCELLED = "CANCELLED"
     export type FILE_EXISTS = "FILE_EXISTS"
+    export type WRONG_CREDENTIALS = "WRONG_CREDENTIALS"
+    export type NETWORK_NAME_NOT_FOUND = "NETWORK_NAME_NOT_FOUND"
     
     
-    export type ErrorType = ACCESS_DENIED | PATH_NOT_FOUND | TRASH_NOT_POSSIBLE| CANCELLED | FILE_EXISTS | UNKNOWN
+    
+    export type ErrorType = ACCESS_DENIED | PATH_NOT_FOUND | TRASH_NOT_POSSIBLE| CANCELLED 
+                            | FILE_EXISTS | WRONG_CREDENTIALS | NETWORK_NAME_NOT_FOUND| UNKNOWN
 
     export interface SystemError {
         error: ErrorType,
@@ -260,7 +264,7 @@ declare module 'filesystem-utilities' {
      * @param share connect a network share like '\\\\host\\sharename' in Windows
      * @param name the name to connect with, domain included: domain\\username
      * @param passwd the password to connect with
-     * @throws SystemError 
+     * @throws SystemError with ErrorType: WRONG_CREDENTIALS, ACCESS_DENIED or NETWORK_NAME_NOT_FOUND
      */
     function addNetworkShare(share: string, name: string, passwd: string): Promise<void>
 }

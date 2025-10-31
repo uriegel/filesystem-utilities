@@ -23,6 +23,10 @@ wstring format_error(int last_error) {
             return L"PATH_NOT_FOUND"s;
         case 5:
             return L"ACCESS_DENIED"s;
+        case 67:
+            return L"NETWORK_NAME_NOT_FOUND"s;
+        case 86:
+            return L"WRONG_CREDENTIALS"s;
         case 183:
             return L"FILE_EXISTS"s;
         case 1223:

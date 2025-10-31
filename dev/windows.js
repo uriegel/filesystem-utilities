@@ -14,7 +14,7 @@ const wait = time => new Promise(res => {
 ; (async () => {
 
         try {
-            await addon.addNetworkShare("\\\\vme-win2016\\c$", "ub2\\uwe", "test")
+            await addon.addNetworkShare("\\\\cas-w2016mc\\f$", "caseris\\uwe", "juliachiarA12!")
         } catch (e) {
             console.log("share", e)
         }
