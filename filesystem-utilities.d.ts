@@ -130,6 +130,9 @@ declare module 'filesystem-utilities' {
      *  * 'folder-open'
      *  * 'user-home'
      *  * 'go-up'
+     *  * 'network-server'
+     *  * 'starred'
+     *  * 'android'
      * @result The icon as binary data
      */
     function getIconFromName(name: string): Promise<Buffer>
