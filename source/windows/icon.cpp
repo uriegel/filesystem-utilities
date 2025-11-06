@@ -168,6 +168,15 @@ vector<char> extract_icon_from_name(wstring icon_name) {
 	} else if (icon_name == L"go-up"s) {
 		vector<char> result(Go_up_png, Go_up_png + Go_up_png_len);
 		return result;
+	} else if (icon_name == L"network-server"s) {
+		vector<char> result(Networkshare_png, Networkshare_png + Networkshare_png_len);
+		return result;
+	} else if (icon_name == L"starred"s) {
+		vector<char> result(Favorites_png, Favorites_png + Favorites_png_len);
+		return result;
+	} else if (icon_name == L"android"s) {
+		vector<char> result(Android_png, Android_png + Android_png_len);
+		return result;
 	} else {
 		vector<char> result;
 		return result;

@@ -76,11 +76,13 @@ declare module 'filesystem-utilities' {
     export type FILE_EXISTS = "FILE_EXISTS"
     export type WRONG_CREDENTIALS = "WRONG_CREDENTIALS"
     export type NETWORK_NAME_NOT_FOUND = "NETWORK_NAME_NOT_FOUND"
+    export type NETWORK_PATH_NOT_FOUND = "NETWORK_PATH_NOT_FOUND"
     
     
     
     export type ErrorType = ACCESS_DENIED | PATH_NOT_FOUND | TRASH_NOT_POSSIBLE| CANCELLED 
-                            | FILE_EXISTS | WRONG_CREDENTIALS | NETWORK_NAME_NOT_FOUND| UNKNOWN
+                            | FILE_EXISTS | WRONG_CREDENTIALS | NETWORK_NAME_NOT_FOUND
+                            | NETWORK_PATH_NOT_FOUND | UNKNOWN
 
     export interface SystemError {
         error: ErrorType,
@@ -130,6 +132,9 @@ declare module 'filesystem-utilities' {
      *  * 'folder-open'
      *  * 'user-home'
      *  * 'go-up'
+     *  * 'network-server'
+     *  * 'starred'
+     *  * 'android'
      * @result The icon as binary data
      */
     function getIconFromName(name: string): Promise<Buffer>
