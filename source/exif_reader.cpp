@@ -189,6 +189,7 @@ ExifInfo get_exif_info(const stdstring& file, int idx) {
 		tm tm = {};
 		stringstream ss(result.c_str());
 		ss >> get_time(&tm, "%Y:%m:%d %H:%M:%S");
+		tm.tm_isdst = -1;
 		auto time = mktime(&tm);
 
 		auto secs = static_cast<chrono::seconds>(time).count();
