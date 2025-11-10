@@ -10,6 +10,9 @@ const wait = time => new Promise(res => {
 ;(async () => {
     try {
 
+        const fileItemsArray = await addon.getFiles("/home/uwe")
+        console.log("fileItemsArray", fileItemsArray)
+
         try {
             await addon.copyFiles("/home/uwe/Videos", "/media/uwe/Daten/Kram", ["Test"], { move: true })
         } catch (e) {
@@ -81,10 +84,6 @@ const wait = time => new Promise(res => {
     console.log("trk",trk)
     const trk2 = await addon.getGpxTrackAsync("/media/uwe/Daten/Bilder/Fotos/2024/Tracks/2024-03-10-12-44.gpx")
     console.log("trk2",trk2)
-
-    const fileItemsArray = await addon.getFiles("/home/uwe")
-    console.log("fileItemsArray", fileItemsArray)
-
 
     const fileItems = await addon.getFilesAsync("/home/uwe")
     console.log("fileItems", fileItems)

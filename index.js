@@ -193,3 +193,53 @@ if (process.platform == "linux") {
     }
 }
 
+/* TODO services
+hSCManager,
+        SC_ENUM_PROCESS_INFO,
+        SERVICE_WIN32,
+        SERVICE_STATE_ALL,
+        nullptr,
+        0,
+        &bytesNeeded,
+        &servicesReturned,
+        &resumeHandle,
+        nullptr
+    );
+
+    if (GetLastError() != ERROR_MORE_DATA) {
+        wprintf(L"EnumServicesStatusExW failed. Error: %lu\n", GetLastError());
+        CloseServiceHandle(hSCManager);
+        return 1;
+    }
+
+    std::vector<BYTE> buffer(bytesNeeded);
+    LPENUM_SERVICE_STATUS_PROCESS services = reinterpret_cast<LPENUM_SERVICE_STATUS_PROCESS>(buffer.data());
+
+    if (!EnumServicesStatusExW(
+        hSCManager,
+        SC_ENUM_PROCESS_INFO,
+        SERVICE_WIN32,
+        SERVICE_STATE_ALL,
+        reinterpret_cast<LPBYTE>(services),
+        bytesNeeded,
+        &bytesNeeded,
+        &servicesReturned,
+        &resumeHandle,
+        nullptr
+    )) {
+        wprintf(L"EnumServicesStatusExW failed. Error: %lu\n", GetLastError());
+        CloseServiceHandle(hSCManager);
+        return 1;
+    }
+
+    // Print service name, display name, and executable path
+    for (DWORD i = 0; i < servicesReturned; ++i) {
+        std::wstring exePath = GetServiceExecutablePath(hSCManager, services[i].lpServiceName);
+        wprintf(L"Service Name: %s\n", services[i].lpServiceName);
+        wprintf(L"Display Name: %s\n", services[i].lpDisplayName);
+        wprintf(L"Executable Path: %s\n\n", exePath.empty() ? L"(Unknown)" : exePath.c_str());
+    }
+
+    CloseServiceHandle(hSCManager);
+    return 0;
+}*/
