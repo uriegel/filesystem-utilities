@@ -13,8 +13,15 @@ int main(int argc, char *argv[])
     }
 
     GtkWidget *window = gtk_window_new(GTK_WINDOW_POPUP);
-    gtk_widget_realize(window);
 
+    // Make the window fully transparent
+    gtk_widget_set_app_paintable(window, TRUE);
+    GdkRGBA color = {0,0,0,0};
+    gtk_widget_override_background_color(window, GTK_STATE_FLAG_NORMAL, &color);
+
+    // Show it (needed on Wayland)
+    gtk_widget_show(window);
+    
     while (g_main_context_pending(nullptr))
         g_main_context_iteration(nullptr, false);
 
