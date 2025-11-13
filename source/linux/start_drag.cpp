@@ -27,7 +27,7 @@ static string write_temp_executable() {
     return string(tmpl);
 }
 
-Value DragFiles(const CallbackInfo& info) {
+Value StartDrag(const CallbackInfo& info) {
     Env env = info.Env();
 
     if (!info[0].IsArray())

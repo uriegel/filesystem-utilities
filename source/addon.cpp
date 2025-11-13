@@ -32,6 +32,7 @@ Object Init(Env env, Object exports) {
     std::setlocale(LC_MESSAGES, "");
     std::setlocale(LC_CTYPE, "");
     exports.Set(String::New(env, "getErrorMessage"), Function::New(env, GetErrorMessage));
+    exports.Set(String::New(env, "startDrag"), Function::New(env, StartDrag));
 #endif
     exports.Set(String::New(env, "getFiles"), Function::New(env, GetFiles));
     exports.Set(String::New(env, "getIcon"), Function::New(env, GetIcon));
@@ -42,7 +43,6 @@ Object Init(Env env, Object exports) {
     exports.Set(String::New(env, "getGpxTrackAsync"), Function::New(env, GetGpxTrack));
     exports.Set(String::New(env, "cancel"), Function::New(env, Cancel));
     exports.Set(String::New(env, "getIconFromName"), Function::New(env, GetIconFromName));
-    exports.Set(String::New(env, "startDrag"), Function::New(env, StartDrag));
 #if WINDOWS    
     exports.Set(String::New(env, "getDrives"), Function::New(env, GetDrives));
     exports.Set(String::New(env, "getFileVersion"), Function::New(env, GetFileVersion));
