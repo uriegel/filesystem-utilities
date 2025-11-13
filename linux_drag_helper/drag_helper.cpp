@@ -13,6 +13,10 @@ int main(int argc, char *argv[])
     }
 
     GtkWidget *window = gtk_window_new(GTK_WINDOW_POPUP);
+    gtk_widget_realize(window);
+
+    while (g_main_context_pending(nullptr))
+        g_main_context_iteration(nullptr, false);
 
     GtkTargetEntry targets[] = {
         { (gchar*)"text/uri-list", 0, 0 },
