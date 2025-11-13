@@ -79,7 +79,8 @@
                     'source/linux/icon.cpp',
                     'source/linux/copy_worker.cpp',
                     'source/linux/trash.cpp',
-                    'source/linux/error.cpp'
+                    'source/linux/error.cpp',
+                    'source/linux/start_drag.cpp'
                 ]
             }],
         ]          

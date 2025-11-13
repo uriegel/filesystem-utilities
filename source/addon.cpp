@@ -14,6 +14,7 @@
     #include "linux/platform.h"
     #include "linux/copy_worker.h"
     #include "error.h"
+    #include "linux/start_drag.h"
 #endif
 #include "get_files_worker.h"
 #include "get_icon_worker.h"
@@ -41,6 +42,7 @@ Object Init(Env env, Object exports) {
     exports.Set(String::New(env, "getGpxTrackAsync"), Function::New(env, GetGpxTrack));
     exports.Set(String::New(env, "cancel"), Function::New(env, Cancel));
     exports.Set(String::New(env, "getIconFromName"), Function::New(env, GetIconFromName));
+    exports.Set(String::New(env, "startDrag"), Function::New(env, StartDrag));
 #if WINDOWS    
     exports.Set(String::New(env, "getDrives"), Function::New(env, GetDrives));
     exports.Set(String::New(env, "getFileVersion"), Function::New(env, GetFileVersion));

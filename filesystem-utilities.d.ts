@@ -265,11 +265,17 @@ declare module 'filesystem-utilities' {
     function rename(path: string, name: string, newName: string): Promise<void>
 
     /**
-     * 
-     * @param share connect a network share like '\\\\host\\sharename' in Windows
+     * connect a network share like '\\\\host\\sharename' in Windows
+     * @param share The share name like '\\\\host\\sharename'
      * @param name the name to connect with, domain included: domain\\username
      * @param passwd the password to connect with
      * @throws SystemError with ErrorType: WRONG_CREDENTIALS, ACCESS_DENIED or NETWORK_NAME_NOT_FOUND
      */
     function addNetworkShare(share: string, name: string, passwd: string): Promise<void>
+
+    /**
+     * Starts a file drag operation
+     * @param files files and/or folders to drag and drop
+     */
+    function startDrag(files: string[]): void
 }

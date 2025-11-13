@@ -168,6 +168,7 @@ if (process.platform == "linux") {
     exports.rename = rename
     exports.getFileSizeSync = inner.getFileSizeSync
     exports.getFileSize = inner.getFileSize
+    exports.startDrag = inner.startDrag
     exports.getFileVersion = async () => null
     exports.getVersionInfos = async () => []
     exports.addNetworkShare = async () => { }
