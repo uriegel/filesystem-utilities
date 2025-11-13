@@ -14,7 +14,6 @@
     #include "linux/platform.h"
     #include "linux/copy_worker.h"
     #include "error.h"
-    #include "linux/start_drag.h"
 #endif
 #include "get_files_worker.h"
 #include "get_icon_worker.h"
@@ -32,7 +31,6 @@ Object Init(Env env, Object exports) {
     std::setlocale(LC_MESSAGES, "");
     std::setlocale(LC_CTYPE, "");
     exports.Set(String::New(env, "getErrorMessage"), Function::New(env, GetErrorMessage));
-    exports.Set(String::New(env, "startDrag"), Function::New(env, StartDrag));
 #endif
     exports.Set(String::New(env, "getFiles"), Function::New(env, GetFiles));
     exports.Set(String::New(env, "getIcon"), Function::New(env, GetIcon));

@@ -272,10 +272,4 @@ declare module 'filesystem-utilities' {
      * @throws SystemError with ErrorType: WRONG_CREDENTIALS, ACCESS_DENIED or NETWORK_NAME_NOT_FOUND
      */
     function addNetworkShare(share: string, name: string, passwd: string): Promise<void>
-
-    /**
-     * Starts a file drag operation
-     * @param files files and/or folders to drag and drop
-     */
-    function startDrag(files: string[]): void
 }
