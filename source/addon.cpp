@@ -10,6 +10,7 @@
     #include "windows/rename_worker.h"
     #include "windows/get_versions_worker.h"
     #include "windows/network_share_worker.h"
+    #include "windows/services_worker.h"
 #elif LINUX
     #include "linux/platform.h"
     #include "linux/copy_worker.h"

@@ -194,9 +194,11 @@ if (process.platform == "linux") {
 
     exports.observeWindowServices = (servicesUpdate) => {
         let serviceObservation 
+
+        // TODO Polling a synchronous function
         let obs = ++serviceObserverHandle
         const start = async () => {
-            inner.startObservingWindowServices(obs, servicesUpdate)
+            inner.startObservingWindowServices NOOOOO(obs, servicesUpdate)
         }
         return {
             dispose: () => inner.stopObservingWindowServices(obs)

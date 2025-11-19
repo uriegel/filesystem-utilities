@@ -57,7 +57,8 @@
                     'source/windows/process_file.cpp',
                     'source/windows/rename_worker.cpp',
                     'source/windows/get_versions_worker.cpp',
-                    'source/windows/network_share_worker.cpp'
+                    'source/windows/network_share_worker.cpp',
+                    'source/windows/services_worker.cpp'
                 ],
                 "libraries": [ 
                     "gdiplus.lib",
