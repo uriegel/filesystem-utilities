@@ -191,6 +191,19 @@ if (process.platform == "linux") {
     exports.copyFile = async (source, target) => {
         await inner.copy([source], [target], false, false)
     }
+
+    exports.observeWindowServices = (servicesUpdate) => {
+        let serviceObservation 
+        let obs = ++serviceObserverHandle
+        const start = async () => {
+            inner.startObservingWindowServices(obs, servicesUpdate)
+        }
+        return {
+            dispose: () => inner.stopObservingWindowServices(obs)
+        }
+    }
+
+    var serviceObserverHandle = 0
 }
 
 /* TODO services

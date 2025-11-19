@@ -51,6 +51,8 @@ Object Init(Env env, Object exports) {
     exports.Set(String::New(env, "rename"), Function::New(env, Rename));
     exports.Set(String::New(env, "getVersionInfos"), Function::New(env, GetVersions));
     exports.Set(String::New(env, "addNetworkShare"), Function::New(env, AddNetworkShare));
+    exports.Set(String::New(env, "startObservingWindowServices"), Function::New(env, StartObservingWindowServices));
+    exports.Set(String::New(env, "stopObservingWindowServices"), Function::New(env, StopObservingWindowServices));
 #endif
     return exports;    
 }

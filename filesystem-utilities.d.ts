@@ -272,4 +272,29 @@ declare module 'filesystem-utilities' {
      * @throws SystemError with ErrorType: WRONG_CREDENTIALS, ACCESS_DENIED or NETWORK_NAME_NOT_FOUND
      */
     function addNetworkShare(share: string, name: string, passwd: string): Promise<void>
+
+    /**
+     * Service item (Window Service)
+     */
+    export interface ServiceItem {
+        name: string
+        displayName: string
+        status: "Running" | "Stopped" | "Starting" | "Stopping"
+    }
+
+    /**
+     * ServiceObserver which is a handle to a Windows service observation
+     */
+    export interface ServiceObserver {
+        /**
+         * Stops observing Windows services
+         */
+        dispose: ()=>void 
+    }
+
+    /**
+     * Starts the observing of Windows services, can be stopped by calling 'dispose' of the returned ServiceObserver
+     * @param servicesUpdate callback, which is periodically called and includes all service items
+     */
+    function observeWindowServices(servicesUpdate: (service: ServiceItem[]) => void): ServiceObserver
 }
