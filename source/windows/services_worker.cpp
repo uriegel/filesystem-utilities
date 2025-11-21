@@ -27,7 +27,7 @@ public:
     // }
 
     void Execute(const ExecutionProgress& progress) { 
-        ExecutionProgressData epd{progress, 0};
+//        ExecutionProgressData epd{progress, 0};
         // for (auto &item : items)
         // {
         //     if (is_cancelled(cancellation)) {
