@@ -24,7 +24,7 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "${workspaceFolder}/node_modules/node-addon-api/**",
-                "/home/uwe/.cache/node-gyp/22.21.0/include/node",
+                "/home/uwe/.cache/node-gyp/24.11.1/include/node",
                 "/usr/include/gtk-3.0",
                 "/usr/include/glib-2.0",
                 "/usr/include/pango-1.0",

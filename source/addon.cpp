@@ -14,6 +14,7 @@
 #elif LINUX
     #include "linux/platform.h"
     #include "linux/copy_worker.h"
+    #include "linux/accent_color.h"
     #include "error.h"
 #endif
 #include "get_files_worker.h"
@@ -28,11 +29,6 @@
 using namespace Napi;
 
 Object Init(Env env, Object exports) {
-#if LINUX
-    std::setlocale(LC_MESSAGES, "");
-    std::setlocale(LC_CTYPE, "");
-    exports.Set(String::New(env, "getErrorMessage"), Function::New(env, GetErrorMessage));
-#endif
     exports.Set(String::New(env, "getFiles"), Function::New(env, GetFiles));
     exports.Set(String::New(env, "getIcon"), Function::New(env, GetIcon));
     exports.Set(String::New(env, "getExifDate"), Function::New(env, GetExifDate));
@@ -42,6 +38,12 @@ Object Init(Env env, Object exports) {
     exports.Set(String::New(env, "getGpxTrackAsync"), Function::New(env, GetGpxTrack));
     exports.Set(String::New(env, "cancel"), Function::New(env, Cancel));
     exports.Set(String::New(env, "getIconFromName"), Function::New(env, GetIconFromName));
+#if LINUX
+    std::setlocale(LC_MESSAGES, "");
+    std::setlocale(LC_CTYPE, "");
+    exports.Set(String::New(env, "getErrorMessage"), Function::New(env, GetErrorMessage));
+    exports.Set(String::New(env, "getAccentColor"), Function::New(env, GetAccentColor));
+#endif
 #if WINDOWS    
     exports.Set(String::New(env, "getDrives"), Function::New(env, GetDrives));
     exports.Set(String::New(env, "getFileVersion"), Function::New(env, GetFileVersion));
@@ -49,7 +51,6 @@ Object Init(Env env, Object exports) {
     exports.Set(String::New(env, "openFile"), Function::New(env, OpenFile));
     exports.Set(String::New(env, "openFileWith"), Function::New(env, OpenFileWith));
     exports.Set(String::New(env, "showFileProperties"), Function::New(env, ShowFileProperties));
-    exports.Set(String::New(env, "rename"), Function::New(env, Rename));
     exports.Set(String::New(env, "getVersionInfos"), Function::New(env, GetVersions));
     exports.Set(String::New(env, "addNetworkShare"), Function::New(env, AddNetworkShare));
     exports.Set(String::New(env, "startObservingWindowServices"), Function::New(env, StartObservingWindowServices));

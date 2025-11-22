@@ -172,6 +172,7 @@ if (process.platform == "linux") {
     exports.getFileVersion = async () => null
     exports.getVersionInfos = async () => []
     exports.addNetworkShare = async () => { }
+    exports.getAccentColor = inner.getAccentColor
 } else {
     exports.createFolder = inner.createFolder
     exports.getDrives = inner.getDrives

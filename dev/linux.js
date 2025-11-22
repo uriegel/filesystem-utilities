@@ -10,6 +10,8 @@ const wait = time => new Promise(res => {
 ;(async () => {
     try {
 
+        console.log("accent color", addon.getAccentColor())
+
         const drives = await addon.getDrives()
         console.log("drives", drives)
 
