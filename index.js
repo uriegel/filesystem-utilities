@@ -63,7 +63,7 @@ if (process.platform == "linux") {
         })()
 
         //const takeOr = (text: string, alt: string) => text ? text : alt
-        const constructDrives = driveString => {
+        const constructDrive = driveString => {
             const getString = (pos1, pos2) =>
                 driveString.substring(columnsPositions[pos1], columnsPositions[pos2]).trim()
             const trimName = name =>
@@ -88,11 +88,12 @@ if (process.platform == "linux") {
         const itemOffers = [{ name: "~", description: "home", mountPoint: homedir, isMounted: true, type: "HOME", isRoot: false }]
             .concat(driveStrings
                 .slice(1)
-                .map(constructDrives)
+                .map(constructDrive)
         )
         const items = itemOffers
                         .filter(rio => (!rio.isRoot && rio.name) || (itemOffers.filter(n => n.name != rio.name && n.name.startsWith(rio.name)) == 0
-                            && rio.mountPoint != "[SWAP]"))
+                            && rio.mountPoint != "[SWAP]"
+                            && !rio.mountPoint.startsWith("/snap")))
             .map(n => ({
                 description: n.description, name: n.name, type: n.type, mountPoint: n.mountPoint, isMounted: n.isMounted, driveType: n.driveType, size: n.size
             }))
@@ -171,6 +172,7 @@ if (process.platform == "linux") {
     exports.getFileVersion = async () => null
     exports.getVersionInfos = async () => []
     exports.addNetworkShare = async () => { }
+    exports.getAccentColor = inner.getAccentColor
 } else {
     exports.createFolder = inner.createFolder
     exports.getDrives = inner.getDrives

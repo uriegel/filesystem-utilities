@@ -10,6 +10,11 @@ const wait = time => new Promise(res => {
 ;(async () => {
     try {
 
+        console.log("accent color", addon.getAccentColor())
+
+        const drives = await addon.getDrives()
+        console.log("drives", drives)
+
         const fileItemsArray = await addon.getFiles("/home/uwe")
         console.log("fileItemsArray", fileItemsArray)
 
@@ -62,9 +67,6 @@ const wait = time => new Promise(res => {
     ], "Känzel")
 
     console.log("exifInfosTest", exifInfosTest)
-
-    const drives = await addon.getDrives()
-    console.log("drives", drives)
 
     const exifDate = await addon.getExifDate("/media/uwe/Video/Uwe/Dokumente/20131116_095204.jpg")
     console.log(new Date().getTime())

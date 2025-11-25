@@ -297,4 +297,11 @@ declare module 'filesystem-utilities' {
      * @param servicesUpdate callback, which is periodically called and includes all service items
      */
     function observeWindowServices(servicesUpdate: (service: ServiceItem[]) => void): ServiceObserver
+
+    /**
+     * Gets the Gnome (or Ubuntu) accent color as string
+     * 
+     * This function is exclusivly available on Linux
+     */
+    function getAccentColor(): string
 }
