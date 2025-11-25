@@ -1,5 +1,6 @@
 #include <napi.h>
 #include <string>
+#include <Windows.h>
 using namespace Napi;
 using namespace std;
 
@@ -7,70 +8,68 @@ struct Service_item {
     wstring name;
 };
 
-class Services_worker : public AsyncProgressWorker<Service_item>
+class Services_worker : public AsyncWorker
 {
 public:
-    Services_worker(const Napi::Env& env, int handle, const Function& callback)
-    : AsyncProgressWorker(env)
-    , callback(Persistent(callback))
+    Services_worker(const Napi::Env& env)
+    : AsyncWorker(env)
     , deferred(Promise::Deferred::New(Env())) 
-    , handle(handle)
    {} 
-    ~Services_worker() {
-        callback.Reset();
-    }
+    ~Services_worker() { }
 
-    // static void FileProgressCallback(int64_t current, int64_t total, void* p) {
-    //     ExecutionProgressData *epd = (ExecutionProgressData *)p;
-    //     auto data = CopyFileProgress { epd->idx, current, total };
-    //     epd->progress.Send(&data, 1);
-    // }
+    void Execute() { 
 
-    void Execute(const ExecutionProgress& progress) { 
-        ExecutionProgressData epd{progress, 0};
-        // for (auto &item : items)
-        // {
-        //     if (is_cancelled(cancellation)) {
-        //         copy_result = make_cancelled_result();
-        //         return;
-        //     }
-        //     auto source = g_file_new_for_path(item.source.c_str());
-        //     auto dest = g_file_new_for_path(item.target.c_str());
-        //     GError* error{nullptr};
-        //     bool success = move
-        //         ? g_file_move(source, dest, (overwrite ? G_FILE_COPY_OVERWRITE : G_FILE_COPY_NONE), nullptr, FileProgressCallback, (void*)&epd, &error)
-        //         : g_file_copy(source, dest, (overwrite ? G_FILE_COPY_OVERWRITE : G_FILE_COPY_NONE), nullptr, FileProgressCallback, (void*)&epd, &error);
-        //     if (error && error->code == 1 && g_file_query_exists(source, nullptr)) {
-        //         g_error_free(error);
-        //         error = nullptr;
-        //         auto path = g_file_get_parent(dest);
-        //         g_file_make_directory_with_parents(path, nullptr, nullptr);
-        //         g_object_unref(path);
-        //         success = move
-        //                       ? g_file_move(source, dest, (GFileCopyFlags)(0), nullptr, FileProgressCallback, (void *)&epd, &error)
-        //                       : g_file_copy(source, dest, (GFileCopyFlags)(0), nullptr, FileProgressCallback, (void *)&epd, &error);
-        //     }
-        //     if (!success) {
-        //         if (error) {
-        //             copy_result = make_result(errno, error);
-        //             g_error_free(error);
-        //             g_object_unref(source);
-        //             g_object_unref(dest);
-        //             return;
-        //         }
-        //     }
-        //     epd.idx++;
-        //     g_object_unref(source);
-        //     g_object_unref(dest);
-        // }
-    }
+        DWORD bytesNeeded = 0;
+        DWORD resumeHandle = 0;
+        DWORD servicesReturned = 0;
 
-    void OnProgress(const Service_item* data, size_t count) {
-    //     vector<napi_value> args;
-    //     args.push_back(Number::New(callback.Env(), data->idx));
-    //     args.push_back(Number::New(callback.Env(), data->current));
-    //     args.push_back(Number::New(callback.Env(), data->total));
-    //     callback.Call(args);
+        auto hSCManager = OpenSCManagerA(nullptr, nullptr, SC_MANAGER_ENUMERATE_SERVICE);
+        EnumServicesStatusExW(
+            hSCManager,
+            SC_ENUM_PROCESS_INFO,
+            SERVICE_WIN32,
+            SERVICE_STATE_ALL,
+            nullptr,
+            0,
+            &bytesNeeded,
+            &servicesReturned,
+            &resumeHandle,
+            nullptr
+        );
+
+        if (GetLastError() != ERROR_MORE_DATA) {
+            wprintf(L"EnumServicesStatusExW failed. Error: %lu\n", GetLastError());
+            CloseServiceHandle(hSCManager);
+            return;
+        }
+
+        std::vector<BYTE> buffer(bytesNeeded);
+        LPENUM_SERVICE_STATUS_PROCESS services = reinterpret_cast<LPENUM_SERVICE_STATUS_PROCESS>(buffer.data());
+
+        if (!EnumServicesStatusExW(
+            hSCManager,
+            SC_ENUM_PROCESS_INFO,
+            SERVICE_WIN32,
+            SERVICE_STATE_ALL,
+            reinterpret_cast<LPBYTE>(services),
+            bytesNeeded,
+            &bytesNeeded,
+            &servicesReturned,
+            &resumeHandle,
+            nullptr
+        )) {
+            wprintf(L"EnumServicesStatusExW failed. Error: %lu\n", GetLastError());
+            CloseServiceHandle(hSCManager);
+            return;
+        }
+
+        // Print service name, display name, and executable path
+        for (DWORD i = 0; i < servicesReturned; ++i) {
+            wprintf(L"Service Name: %s\n", services[i].lpServiceName);
+            wprintf(L"Display Name: %s\n", services[i].lpDisplayName);
+        }
+
+        CloseServiceHandle(hSCManager);
     }
 
     void OnOK();
@@ -78,9 +77,7 @@ public:
     Napi::Promise GetPromise() { return deferred.Promise(); }
 
 private:
-    FunctionReference callback;
     Promise::Deferred deferred;
-    int handle;
 };
 
 void Services_worker::OnOK() {
@@ -102,16 +99,9 @@ void Services_worker::OnOK() {
     deferred.Resolve(Env().Null());
 }
 
-Value StartObservingWindowServices(const CallbackInfo& info) {
-    auto handle = info[0].As<Number>().Int32Value();
-    auto cb = info[1].As<Function>();
-
-    auto worker = new Services_worker(info.Env(), handle, cb);
+Value GetServices(const CallbackInfo& info) {
+    auto worker = new Services_worker(info.Env());
     worker->Queue();
     return worker->GetPromise();
 }
 
-Value StopObservingWindowServices(const CallbackInfo& info) {
-    auto handle = info[0].As<Number>().Int32Value();
-    return info.Env().Undefined();    
-}
