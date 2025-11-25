@@ -1,11 +1,14 @@
 #include <napi.h>
 #include <string>
 #include <Windows.h>
+#include "../wstring.h"
 using namespace Napi;
 using namespace std;
 
 struct Service_item {
+    wstring display_name;
     wstring name;
+    int state;
 };
 
 class Services_worker : public AsyncWorker
@@ -64,9 +67,12 @@ public:
         }
 
         // Print service name, display name, and executable path
-        for (DWORD i = 0; i < servicesReturned; ++i) {
-            wprintf(L"Service Name: %s\n", services[i].lpServiceName);
-            wprintf(L"Display Name: %s\n", services[i].lpDisplayName);
+        for (auto i = 0u; i < servicesReturned; ++i) {
+            items.push_back(Service_item{ 
+                (wstring)(LPWSTR)services[i].lpDisplayName, 
+                (wstring)(LPWSTR)services[i].lpServiceName, 
+                2
+            });
         }
 
         CloseServiceHandle(hSCManager);
@@ -78,25 +84,24 @@ public:
 
 private:
     Promise::Deferred deferred;
+    vector<Service_item> items;
 };
 
 void Services_worker::OnOK() {
     HandleScope scope(Env());
 
-    // auto native_err_code = get<0>(copy_result);
-    // auto err_code = get<1>(copy_result);
-    // auto err_msg = get<2>(copy_result);
-    // if (native_err_code == 0) 
-    //     deferred.Resolve(Env().Null());
-    // else {
-    //     Napi::Object errObj = Env().Global()
-    //         .Get("Error").As<Napi::Function>()
-    //         .New({ nodestring::New(Env(), err_msg) });        
-    //     errObj.Set("error", nodestring::New(Env(), err_code));
-    //     errObj.Set("nativeError", Number::New(Env(), (int)native_err_code));
-    //     deferred.Reject(errObj);
-    // }
-    deferred.Resolve(Env().Null());
+    auto array = Array::New(Env(), items.size());
+    int i{0};
+    for(auto item: items) {
+        auto obj = Object::New(Env());
+
+        obj.Set("name", WString::New(Env(), item.name));
+        obj.Set("displayName", WString::New(Env(), item.display_name));
+        obj.Set("state", Number::New(Env(), item.state));
+
+        array.Set(i++, obj);
+    }
+    deferred.Resolve(array);
 }
 
 Value GetServices(const CallbackInfo& info) {

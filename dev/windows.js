@@ -10,8 +10,17 @@ const wait = time => new Promise(res => {
 // addon.openFile("c:\\users\\urieg\\Downloads\\index.html")
 // addon.openFileWith("c:\\users\\urieg\\Downloads\\index.html")
 // addon.showFileProperties("c:\\users\\urieg\\Downloads\\index.html")
-    
+
+const delay = (span) => new Promise(res => setTimeout(res, span))
+
 ; (async () => {
+
+
+        const handle = addon.observeWindowServices(items => {
+            console.log("services", items)
+        })
+        await delay(20_000)
+        handle.dispose()
 
         try {
             await addon.addNetworkShare("\\\\cas-w2016mc\\f$", "caseris\\uwe", "juliachiarA12!")
