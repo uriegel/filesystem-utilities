@@ -102,7 +102,7 @@ declare module 'filesystem-utilities' {
         longitude: number
     }
     /**
-     * Gets drives Retrieves all direves from the file system
+     * Retrieves all drives from the file system
      * @returns drives 
      */
     function getDrives(): Promise<DriveItem[]>
